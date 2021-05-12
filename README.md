@@ -1,15 +1,9 @@
-# React Accelerate
+# Bullsfirst Client
+
+Bullsfirst is an application to trade securities and manage investments.
 
 This project was bootstrapped with
 [React Accelerate](https://github.com/PublicisSapient/cra-template-accelerate).
-It is based on [Create React App](https://github.com/facebook/create-react-app)
-and is designed to accelerate React application development by providing
-guidance, libraries and tools to encourage you to write web applications using
-best practices.
-
-Clone the repo listed below to see a small example of how to use this template:
-
-[Accelerated News](https://github.com/PublicisSapient/accelerated-news)
 
 ## Features
 
