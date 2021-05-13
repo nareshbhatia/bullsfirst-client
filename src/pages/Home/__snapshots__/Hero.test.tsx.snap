@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Hero /> renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="bg-neutral-light py-4"
+    data-testid="home-hero"
+  >
+    <div
+      class="hero_container container"
+    >
+      <div
+        class="flex-1 flex flex-row justify-between items-center"
+        data-testid="horizontal-container"
+      >
+        <img
+          alt="logo"
+          src="bullsfirst-logo.svg"
+          width="190"
+        />
+        <img
+          alt="popsicle"
+          class="hero__popsicle"
+          height="200px"
+          src="popsicle.png"
+        />
+        <button
+          aria-label="Sign in"
+          class="btn-sm mt-2"
+          type="submit"
+        >
+          Sign in
+        </button>
+      </div>
+      <p
+        class="title hero__slogan"
+      >
+        Get better results with Bullsfirst at the helm of your portfolio.
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
