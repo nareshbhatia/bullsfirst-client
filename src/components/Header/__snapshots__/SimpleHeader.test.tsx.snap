@@ -11,7 +11,7 @@ exports[`<SimpleHeader /> renders correctly 1`] = `
       <span
         class="navbar__brand"
       >
-        Accelerated News
+        Bullsfirst
       </span>
     </nav>
   </header>

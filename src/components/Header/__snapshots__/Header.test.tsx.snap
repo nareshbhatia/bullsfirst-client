@@ -12,36 +12,10 @@ exports[`<Header /> renders correctly 1`] = `
         class="navbar"
       >
         <span
-          class="navbar__brand mobile"
+          class="navbar__brand"
         >
-          News
+          Bullsfirst
         </span>
-        <span
-          class="navbar__brand desktop"
-        >
-          Accelerated News
-        </span>
-        <ul
-          class="flex-1"
-        >
-          <li>
-            <a
-              aria-current="page"
-              class="navbar__link active"
-              href="/"
-            >
-              Headlines
-            </a>
-          </li>
-          <li>
-            <a
-              class="navbar__link"
-              href="/sports"
-            >
-              Sports
-            </a>
-          </li>
-        </ul>
       </nav>
     </div>
   </header>
