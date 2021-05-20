@@ -5,19 +5,15 @@ exports[`<Header /> renders correctly 1`] = `
   <header
     class="bg-primary-main"
   >
-    <div
-      class="container"
+    <nav
+      class="navbar"
     >
-      <nav
-        class="navbar"
+      <span
+        class="navbar__brand"
       >
-        <span
-          class="navbar__brand"
-        >
-          Bullsfirst
-        </span>
-      </nav>
-    </div>
+        Bullsfirst
+      </span>
+    </nav>
   </header>
 </DocumentFragment>
 `;

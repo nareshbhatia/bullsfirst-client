@@ -1,0 +1,10 @@
+.signup-form {
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  margin: auto;
+}
+
+.signup-form__sign-in {
+  font-weight: 600;
+}

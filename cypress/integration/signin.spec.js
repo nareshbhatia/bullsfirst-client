@@ -28,17 +28,4 @@ describe('SignIn page', function () {
     // Verify email validation error
     cy.contains('email must be a valid email');
   });
-
-  it('navigates to accounts page if validations pass', function () {
-    // Go to the sign-in page
-    cy.visit('/signin');
-
-    // SignIn Page: Fill out sign-in form correctly and submit
-    cy.get('input[name="email"]').type(user.email);
-    cy.get('input[name="password"]').type(user.password);
-    cy.contains('Sign in').click();
-
-    // Verify navigation to Accounts Page
-    cy.contains('Bullsfirst');
-  });
 });

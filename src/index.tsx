@@ -1,10 +1,20 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { App } from './App';
 import { ErrorBoundary, Loading } from './components';
-import { EnvProvider } from './contexts';
+import { AuthContextProvider, EnvProvider } from './contexts';
+import { WindowEnv } from './models';
 import reportWebVitals from './reportWebVitals';
+import { AuthService } from './services';
+import { EnvVar } from './utils';
 import './styles/main.css';
 
 // Start mock service worker
@@ -14,14 +24,37 @@ if (process.env.NODE_ENV === 'development') {
   worker.printHandlers();
 }
 
+// Create Apollo client
+const env = new WindowEnv();
+const httpLink = createHttpLink({
+  uri: env.get(EnvVar.API_URL),
+});
+const authLink = setContext((_, { headers }) => {
+  const token = AuthService.getAccessToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Loading />}>
       <ErrorBoundary>
         <EnvProvider>
-          <Router>
-            <App />
-          </Router>
+          <ApolloProvider client={client}>
+            <AuthContextProvider>
+              <Router>
+                <App />
+              </Router>
+            </AuthContextProvider>
+          </ApolloProvider>
         </EnvProvider>
       </ErrorBoundary>
     </Suspense>
