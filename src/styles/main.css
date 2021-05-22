@@ -301,6 +301,13 @@
   line-height: 1;
 }
 
+.title2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1;
+}
+
 /* ----- Backgrounds ----- */
 .bg-primary-50 {
   background-color: var(--primary-50);
@@ -431,6 +438,7 @@ label {
 
   --bg-default: var(--grey-50);
   --bg-paper: var(--white);
+  --bg-sidebar: #303030;
 
   --primary-light: var(--primary-500);
   --primary-main: var(--primary-800);
@@ -454,6 +462,10 @@ label {
 
   /* text colors on secondary background */
   --text-secondary-default: var(--neutral-900);
+
+  /* sidebar */
+  --sidebar-item: var(--grey-400);
+  --sidebar-item-ative: var(--primary-200);
 
   /* ----- Chota Overrides ----- */
   --bg-color: var(--grey-50);

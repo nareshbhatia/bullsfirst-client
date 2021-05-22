@@ -5,3 +5,4 @@ export * from './Form';
 export * from './Header';
 export * from './Loading';
 export * from './Routes';
+export * from './SideBar';

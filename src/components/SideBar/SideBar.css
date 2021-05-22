@@ -1,0 +1,32 @@
+.sidebar {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-sidebar);
+}
+
+.sidebar__title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--text-primary-default);
+  margin: var(--spacing-1) 0 0 0;
+}
+
+.sidebar__items {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--spacing-2) 0;
+}
+
+.sidebar__item {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--sidebar-item);
+  margin-bottom: var(--spacing-2);
+  cursor: pointer;
+}
+
+.sidebar__item--active {
+  color: var(--sidebar-item-ative);
+}

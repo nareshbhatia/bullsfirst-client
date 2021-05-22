@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SideBar renders correctly without a title 1`] = `
+<DocumentFragment>
+  <div
+    class="sidebar"
+    data-testid="sidebar"
+  >
+    <div
+      class="overflow-auto flex-1 p-2"
+      data-testid="scrolling-container"
+    >
+      <ul
+        class="sidebar__items"
+      >
+        <li
+          class="sidebar__item
+                sidebar__item--active
+              "
+        >
+          Brokerage Account
+        </li>
+        <li
+          class="sidebar__item
+                
+              "
+        >
+          Retirement Account
+        </li>
+        <li
+          class="sidebar__item
+                
+              "
+        >
+          Jenny's College Fund
+        </li>
+      </ul>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`SideBar renders correctly without items 1`] = `
+<DocumentFragment>
+  <div
+    class="sidebar"
+    data-testid="sidebar"
+  >
+    <div
+      class="overflow-auto flex-1 p-2"
+      data-testid="scrolling-container"
+    >
+      <h1
+        class="sidebar__title"
+      >
+        Accounts
+      </h1>
+    </div>
+  </div>
+</DocumentFragment>
+`;
