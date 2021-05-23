@@ -48,7 +48,7 @@ export const AccountHeader = () => {
       </ul>
 
       <button className="btn-sm btn-outline-secondary mr-1">Transfer</button>
-      <button className="btn-sm mr-1" type="submit">
+      <button className="btn-sm btn-secondary mr-1">
         Trade
       </button>
       <FaRedoAlt className="account-header__refresh" />

@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuthState, useAuthStateSetter } from '../../contexts';
 import { AuthService } from '../../services';
 import './Navbar.css';
-import { gql, useMutation } from '@apollo/client';
 
 const SIGN_OUT = gql`
   mutation SignOut {
@@ -20,11 +20,16 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { user } = authState;
   const [signOut] = useMutation(SIGN_OUT);
+  const apolloClient = useApolloClient();
 
   /* istanbul ignore next */
   const handleSignOut = async () => {
     await signOut();
+
+    // clear the apollo cache to remove the user and any other query results
+    await apolloClient.clearStore();
     AuthService.removeAccessToken();
+
     // navigate before setting authState to avoid saving incorrect signInRedirect
     navigate('/');
     setAuthState({ ...authState, user: undefined });
