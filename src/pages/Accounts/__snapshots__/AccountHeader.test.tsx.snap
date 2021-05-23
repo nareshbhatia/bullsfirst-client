@@ -47,8 +47,7 @@ exports[`AccountHeader renders correctly 1`] = `
       Transfer
     </button>
     <button
-      class="btn-sm mr-1"
-      type="submit"
+      class="btn-sm btn-secondary mr-1"
     >
       Trade
     </button>

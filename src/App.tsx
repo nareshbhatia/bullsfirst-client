@@ -17,7 +17,7 @@ import {
 } from './pages';
 import { AuthService } from './services';
 
-const GET_USER = gql`
+export const GET_USER = gql`
   query GetUser {
     user {
       name

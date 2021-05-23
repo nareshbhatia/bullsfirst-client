@@ -1,12 +1,21 @@
 import React from 'react';
+import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { App } from './App';
+import { App, GET_USER } from './App';
 import { AuthContextProvider } from './contexts';
 import { Home, NotFound } from './pages';
 
 jest.mock('./pages/Home/Home');
 jest.mock('./pages/NotFound/NotFound');
+
+const mocks = [
+  {
+    request: {
+      query: GET_USER,
+    },
+  },
+];
 
 describe('<App />', () => {
   test('renders the Home page on default route', () => {
@@ -15,11 +24,13 @@ describe('<App />', () => {
 
     // Act
     const { getByText } = render(
-      <AuthContextProvider>
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>
-      </AuthContextProvider>
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <AuthContextProvider>
+          <MemoryRouter>
+            <App />
+          </MemoryRouter>
+        </AuthContextProvider>
+      </MockedProvider>
     );
 
     // Assert
@@ -32,11 +43,13 @@ describe('<App />', () => {
 
     // Act
     const { getByText } = render(
-      <AuthContextProvider>
-        <MemoryRouter initialEntries={['/invalid/route']}>
-          <App />
-        </MemoryRouter>
-      </AuthContextProvider>
+      <MockedProvider mocks={mocks} addTypename={false}>
+        <AuthContextProvider>
+          <MemoryRouter initialEntries={['/invalid/route']}>
+            <App />
+          </MemoryRouter>
+        </AuthContextProvider>
+      </MockedProvider>
     );
 
     // Assert
