@@ -3,7 +3,18 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components';
 import { useAuthState, useAuthStateSetter } from './contexts';
-import { Accounts, Home, NotFound, SignIn, SignUp } from './pages';
+import {
+  Account,
+  Accounts,
+  Activity,
+  Holdings,
+  Home,
+  NotFound,
+  Orders,
+  Overview,
+  SignIn,
+  SignUp,
+} from './pages';
 import { AuthService } from './services';
 
 const GET_USER = gql`
@@ -43,7 +54,14 @@ export const App = () => {
         path="/accounts"
         redirectPath="/signin"
         element={<Accounts />}
-      />
+      >
+        <Route path=":accountId" element={<Account />}>
+          <Route path="overview" element={<Overview />} />
+          <Route path="holdings" element={<Holdings />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="activity" element={<Activity />} />
+        </Route>
+      </PrivateRoute>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="*" element={<NotFound />} />

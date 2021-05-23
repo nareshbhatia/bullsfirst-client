@@ -27,7 +27,7 @@ describe('Authentication', function () {
     // Verify navigation to Accounts Page and
     //   1. navbar shows Bullsfirst brand
     //   2. navbar shows user's name
-    cy.url().should('eq', `${baseUrl}/accounts`);
+    cy.url().should('eq', `${baseUrl}/accounts/brokerage-account/overview`);
     cy.contains('Bullsfirst');
     cy.contains(user.name);
 
@@ -42,7 +42,7 @@ describe('Authentication', function () {
 
     // Verify navigation to accounts page and
     //   1. navbar shows user's name
-    cy.url().should('eq', `${baseUrl}/accounts`);
+    cy.url().should('eq', `${baseUrl}/accounts/brokerage-account/overview`);
     cy.contains(user.name);
   });
 });

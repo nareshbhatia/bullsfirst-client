@@ -1,0 +1,44 @@
+.account-header {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--spacing-2);
+  background-color: var(--neutral-light);
+}
+
+.account-header ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.account-header__link {
+  color: var(--neutral-600);
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.account-header__link:hover {
+  color: var(--neutral-800);
+  text-decoration: none;
+}
+
+/* override chota hover behavior for navbar links */
+a.account-header__link:hover {
+  opacity: 1;
+}
+
+.account-header__link.active {
+  color: var(--neutral-900);
+}
+
+.account-header__refresh {
+  color: var(--neutral-600);
+  cursor: pointer;
+}
+
+.account-header__refresh:hover {
+  color: var(--neutral-800);
+}

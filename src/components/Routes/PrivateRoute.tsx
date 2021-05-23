@@ -13,7 +13,7 @@ export const PrivateRoute = ({ redirectPath, ...props }: PrivateRouteProps) => {
   const { user } = useAuthState();
 
   if (!user) {
-    AuthService.setSignInRedirectPath(props.path || '/');
+    AuthService.setSignInRedirectPath(props.path || '/accounts');
     return <Navigate to={redirectPath} />;
   }
   return <Route {...props} />;
