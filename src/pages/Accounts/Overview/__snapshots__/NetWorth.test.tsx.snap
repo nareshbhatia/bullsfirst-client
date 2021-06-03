@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NetWorth /> renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="flex-1 flex flex-row p-2"
+    data-testid="horizontal-container"
+  >
+    <div
+      class="net-worth__label-value"
+    >
+      <h1
+        class="net-worth__label"
+      >
+        Net Worth
+      </h1>
+      <p
+        class="net-worth__value"
+      >
+        $14,500.12
+      </p>
+    </div>
+    <div
+      class="net-worth__label-value"
+    >
+      <h1
+        class="net-worth__label"
+      >
+        Investments
+      </h1>
+      <p
+        class="net-worth__value"
+      >
+        $11,000.12
+      </p>
+    </div>
+    <div
+      class="net-worth__label-value"
+    >
+      <h1
+        class="net-worth__label"
+      >
+        Cash
+      </h1>
+      <p
+        class="net-worth__value"
+      >
+        $3,500.00
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
