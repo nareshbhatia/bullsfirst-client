@@ -329,9 +329,34 @@
   background-color: var(--neutral-light);
 }
 
+/* ----- Text Colors ----- */
+.color-default {
+  color: var(--text-default);
+}
+
+.color-muted {
+  color: var(--text-muted);
+}
+
+.color-primary-default {
+  color: var(--text-primary-default);
+}
+
+.color-primary-muted {
+  color: var(--text-primary-muted);
+}
+
+.color-secondary-default {
+  color: var(--text-secondary-default);
+}
+
 /* ----- Paper ----- */
 .paper {
   background-color: var(--bg-paper);
+}
+
+.border-paper {
+  border: 1px solid var(--neutral-100);
 }
 
 /* ----- Card ----- */
@@ -481,4 +506,8 @@ label {
   --spacing-4: 32px;
   --spacing-5: 40px;
   --spacing-6: 48px;
+  --spacing-7: 56px;
+  --spacing-8: 64px;
+  --spacing-9: 72px;
+  --spacing-10: 80px;
 }

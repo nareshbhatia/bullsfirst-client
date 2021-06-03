@@ -1,0 +1,4 @@
+.account-overview__chart {
+  width: calc((100% - 16px) / 2);
+  height: 388px;
+}

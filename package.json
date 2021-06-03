@@ -24,6 +24,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.18",
     "@hookform/resolvers": "^2.5.0",
+    "@react-force/number-utils": "^2.1.0",
     "graphql": "^15.5.0",
     "history": "5.0.0",
     "react": "^17.0.2",

@@ -1886,6 +1886,14 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
+"@react-force/number-utils@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-force/number-utils/-/number-utils-2.1.0.tgz#a9b6e848917da9fffe943af548533909638661ab"
+  integrity sha512-P4fcS9PowV+vCFkOse3cljWpzzc6wB23nZpwaqG21kQ2i3ESpMTWg8c/XEC1ma3I1d51trL8OM725FrYa1PSjA==
+  dependencies:
+    numeral "^2.0.6"
+    tslib "^2.0.0"
+
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-7.1.3.tgz#80de384edfbd7bfc9101164910f86078151a3eca"
@@ -10564,6 +10572,11 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
+
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha1-StCAk21EPCVhrtnyGX7//iX05QY=
 
 nwsapi@^2.2.0:
   version "2.2.0"
