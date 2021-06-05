@@ -7,7 +7,6 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { addDecorator } from '@storybook/react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthContextProvider, EnvProvider } from '../src/contexts';
 import { AuthService } from '../src/services';
 import '../src/styles/main.css';
@@ -48,9 +47,7 @@ const StoryDecorator = (Story: any) => (
   <EnvProvider>
     <ApolloProvider client={client}>
       <AuthContextProvider>
-        <Router>
-          <Story />
-        </Router>
+        <Story />
       </AuthContextProvider>
     </ApolloProvider>
   </EnvProvider>

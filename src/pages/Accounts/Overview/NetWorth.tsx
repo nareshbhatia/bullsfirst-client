@@ -1,10 +1,26 @@
 import React from 'react';
+import { gql, useQuery } from '@apollo/client';
 import { NumberUtils } from '@react-force/number-utils';
-import { HorizontalContainer } from '../../../components';
+import { useParams } from 'react-router-dom';
+import { HorizontalContainer, Loading } from '../../../components';
 import { NetWorthInfo } from '../../../models';
 import './NetWorth.css';
 
 const { formatAsMoney } = NumberUtils;
+
+interface NetWorthData {
+  netWorthInfo: NetWorthInfo;
+}
+
+export const GET_NET_WORTH = gql`
+  query GetNetWorth($accountId: ID!) {
+    netWorthInfo(id: $accountId) {
+      netWorth
+      investments
+      cash
+    }
+  }
+`;
 
 const LabelValue = ({ label, value }: { label: string; value: number }) => {
   return (
@@ -15,8 +31,19 @@ const LabelValue = ({ label, value }: { label: string; value: number }) => {
   );
 };
 
-export const NetWorth = ({ netWorthInfo }: { netWorthInfo: NetWorthInfo }) => {
-  const { cash, investments, netWorth } = netWorthInfo;
+export const NetWorth = () => {
+  const { accountId } = useParams();
+  const { loading, data } = useQuery<NetWorthData>(GET_NET_WORTH, {
+    variables: {
+      accountId,
+    },
+  });
+
+  if (loading || !data) {
+    return <Loading />;
+  }
+
+  const { cash, investments, netWorth } = data.netWorthInfo;
   return (
     <HorizontalContainer className="p-2">
       <LabelValue label="Net Worth" value={netWorth} />
