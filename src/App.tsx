@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components';
-import { useAuthState } from './contexts';
+import { useAuthContext } from './contexts';
 import {
   Account,
   Accounts,
@@ -27,7 +27,7 @@ export const GET_USER = gql`
 `;
 
 export const App = () => {
-  const { authState, setAuthState } = useAuthState();
+  const { authState, setAuthState } = useAuthContext();
   const { data } = useQuery(GET_USER, {
     skip:
       authState.user !== undefined ||

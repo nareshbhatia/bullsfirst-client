@@ -19,14 +19,14 @@ const AuthContextProvider: React.FC = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// ---------- useAuthState ----------
-function useAuthState() {
+// ---------- useAuthContext ----------
+function useAuthContext() {
   const authContext = useContext(AuthContext);
   /* istanbul ignore next */
   if (authContext === undefined) {
-    throw new Error('useAuthState must be used within a AuthContextProvider');
+    throw new Error('useAuthContext must be used within a AuthContextProvider');
   }
   return authContext;
 }
 
-export { AuthContextProvider, useAuthState };
+export { AuthContextProvider, useAuthContext };
