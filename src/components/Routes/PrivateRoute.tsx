@@ -10,9 +10,9 @@ export interface PrivateRouteProps extends RouteProps {
 
 /* istanbul ignore next */
 export const PrivateRoute = ({ redirectPath, ...props }: PrivateRouteProps) => {
-  const { user } = useAuthState();
+  const { authState } = useAuthState();
 
-  if (!user) {
+  if (!authState.user) {
     AuthService.setSignInRedirectPath(props.path || '/accounts');
     return <Navigate to={redirectPath} />;
   }

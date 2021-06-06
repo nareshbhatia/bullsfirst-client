@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
-import { useAuthState, useAuthStateSetter } from '../../contexts';
+import { useAuthState } from '../../contexts';
 import { AuthService } from '../../services';
 import { SignUpForm, FormUserInfo } from './SignUpForm';
 
@@ -19,8 +19,7 @@ const SIGN_UP = gql`
 `;
 
 export const SignUp = () => {
-  const authState = useAuthState();
-  const setAuthState = useAuthStateSetter();
+  const { authState, setAuthState } = useAuthState();
   const navigate = useNavigate();
   const [signUp, { data, error }] = useMutation(SIGN_UP);
   const signUpError = error ? error.message : undefined;

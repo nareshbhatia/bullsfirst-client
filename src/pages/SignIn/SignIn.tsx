@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
-import { useAuthState, useAuthStateSetter } from '../../contexts';
+import { useAuthState } from '../../contexts';
 import { Credentials } from '../../models';
 import { AuthService } from '../../services';
 import { SignInForm } from './SignInForm';
@@ -20,8 +20,7 @@ const SIGN_IN = gql`
 `;
 
 export const SignIn = () => {
-  const authState = useAuthState();
-  const setAuthState = useAuthStateSetter();
+  const { authState, setAuthState } = useAuthState();
   const navigate = useNavigate();
   const [signIn, { data, error }] = useMutation(SIGN_IN);
   const signInError = error ? error.message : undefined;
