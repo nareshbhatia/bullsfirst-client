@@ -4,10 +4,10 @@ import { PieChart } from './PieChart';
 import { DataPoint } from '../../models';
 
 const monthlySpending: Array<DataPoint> = [
-  { name: 'Food & Dining', y: 22 },
-  { name: 'Health Insurance', y: 18 },
-  { name: 'Miscellaneous', y: 32 },
-  { name: 'Travel & Shopping', y: 16 },
+  { name: 'Taxes', y: 30 },
+  { name: 'Food & Dining', y: 25 },
+  { name: 'Health Insurance', y: 25 },
+  { name: 'Travel & Shopping', y: 20 },
 ];
 
 export default {
@@ -16,7 +16,7 @@ export default {
 } as Meta;
 
 const Template: Story = (args) => (
-  <div className="paper border-paper" style={{ width: 380, height: 380 }}>
+  <div className="paper border-paper" style={{ height: 388 }}>
     <PieChart title={args.title} data={args.data} />
   </div>
 );
