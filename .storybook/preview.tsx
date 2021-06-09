@@ -7,9 +7,11 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { addDecorator } from '@storybook/react';
+import Highcharts from 'highcharts';
 import { AuthContextProvider, EnvProvider } from '../src/contexts';
 import { AuthService } from '../src/services';
 import '../src/styles/main.css';
+import { ChartColors } from '../src/utils';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -24,6 +26,11 @@ export const parameters = {
 const { worker } = require('../src/mocks/browser');
 worker.start();
 worker.printHandlers();
+
+// Initialize Highcharts
+Highcharts.setOptions({
+  colors: ChartColors,
+});
 
 // Create Apollo client
 const httpLink = createHttpLink({

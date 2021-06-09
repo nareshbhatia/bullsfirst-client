@@ -1,4 +1,5 @@
 export * from './CenteredMessage';
+export * from './Charts';
 export * from './Containers';
 export * from './ErrorBoundary';
 export * from './Form';

@@ -7,6 +7,7 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import Highcharts from 'highcharts';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { App } from './App';
 import { ErrorBoundary, Loading } from './components';
@@ -14,7 +15,7 @@ import { AuthContextProvider, EnvProvider } from './contexts';
 import { WindowEnv } from './models';
 import reportWebVitals from './reportWebVitals';
 import { AuthService } from './services';
-import { EnvVar } from './utils';
+import { ChartColors, EnvVar } from './utils';
 import './styles/main.css';
 
 // Start mock service worker
@@ -23,6 +24,11 @@ if (process.env.NODE_ENV === 'development') {
   worker.start();
   worker.printHandlers();
 }
+
+// Initialize Highcharts
+Highcharts.setOptions({
+  colors: ChartColors,
+});
 
 // Create Apollo client
 const env = new WindowEnv();
