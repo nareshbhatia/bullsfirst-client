@@ -1,20 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Highcharts, { Chart } from 'highcharts';
+import React, { useEffect, useState } from 'react';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { DataPoint } from '../../models';
+import drilldown from 'highcharts/modules/drilldown';
+drilldown(Highcharts);
 
 export interface PieChartProps {
   title: string;
-  data: Array<DataPoint>;
+  series: any;
+  drilldown: any;
 }
 
-export const PieChart = ({ title, data }: PieChartProps) => {
-  const chartRef =
-    useRef<{
-      chart: Chart;
-      container: React.RefObject<HTMLDivElement>;
-    }>(null);
-
+export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
   const [chartOptions, setChartOptions] = useState({
     chart: {
       type: 'pie',
@@ -27,9 +23,7 @@ export const PieChart = ({ title, data }: PieChartProps) => {
     },
     plotOptions: {
       pie: {
-        allowPointSelect: true,
         center: ['50%', '42%'],
-        cursor: 'pointer',
         size: '70%',
         dataLabels: {
           distance: 30, // this is the default
@@ -52,7 +46,10 @@ export const PieChart = ({ title, data }: PieChartProps) => {
         },
       },
     },
-    series: [{}],
+    series: [],
+    drilldown: {
+      series: [],
+    },
     title: {
       align: 'left',
       style: {
@@ -92,16 +89,16 @@ export const PieChart = ({ title, data }: PieChartProps) => {
     // see https://github.com/highcharts/highcharts-react#optimal-way-to-update
     // @ts-ignore
     setChartOptions({
-      series: [{ data }],
+      series,
+      drilldown,
     });
-  }, [data]);
+  }, [series, drilldown]);
 
   return (
     <HighchartsReact
       highcharts={Highcharts}
       containerProps={{ style: { width: '100%', height: '100%' } }}
       options={chartOptions}
-      ref={chartRef}
     />
   );
 };

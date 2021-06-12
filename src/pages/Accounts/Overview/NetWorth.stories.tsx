@@ -11,7 +11,14 @@ export default {
 export const NetWorthStory = () => (
   <Router initialEntries={['/accounts/brokerage-account/overview']}>
     <Routes>
-      <Route path="/accounts/:accountId/overview" element={<NetWorth />} />
+      <Route
+        path="/accounts/:accountId/overview"
+        element={
+          <div className="paper border-paper">
+            <NetWorth />
+          </div>
+        }
+      />
     </Routes>
   </Router>
 );

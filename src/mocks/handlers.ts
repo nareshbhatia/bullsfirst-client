@@ -1,38 +1,10 @@
 import { graphql, GraphQLRequest } from 'msw';
 import { v4 as uuidv4 } from 'uuid';
+import accounts from './data/accounts.json';
+import netWorths from './data/net-worths.json';
 import { mockDb } from './mockDb';
 
 const { getUser, setUser, getTokenValue, setTokenValue, removeToken } = mockDb;
-
-const AccountId = {
-  BrokerageAccount: 'brokerage-account',
-  RetirementAccount: 'retirement-account',
-  JennysCollegeFund: 'jennys-college-fund',
-};
-
-const NetWorthInfo = {
-  [AccountId.BrokerageAccount]: {
-    __typename: 'NetWorthInfo',
-    id: AccountId.BrokerageAccount,
-    netWorth: 14500.12,
-    investments: 11000.12,
-    cash: 3500.0,
-  },
-  [AccountId.RetirementAccount]: {
-    __typename: 'NetWorthInfo',
-    id: AccountId.RetirementAccount,
-    netWorth: 10000.0,
-    investments: 8000.0,
-    cash: 2000.0,
-  },
-  [AccountId.JennysCollegeFund]: {
-    __typename: 'NetWorthInfo',
-    id: AccountId.JennysCollegeFund,
-    netWorth: 20000.0,
-    investments: 16000.0,
-    cash: 4000.0,
-  },
-};
 
 function parseAccessToken(req: GraphQLRequest<any>) {
   const authHeader = req.headers.get('Authorization');
@@ -163,27 +135,7 @@ export const handlers = [
 
   /** get accounts */
   graphql.query('GetAccounts', (req, res, ctx) => {
-    return res(
-      ctx.data({
-        accounts: [
-          {
-            __typename: 'Account',
-            id: AccountId.BrokerageAccount,
-            name: 'Brokerage Account',
-          },
-          {
-            __typename: 'Account',
-            id: AccountId.RetirementAccount,
-            name: 'Retirement Account',
-          },
-          {
-            __typename: 'Account',
-            id: AccountId.JennysCollegeFund,
-            name: "Jenny's College Fund",
-          },
-        ],
-      })
-    );
+    return res(ctx.data({ accounts }));
   }),
 
   /** get net worth */
@@ -191,7 +143,9 @@ export const handlers = [
     const { accountId } = req.variables;
     return res(
       ctx.data({
-        netWorthInfo: NetWorthInfo[accountId],
+        netWorthInfo: netWorths.find(
+          (netWorthInfo) => netWorthInfo.id === accountId
+        ),
       })
     );
   }),
