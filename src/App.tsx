@@ -4,8 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components';
 import { useAuthContext } from './contexts';
 import {
-  Account,
   Accounts,
+  AccountView,
   Activity,
   Holdings,
   Home,
@@ -15,7 +15,12 @@ import {
   SignIn,
   SignUp,
 } from './pages';
+import { User } from './models';
 import { AuthService } from './services';
+
+interface UserData {
+  user: User;
+}
 
 export const GET_USER = gql`
   query GetUser {
@@ -28,7 +33,7 @@ export const GET_USER = gql`
 
 export const App = () => {
   const { authState, setAuthState } = useAuthContext();
-  const { data } = useQuery(GET_USER, {
+  const { data } = useQuery<UserData>(GET_USER, {
     skip:
       authState.user !== undefined ||
       AuthService.getAccessToken() === undefined,
@@ -50,7 +55,7 @@ export const App = () => {
         redirectPath="/signin"
         element={<Accounts />}
       >
-        <Route path=":accountId" element={<Account />}>
+        <Route path=":accountId" element={<AccountView />}>
           <Route path="overview" element={<Overview />} />
           <Route path="holdings" element={<Holdings />} />
           <Route path="orders" element={<Orders />} />

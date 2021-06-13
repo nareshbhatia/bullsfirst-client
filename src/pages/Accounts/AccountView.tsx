@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { VerticalContainer } from '../../components';
 import { AccountHeader } from './AccountHeader';
 
-export const Account = () => {
+export const AccountView = () => {
   return (
     <VerticalContainer className="flex-1">
       <AccountHeader />

@@ -8,6 +8,11 @@ import {
   SideBar,
   ViewVerticalContainer,
 } from '../../components';
+import { Account } from '../../models';
+
+interface AccountData {
+  accounts: Array<Account>;
+}
 
 const GET_ACCOUNTS = gql`
   query GetAccounts {
@@ -19,7 +24,7 @@ const GET_ACCOUNTS = gql`
 `;
 
 export const Accounts = () => {
-  const { loading, error, data } = useQuery(GET_ACCOUNTS);
+  const { loading, error, data } = useQuery<AccountData>(GET_ACCOUNTS);
   const [selectedNavId, setSelectedNavId] = useState<string | undefined>();
   const navigate = useNavigate();
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { HorizontalContainer } from '../../../components';
-import { AssetAllocation } from './AssetAllocation';
+import { AssetAllocationChart } from './AssetAllocationChart';
 import { NetWorth } from './NetWorth';
-import { Performance } from './Performance';
+import { PerformanceChart } from './PerformanceChart';
 import './Overview.css';
 
 export const Overview = () => {
@@ -13,10 +13,10 @@ export const Overview = () => {
       </div>
       <HorizontalContainer className="justify-between mt-2">
         <div className="account-overview__chart paper border-paper">
-          <AssetAllocation />
+          <AssetAllocationChart />
         </div>
         <div className="account-overview__chart paper border-paper">
-          <Performance />
+          <PerformanceChart />
         </div>
       </HorizontalContainer>
     </div>

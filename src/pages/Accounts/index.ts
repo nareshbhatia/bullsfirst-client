@@ -1,5 +1,5 @@
-export * from './Account';
 export * from './Accounts';
+export * from './AccountView';
 export * from './Activity';
 export * from './Holdings';
 export * from './Orders';

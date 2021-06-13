@@ -1,0 +1,149 @@
+[
+  {
+    "__typename": "Holding",
+    "id": "holding-001",
+    "symbol": "TSLA",
+    "quantity": 100,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-002",
+    "symbol": "AAPL",
+    "quantity": 400,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-003",
+    "symbol": "GOOG",
+    "quantity": 100,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-004",
+    "symbol": "AMZN",
+    "quantity": 100,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-005",
+    "symbol": "MSFT",
+    "quantity": 200,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-006",
+    "symbol": "EBAY",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-007",
+    "symbol": "BA",
+    "quantity": 200,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-008",
+    "symbol": "MAR",
+    "quantity": 100,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-009",
+    "symbol": "JBLU",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-010",
+    "symbol": "JNJ",
+    "quantity": 100,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-011",
+    "symbol": "JPM",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-012",
+    "symbol": "C",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-013",
+    "symbol": "CMCSA",
+    "quantity": 2000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-014",
+    "symbol": "GE",
+    "quantity": 5000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-015",
+    "symbol": "ATHN",
+    "quantity": 10000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-016",
+    "symbol": "CVS",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-017",
+    "symbol": "CVX",
+    "quantity": 10000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-018",
+    "symbol": "OTIS",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-019",
+    "symbol": "Z",
+    "quantity": 1000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-020",
+    "symbol": "MON",
+    "quantity": 10000,
+    "accountId": "brokerage-account"
+  },
+  {
+    "__typename": "Holding",
+    "id": "holding-021",
+    "symbol": "MRNA",
+    "quantity": 1000,
+    "accountId": "retirement-account"
+  }
+]
