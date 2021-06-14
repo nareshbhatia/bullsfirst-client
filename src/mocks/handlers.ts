@@ -1,6 +1,12 @@
 import { graphql, GraphQLRequest } from 'msw';
 import { v4 as uuidv4 } from 'uuid';
-import { AssetAllocation, Holding, Security } from '../models';
+import {
+  AssetAllocation,
+  Holding,
+  Industry,
+  Sector,
+  Security,
+} from '../models';
 import accounts from './data/accounts.json';
 import cashBalances from './data/cash-balances.json';
 import holdings from './data/holdings.json';
@@ -30,15 +36,23 @@ function parseAccessToken(req: GraphQLRequest<any>) {
   }
 }
 
-const getAccountHoldings = (accountId: string): Array<Holding> => {
-  return holdings.filter((holding) => holding.accountId === accountId);
-};
-
 const getAccountCashBalance = (accountId: string): number => {
   const cashBalance = cashBalances.find(
     (cashBalance) => cashBalance.id === accountId
   );
   return cashBalance ? cashBalance.balance : 0;
+};
+
+const getAccountHoldings = (accountId: string): Array<Holding> => {
+  return holdings.filter((holding) => holding.accountId === accountId);
+};
+
+const getIndustry = (industryId: string): Industry | undefined => {
+  return industries.find((industry) => industry.id === industryId);
+};
+
+const getSector = (sectorId: string): Sector | undefined => {
+  return sectors.find((sector) => sector.id === sectorId);
 };
 
 const getSecurity = (symbol: string): Security | undefined => {
@@ -188,68 +202,81 @@ export const handlers = [
   /** get asset allocations */
   graphql.query('GetAssetAllocations', (req, res, ctx) => {
     const { accountId } = req.variables;
+    const accountHoldings = getAccountHoldings(accountId);
 
-    const assetAllocations: Array<AssetAllocation> = [
-      {
-        id: 'technology',
-        name: 'Technology',
-        value: 8000,
-        percentage: 0.8,
-        children: [
-          {
-            id: 'computer-hardware',
-            name: 'Computer Hardware',
-            value: 800,
-            percentage: 0.2,
-          },
-          {
-            id: 'application-software',
-            name: 'Application Software',
-            value: 7200,
-            percentage: 0.4,
-          },
-          {
-            id: 'semiconductors',
-            name: 'Semiconductors',
-            value: 7200,
-            percentage: 0.3,
-          },
-          {
-            id: 'communication-equipment',
-            name: 'Communication Equipment',
-            value: 7200,
-            percentage: 0.1,
-          },
-        ],
-      },
-      {
-        id: 'financial-services',
-        name: 'Financial Services',
-        value: 2000,
-        percentage: 0.2,
-        children: [
-          {
-            id: 'asset-management',
-            name: 'Asset Management',
-            value: 800,
-            percentage: 0.2,
-          },
-          {
-            id: 'banks',
-            name: 'Banks',
-            value: 1200,
-            percentage: 0.6,
-          },
-          {
-            id: 'insurance',
-            name: 'Insurance',
-            value: 1200,
-            percentage: 0.2,
-          },
-        ],
-      },
-    ];
+    // iterate through holdings and start creating asset allocations
+    const sectorAllocations: Array<AssetAllocation> = [];
+    accountHoldings.forEach((holding) => {
+      const { symbol } = holding;
+      const security = getSecurity(symbol);
+      if (security) {
+        const { industryId } = security;
+        const industry = getIndustry(industryId);
+        if (industry) {
+          const { name: industryName, sectorId } = industry;
+          const sector = getSector(sectorId);
+          if (sector) {
+            const { name: sectorName } = sector;
 
-    return res(ctx.data({ assetAllocations }));
+            // create a sector allocation if needed
+            let sectorAllocation = sectorAllocations.find(
+              (allocation) => allocation.id === sectorId
+            );
+            if (sectorAllocation === undefined) {
+              sectorAllocation = {
+                id: sectorId,
+                name: sectorName,
+                value: 0,
+                percentage: 0,
+                children: [],
+              };
+              sectorAllocations.push(sectorAllocation);
+            }
+            const { children: industryAllocations } = sectorAllocation;
+
+            // create a industryAllocation if needed
+            let industryAllocation = industryAllocations!.find(
+              (allocation) => allocation.id === industryId
+            );
+            if (industryAllocation === undefined) {
+              industryAllocation = {
+                id: industryId,
+                name: industryName,
+                value: 0,
+                percentage: 0,
+              };
+              industryAllocations!.push(industryAllocation);
+            }
+
+            // calculate value and add to sector and industry allocations
+            const value = security.price * holding.quantity;
+            sectorAllocation.value += value;
+            industryAllocation.value += value;
+          }
+        }
+      }
+    });
+
+    // calculate total account value as the sum of all sector values
+    const accountValue = sectorAllocations.reduce(
+      (accumulator: number, sectorAllocation: AssetAllocation) => {
+        return accumulator + sectorAllocation.value;
+      },
+      0
+    );
+
+    // calculate sector allocation percentages
+    sectorAllocations.forEach((sectorAllocation) => {
+      sectorAllocation.percentage = sectorAllocation.value / accountValue;
+
+      // calculate industry allocation percentages
+      const { children: industryAllocations } = sectorAllocation;
+      industryAllocations!.forEach((industryAllocation) => {
+        industryAllocation.percentage =
+          industryAllocation.value / sectorAllocation.value;
+      });
+    });
+
+    return res(ctx.data({ assetAllocations: sectorAllocations }));
   }),
 ];

@@ -3,6 +3,8 @@ export * from './AssetAllocation';
 export * from './Credentials';
 export * from './Env';
 export * from './Holding';
+export * from './Industry';
 export * from './NetWorthInfo';
+export * from './Sector';
 export * from './Security';
 export * from './User';

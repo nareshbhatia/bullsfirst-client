@@ -49,7 +49,7 @@ export const AssetAllocationChart = () => {
       data: assetAllocations
         .map((sectorAllocation) => ({
           name: sectorAllocation.name,
-          y: sectorAllocation.percentage * 100,
+          y: Math.round(sectorAllocation.percentage * 100),
           drilldown: sectorAllocation.id,
         }))
         .sort((a, b) => b.y - a.y), // descending order
@@ -72,7 +72,10 @@ export const AssetAllocationChart = () => {
 
       const data = industryAllocations
         .map((industryAllocation) => {
-          return [industryAllocation.name, industryAllocation.percentage * 100];
+          return [
+            industryAllocation.name,
+            Math.round(industryAllocation.percentage * 100),
+          ];
         })
         .sort((a: any, b: any) => b[1] - a[1]); // descending order
 
