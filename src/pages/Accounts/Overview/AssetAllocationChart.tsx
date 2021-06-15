@@ -25,28 +25,11 @@ export const GET_ASSET_ALLOCATIONS = gql`
   }
 `;
 
-export const AssetAllocationChart = () => {
-  const { accountId } = useParams();
-  const { loading, data } = useQuery<AssetAllocationData>(
-    GET_ASSET_ALLOCATIONS,
-    {
-      variables: {
-        accountId,
-      },
-    }
-  );
-
-  if (loading || !data) {
-    return <Loading />;
-  }
-
-  const { assetAllocations } = data;
-
-  // configure top-level chart (sector allocations)
-  const series = [
+export function computePieSeries(sectorAllocations: Array<AssetAllocation>) {
+  return [
     {
       name: 'Sectors',
-      data: assetAllocations
+      data: sectorAllocations
         .map((sectorAllocation) => ({
           name: sectorAllocation.name,
           y: Math.round(sectorAllocation.percentage * 100),
@@ -55,15 +38,16 @@ export const AssetAllocationChart = () => {
         .sort((a, b) => b.y - a.y), // descending order
     },
   ];
+}
 
-  // configure drilldown charts (industry allocations)
-  const drilldown = {
+export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
+  return {
     activeDataLabelStyle: {
       color: '#000000',
       fontWeight: 'normal',
       textDecoration: 'none',
     },
-    series: assetAllocations.map((sectorAllocation) => {
+    series: sectorAllocations.map((sectorAllocation) => {
       const { id, name, children: industryAllocations } = sectorAllocation;
 
       if (!industryAllocations) {
@@ -82,6 +66,26 @@ export const AssetAllocationChart = () => {
       return { id, name, data };
     }),
   };
+}
+
+export const AssetAllocationChart = () => {
+  const { accountId } = useParams();
+  const { loading, data } = useQuery<AssetAllocationData>(
+    GET_ASSET_ALLOCATIONS,
+    {
+      variables: {
+        accountId,
+      },
+    }
+  );
+
+  if (loading || !data) {
+    return <Loading />;
+  }
+
+  const { assetAllocations } = data;
+  const series = computePieSeries(assetAllocations);
+  const drilldown = computePieDrilldown(assetAllocations);
 
   return (
     <PieChart title="ASSET ALLOCATION" series={series} drilldown={drilldown} />
