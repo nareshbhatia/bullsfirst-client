@@ -4,6 +4,7 @@ export * from './Credentials';
 export * from './Env';
 export * from './Holding';
 export * from './Industry';
+export * from './Series';
 export * from './NetWorthInfo';
 export * from './Sector';
 export * from './Security';

@@ -6,11 +6,13 @@ import {
   Industry,
   Sector,
   Security,
+  Series,
 } from '../models';
 import accounts from './data/accounts.json';
 import cashBalances from './data/cash-balances.json';
 import holdings from './data/holdings.json';
 import industries from './data/industries.json';
+import performances from './data/performances.json';
 import sectors from './data/sectors.json';
 import securities from './data/securities.json';
 import { mockDb } from './mockDb';
@@ -45,6 +47,15 @@ const getAccountCashBalance = (accountId: string): number => {
 
 const getAccountHoldings = (accountId: string): Array<Holding> => {
   return holdings.filter((holding) => holding.accountId === accountId);
+};
+
+const getAccountPerformance = (
+  accountId: string
+): Array<Series> | undefined => {
+  const accountPerformance = performances.find(
+    (accountPerformance) => accountPerformance.id === accountId
+  );
+  return accountPerformance?.performance;
 };
 
 const getIndustry = (industryId: string): Industry | undefined => {
@@ -278,5 +289,16 @@ export const handlers = [
     });
 
     return res(ctx.data({ assetAllocations: sectorAllocations }));
+  }),
+
+  /** get account performance */
+  graphql.query('GetAccountPerformance', (req, res, ctx) => {
+    const { accountId } = req.variables;
+
+    return res(
+      ctx.data({
+        accountPerformance: getAccountPerformance(accountId),
+      })
+    );
   }),
 ];
