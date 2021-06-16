@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '../../test/test-utils';
+import { render } from '../../../test/test-utils';
 import { AccountHeader } from './AccountHeader';
 
 describe('AccountHeader', () => {
