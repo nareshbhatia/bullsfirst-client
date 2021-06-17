@@ -1,6 +1,7 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, waitForElementToBeRemoved } from '@testing-library/react';
+import { RefreshContextProvider } from '../../../contexts';
 import { GET_NET_WORTH, NetWorth } from './NetWorth';
 
 const mocks = [
@@ -35,7 +36,9 @@ describe('<NetWorth />', () => {
   test('renders correctly', async () => {
     const { asFragment, getByText } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
-        <NetWorth />
+        <RefreshContextProvider>
+          <NetWorth />
+        </RefreshContextProvider>
       </MockedProvider>
     );
 

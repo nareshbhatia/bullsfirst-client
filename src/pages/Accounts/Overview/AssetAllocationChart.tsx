@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Loading, PieChart } from '../../../components';
+import { useRefreshContext } from '../../../contexts';
 import { AssetAllocation } from '../../../models';
 
 interface AssetAllocationData {
@@ -70,7 +71,8 @@ export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
 
 export const AssetAllocationChart = () => {
   const { accountId } = useParams();
-  const { loading, data } = useQuery<AssetAllocationData>(
+  const { refreshCount } = useRefreshContext();
+  const { loading, data, refetch } = useQuery<AssetAllocationData>(
     GET_ASSET_ALLOCATIONS,
     {
       variables: {
@@ -78,6 +80,10 @@ export const AssetAllocationChart = () => {
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [refreshCount, refetch]);
 
   if (loading || !data) {
     return <Loading />;

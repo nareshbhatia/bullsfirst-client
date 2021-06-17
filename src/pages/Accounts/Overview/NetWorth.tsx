@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { NumberUtils } from '@react-force/number-utils';
 import { useParams } from 'react-router-dom';
 import { HorizontalContainer, Loading } from '../../../components';
+import { useRefreshContext } from '../../../contexts';
 import { NetWorthInfo } from '../../../models';
 import './NetWorth.css';
 
@@ -33,11 +34,16 @@ const LabelValue = ({ label, value }: { label: string; value: number }) => {
 
 export const NetWorth = () => {
   const { accountId } = useParams();
-  const { loading, data } = useQuery<NetWorthData>(GET_NET_WORTH, {
+  const { refreshCount } = useRefreshContext();
+  const { loading, data, refetch } = useQuery<NetWorthData>(GET_NET_WORTH, {
     variables: {
       accountId,
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refreshCount, refetch]);
 
   if (loading || !data) {
     return <Loading />;

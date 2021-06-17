@@ -1,4 +1,5 @@
 import React from 'react';
+import { RefreshContextProvider } from '../../../contexts';
 import { render, waitForElementToBeRemoved } from '../../../test/test-utils';
 import {
   AssetAllocationChart,
@@ -105,7 +106,11 @@ describe('<AssetAllocationChart />', () => {
   });
 
   test('renders correctly', async () => {
-    const { container, getByText } = render(<AssetAllocationChart />);
+    const { container, getByText } = render(
+      <RefreshContextProvider>
+        <AssetAllocationChart />
+      </RefreshContextProvider>
+    );
 
     await waitForElementToBeRemoved(getByText('Loading...'));
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaRedoAlt } from 'react-icons/fa';
 import { NavLink, useParams } from 'react-router-dom';
+import { RefreshButton } from './RefreshButton';
 import './AccountHeader.css';
 
 export const AccountHeader = () => {
@@ -49,7 +49,7 @@ export const AccountHeader = () => {
 
       <button className="btn-sm btn-outline-secondary mr-1">Transfer</button>
       <button className="btn-sm btn-secondary mr-1">Trade</button>
-      <FaRedoAlt className="account-header__refresh" />
+      <RefreshButton />
     </nav>
   );
 };

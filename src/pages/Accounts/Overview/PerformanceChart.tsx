@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { LineChart, Loading } from '../../../components';
+import { useRefreshContext } from '../../../contexts';
 import { Series } from '../../../models';
 
 interface AccountPerformanceData {
@@ -30,7 +31,8 @@ export function computeLineChartSeries(accountPerformance: Array<Series>) {
 
 export const PerformanceChart = () => {
   const { accountId } = useParams();
-  const { loading, data } = useQuery<AccountPerformanceData>(
+  const { refreshCount } = useRefreshContext();
+  const { loading, data, refetch } = useQuery<AccountPerformanceData>(
     GET_ACCOUNT_PERFORMANCE,
     {
       variables: {
@@ -38,6 +40,10 @@ export const PerformanceChart = () => {
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [refreshCount, refetch]);
 
   if (loading || !data) {
     return <Loading />;

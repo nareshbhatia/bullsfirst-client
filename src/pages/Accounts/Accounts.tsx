@@ -8,6 +8,7 @@ import {
   SideBar,
   ViewVerticalContainer,
 } from '../../components';
+import { RefreshContextProvider } from '../../contexts';
 import { Account } from '../../models';
 
 interface AccountData {
@@ -52,21 +53,23 @@ export const Accounts = () => {
   }
 
   return (
-    <ViewVerticalContainer>
-      <Header />
-      <HorizontalContainer className="min-h-0">
-        {selectedNavId !== undefined ? (
-          <SideBar
-            title="Accounts"
-            items={data?.accounts}
-            selectedNavItemId={selectedNavId}
-            onNavItemSelected={handleNavItemSelected}
-          />
-        ) : (
-          <div className="p-2">No accounts found</div>
-        )}
-        <Outlet />
-      </HorizontalContainer>
-    </ViewVerticalContainer>
+    <RefreshContextProvider>
+      <ViewVerticalContainer>
+        <Header />
+        <HorizontalContainer className="min-h-0">
+          {selectedNavId !== undefined ? (
+            <SideBar
+              title="Accounts"
+              items={data?.accounts}
+              selectedNavItemId={selectedNavId}
+              onNavItemSelected={handleNavItemSelected}
+            />
+          ) : (
+            <div className="p-2">No accounts found</div>
+          )}
+          <Outlet />
+        </HorizontalContainer>
+      </ViewVerticalContainer>
+    </RefreshContextProvider>
   );
 };

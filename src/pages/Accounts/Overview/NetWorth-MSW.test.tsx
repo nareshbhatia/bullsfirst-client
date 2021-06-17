@@ -1,4 +1,5 @@
 import React from 'react';
+import { RefreshContextProvider } from '../../../contexts';
 import { render, waitForElementToBeRemoved } from '../../../test/test-utils';
 import { NetWorth } from './NetWorth';
 
@@ -12,7 +13,11 @@ jest.mock('react-router-dom', () => ({
 
 describe('<NetWorth />', () => {
   test('renders correctly', async () => {
-    const { asFragment, getByText } = render(<NetWorth />);
+    const { asFragment, getByText } = render(
+      <RefreshContextProvider>
+        <NetWorth />
+      </RefreshContextProvider>
+    );
 
     await waitForElementToBeRemoved(getByText('Loading...'));
 

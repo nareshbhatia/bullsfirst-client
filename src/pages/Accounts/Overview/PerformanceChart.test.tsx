@@ -1,4 +1,5 @@
 import React from 'react';
+import { RefreshContextProvider } from '../../../contexts';
 import { render, waitForElementToBeRemoved } from '../../../test/test-utils';
 import { computeLineChartSeries, PerformanceChart } from './PerformanceChart';
 
@@ -71,7 +72,11 @@ describe('<PerformanceChart />', () => {
   });
 
   test('renders correctly', async () => {
-    const { container, getByText } = render(<PerformanceChart />);
+    const { container, getByText } = render(
+      <RefreshContextProvider>
+        <PerformanceChart />
+      </RefreshContextProvider>
+    );
 
     await waitForElementToBeRemoved(getByText('Loading...'));
 

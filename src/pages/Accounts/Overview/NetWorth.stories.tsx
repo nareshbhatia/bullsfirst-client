@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router';
+import { RefreshContextProvider } from '../../../contexts';
 import { NetWorth } from './NetWorth';
 
 export default {
@@ -14,9 +15,11 @@ export const NetWorthStory = () => (
       <Route
         path="/accounts/:accountId/overview"
         element={
-          <div className="paper border-paper">
-            <NetWorth />
-          </div>
+          <RefreshContextProvider>
+            <div className="paper border-paper">
+              <NetWorth />
+            </div>
+          </RefreshContextProvider>
         }
       />
     </Routes>
