@@ -8,14 +8,14 @@
 // ====================================================
 
 export interface GetHoldings_holdings_security {
-  __typename: "Security";
+  __typename: 'Security';
   id: string;
   name: string;
   price: number;
 }
 
 export interface GetHoldings_holdings {
-  __typename: "Holding";
+  __typename: 'Holding';
   id: string;
   quantity: number;
   value: number;
