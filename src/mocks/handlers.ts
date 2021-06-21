@@ -301,4 +301,30 @@ export const handlers = [
       })
     );
   }),
+
+  /** get account holdings */
+  graphql.query('GetHoldings', (req, res, ctx) => {
+    const { accountId } = req.variables;
+    const accountHoldings = getAccountHoldings(accountId);
+
+    return res(
+      ctx.data({
+        holdings: accountHoldings.map((holding) => {
+          const security = getSecurity(holding.symbol);
+          return security
+            ? {
+                id: holding.id,
+                quantity: holding.quantity,
+                value: security.price * holding.quantity,
+                security: {
+                  id: security.id,
+                  name: security.name,
+                  price: security.price,
+                },
+              }
+            : holding;
+        }),
+      })
+    );
+  }),
 ];

@@ -33,7 +33,7 @@ export const Hero = () => {
             Sign in
           </button>
         </HorizontalContainer>
-        <p className="title hero__slogan">
+        <p className="hero__slogan">
           Get better results with Bullsfirst at the helm of your portfolio.
         </p>
       </div>

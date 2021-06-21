@@ -296,16 +296,19 @@
 
 /* ----- Typography ----- */
 .title {
-  margin: 0;
-  font-size: 30px;
-  line-height: 1;
-}
-
-.title2 {
-  margin: 0;
   font-size: 24px;
   font-weight: 400;
   line-height: 1;
+  margin: 0;
+}
+
+.title2 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 /* ----- Backgrounds ----- */
@@ -399,6 +402,13 @@ label {
 .btn-lg {
   font-size: 20px;
   line-height: 1.5;
+}
+
+.btn-icon {
+  background-color: var(--neutral-light);
+  border: none;
+  font-size: 20px;
+  padding: .2rem 0.8rem;
 }
 
 .btn-secondary {

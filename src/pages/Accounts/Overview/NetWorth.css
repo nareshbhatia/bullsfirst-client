@@ -2,14 +2,6 @@
   margin-right: 80px;
 }
 
-.net-worth__label {
-  font-size: 14px;
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin: 0;
-}
-
 .net-worth__value {
   font-size: 24px;
   line-height: 1.1;

@@ -16,6 +16,7 @@ import { WindowEnv } from './models';
 import reportWebVitals from './reportWebVitals';
 import { AuthService } from './services';
 import { ChartColors, EnvVar } from './utils';
+import './index.scss';
 import './styles/main.css';
 
 // Start mock service worker

@@ -26,7 +26,7 @@ export const GET_NET_WORTH = gql`
 const LabelValue = ({ label, value }: { label: string; value: number }) => {
   return (
     <div className="net-worth__label-value">
-      <h1 className="net-worth__label">{label}</h1>
+      <h1 className="title2">{label}</h1>
       <p className="net-worth__value">${formatAsMoney(value)}</p>
     </div>
   );

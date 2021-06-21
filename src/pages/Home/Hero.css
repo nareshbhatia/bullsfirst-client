@@ -2,10 +2,11 @@
   position: relative;
 }
 
-.hero__slogan.title {
+.hero__slogan {
+  margin: var(--spacing-5) 0 0 0;
+  font-size: 30px;
   line-height: 32px;
   max-width: 392px;
-  margin-top: var(--spacing-5);
 }
 
 .hero__popsicle {

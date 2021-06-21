@@ -5,7 +5,7 @@ import { AccountHeader } from './AccountHeader';
 
 export const AccountView = () => {
   return (
-    <VerticalContainer className="flex-1">
+    <VerticalContainer>
       <AccountHeader />
       <Outlet />
     </VerticalContainer>

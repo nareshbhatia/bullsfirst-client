@@ -3,6 +3,7 @@ export * from './Charts';
 export * from './Containers';
 export * from './ErrorBoundary';
 export * from './Form';
+export * from './Grids';
 export * from './Header';
 export * from './Loading';
 export * from './Routes';

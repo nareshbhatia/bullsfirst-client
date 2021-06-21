@@ -33,7 +33,7 @@ exports[`<Hero /> renders correctly 1`] = `
         </button>
       </div>
       <p
-        class="title hero__slogan"
+        class="hero__slogan"
       >
         Get better results with Bullsfirst at the helm of your portfolio.
       </p>

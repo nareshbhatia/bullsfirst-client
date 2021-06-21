@@ -49,7 +49,7 @@ const Template: Story = () => {
           onNavItemSelected={handleNavItemSelected}
         />
         <ScrollingContainer className="flex-1 p-2">
-          <h1 className="title2">
+          <h1 className="title">
             {items.find((item) => item.id === selectedNavId)?.name}
           </h1>
         </ScrollingContainer>

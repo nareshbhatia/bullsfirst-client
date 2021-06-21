@@ -10,7 +10,7 @@ exports[`<NetWorth /> renders correctly 1`] = `
       class="net-worth__label-value"
     >
       <h1
-        class="net-worth__label"
+        class="title2"
       >
         Net Worth
       </h1>
@@ -24,7 +24,7 @@ exports[`<NetWorth /> renders correctly 1`] = `
       class="net-worth__label-value"
     >
       <h1
-        class="net-worth__label"
+        class="title2"
       >
         Investments
       </h1>
@@ -38,7 +38,7 @@ exports[`<NetWorth /> renders correctly 1`] = `
       class="net-worth__label-value"
     >
       <h1
-        class="net-worth__label"
+        class="title2"
       >
         Cash
       </h1>
