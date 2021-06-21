@@ -25,6 +25,7 @@ export const CustomGrid = ({ columnDefs, rowData }: CustomGridProps) => {
   const defaultColDef = {
     resizable: true,
     sortable: true,
+    filter: true,
     menuTabs: ['filterMenuTab'],
   };
 

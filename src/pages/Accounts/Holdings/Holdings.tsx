@@ -73,6 +73,7 @@ export const Holdings = () => {
       suppressSizeToFit: true,
       type: 'rightAligned',
       valueFormatter: intFormatter,
+      filter: 'agNumberColumnFilter',
     },
     {
       field: 'security.price',
@@ -81,6 +82,7 @@ export const Holdings = () => {
       suppressSizeToFit: true,
       type: 'rightAligned',
       valueFormatter: currencyFormatter,
+      filter: 'agNumberColumnFilter',
     },
     {
       field: 'value',
@@ -89,6 +91,7 @@ export const Holdings = () => {
       suppressSizeToFit: true,
       type: 'rightAligned',
       valueFormatter: currencyFormatter,
+      filter: 'agNumberColumnFilter',
     },
   ];
 

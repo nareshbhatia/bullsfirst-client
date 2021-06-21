@@ -407,8 +407,8 @@ label {
 .btn-icon {
   background-color: var(--neutral-light);
   border: none;
-  font-size: 20px;
-  padding: .2rem 0.8rem;
+  font-size: 16px;
+  padding: 6px 7px;
 }
 
 .btn-secondary {
