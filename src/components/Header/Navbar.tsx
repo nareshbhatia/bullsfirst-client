@@ -12,9 +12,7 @@ interface SignOutData {
 
 const SIGN_OUT = gql`
   mutation SignOut {
-    signOut {
-      accessToken
-    }
+    signOut
   }
 `;
 

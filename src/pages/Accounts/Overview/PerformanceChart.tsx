@@ -11,7 +11,7 @@ interface AccountPerformanceData {
 
 export const GET_ACCOUNT_PERFORMANCE = gql`
   query GetAccountPerformance($accountId: ID!) {
-    accountPerformance(id: $accountId) {
+    accountPerformance(accountId: $accountId) {
       name
       data {
         x

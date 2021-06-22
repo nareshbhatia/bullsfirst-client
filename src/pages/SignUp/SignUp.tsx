@@ -12,7 +12,7 @@ interface UserInfoData {
 }
 
 const SIGN_UP = gql`
-  mutation SignUp($signUpInput: SignUpInput) {
+  mutation SignUp($signUpInput: SignUpInput!) {
     signUp(signUpInput: $signUpInput) {
       user {
         id

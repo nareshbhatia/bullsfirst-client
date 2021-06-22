@@ -11,7 +11,7 @@ interface AssetAllocationData {
 
 export const GET_ASSET_ALLOCATIONS = gql`
   query GetAssetAllocations($accountId: ID!) {
-    assetAllocations(id: $accountId) {
+    assetAllocations(accountId: $accountId) {
       id
       name
       value

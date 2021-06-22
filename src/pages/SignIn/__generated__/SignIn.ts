@@ -29,5 +29,5 @@ export interface SignIn {
 }
 
 export interface SignInVariables {
-  credentials?: Credentials | null;
+  credentials: Credentials;
 }

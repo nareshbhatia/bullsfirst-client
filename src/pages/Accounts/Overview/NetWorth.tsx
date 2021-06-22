@@ -15,7 +15,7 @@ interface NetWorthData {
 
 export const GET_NET_WORTH = gql`
   query GetNetWorth($accountId: ID!) {
-    netWorthInfo(id: $accountId) {
+    netWorthInfo(accountId: $accountId) {
       netWorth
       investments
       cash

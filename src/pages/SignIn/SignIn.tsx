@@ -12,7 +12,7 @@ interface UserInfoData {
 }
 
 const SIGN_IN = gql`
-  mutation SignIn($credentials: Credentials) {
+  mutation SignIn($credentials: Credentials!) {
     signIn(credentials: $credentials) {
       user {
         name

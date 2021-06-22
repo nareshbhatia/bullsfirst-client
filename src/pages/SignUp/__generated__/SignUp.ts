@@ -30,5 +30,5 @@ export interface SignUp {
 }
 
 export interface SignUpVariables {
-  signUpInput?: SignUpInput | null;
+  signUpInput: SignUpInput;
 }
