@@ -6,6 +6,10 @@ import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
 import './Navbar.css';
 
+interface SignOutData {
+  signOut: string;
+}
+
 const SIGN_OUT = gql`
   mutation SignOut {
     signOut {
@@ -18,7 +22,7 @@ export const Navbar = () => {
   const { authState, setAuthState } = useAuthContext();
   const { user } = authState;
   const navigate = useNavigate();
-  const [signOut] = useMutation(SIGN_OUT);
+  const [signOut] = useMutation<SignOutData>(SIGN_OUT);
   const apolloClient = useApolloClient();
 
   /* istanbul ignore next */

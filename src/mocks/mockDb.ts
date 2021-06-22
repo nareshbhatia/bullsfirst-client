@@ -1,4 +1,4 @@
-import { UserInfo } from '../models';
+import { SignUpInput } from '../models';
 import { Storage } from '../utils';
 
 const USERS_KEY = 'mockDbUsers';
@@ -10,19 +10,19 @@ const TOKENS_KEY = 'mockDbTokens';
 
 // -------------------- Initialize in-memory database --------------------
 // users & tokens
-const users: { [key: string]: UserInfo } = Storage.get(USERS_KEY, {});
+const users: { [key: string]: SignUpInput } = Storage.get(USERS_KEY, {});
 const tokens: { [key: string]: string } = Storage.get(TOKENS_KEY, {});
 // -----------------------------------------------------------------------
 
-function getUser(email: string): UserInfo | undefined {
+function getUser(email: string): SignUpInput | undefined {
   return users[email];
 }
 
-function setUser(userInfo: UserInfo): UserInfo | undefined {
-  if (userInfo?.email) {
-    users[userInfo.email] = userInfo;
+function setUser(signUpInput: SignUpInput): SignUpInput | undefined {
+  if (signUpInput?.email) {
+    users[signUpInput.email] = signUpInput;
     Storage.set(USERS_KEY, users);
-    return userInfo;
+    return signUpInput;
   } else {
     return undefined;
   }

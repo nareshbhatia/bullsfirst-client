@@ -147,9 +147,9 @@ export const handlers = [
 
   /** sign up */
   graphql.mutation('SignUp', (req, res, ctx) => {
-    const { userInfo: requestedUser } = req.variables;
+    const { signUpInput } = req.variables;
 
-    const existingUser = getUser(requestedUser.email);
+    const existingUser = getUser(signUpInput.email);
     if (existingUser) {
       return res(
         ctx.errors([
@@ -161,10 +161,10 @@ export const handlers = [
       );
     }
 
-    const createdUser = setUser(requestedUser);
+    const createdUser = setUser(signUpInput);
     if (createdUser) {
       const accessToken = uuidv4();
-      setTokenValue(accessToken, requestedUser.email);
+      setTokenValue(accessToken, signUpInput.email);
 
       const { password, ...user } = createdUser;
       return res(

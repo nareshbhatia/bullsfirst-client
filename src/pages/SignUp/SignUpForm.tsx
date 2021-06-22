@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import logo from '../../assets/bullsfirst-logo.svg';
 import { TextField } from '../../components';
-import { UserInfo } from '../../models';
+import { SignUpInput } from '../../models';
 import './SignUpForm.css';
 
 const schema = yup.object().shape({
@@ -19,17 +19,17 @@ const schema = yup.object().shape({
     }),
 });
 
-export interface FormUserInfo extends UserInfo {
+export interface FormEntity extends SignUpInput {
   confirmPassword: string;
 }
 
 export interface SignUpFormProps {
   signUpError?: string;
-  onSubmit: (formUserInfo: FormUserInfo) => void;
+  onSubmit: (formEntity: FormEntity) => void;
 }
 
 export const SignUpForm = ({ signUpError, onSubmit }: SignUpFormProps) => {
-  const { formState, register, handleSubmit } = useForm<FormUserInfo>({
+  const { formState, register, handleSubmit } = useForm<FormEntity>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });

@@ -3,13 +3,19 @@ import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
+import { UserInfo } from '../../models';
 import { AuthService } from '../../services';
-import { SignUpForm, FormUserInfo } from './SignUpForm';
+import { SignUpForm, FormEntity } from './SignUpForm';
+
+interface UserInfoData {
+  signUp: UserInfo;
+}
 
 const SIGN_UP = gql`
-  mutation SignUp($userInfo: UserInfo) {
-    signIn(userInfo: $userInfo) {
+  mutation SignUp($signUpInput: SignUpInput) {
+    signUp(signUpInput: $signUpInput) {
       user {
+        id
         name
         email
       }
@@ -21,7 +27,7 @@ const SIGN_UP = gql`
 export const SignUp = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signUp, { data, error }] = useMutation(SIGN_UP);
+  const [signUp, { data, error }] = useMutation<UserInfoData>(SIGN_UP);
   const signUpError = error ? error.message : undefined;
 
   // redirect if user is already logged in
@@ -45,9 +51,9 @@ export const SignUp = () => {
   }, [data?.signUp, authState, setAuthState, navigate]);
 
   /* istanbul ignore next */
-  const handleSubmit = async (formUserInfo: FormUserInfo) => {
-    const { confirmPassword, ...userInfo } = formUserInfo;
-    await signUp({ variables: { userInfo } });
+  const handleSubmit = async (formEntity: FormEntity) => {
+    const { confirmPassword, ...signUpInput } = formEntity;
+    await signUp({ variables: { signUpInput } });
   };
 
   return (
