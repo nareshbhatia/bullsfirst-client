@@ -23,6 +23,9 @@ export interface GetHoldings_holdings {
 }
 
 export interface GetHoldings {
+  /**
+   * returns the holdings for the specified account
+   */
   holdings: GetHoldings_holdings[];
 }
 
