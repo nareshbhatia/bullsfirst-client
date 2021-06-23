@@ -4,14 +4,10 @@ import { NumberUtils } from '@react-force/number-utils';
 import { useParams } from 'react-router-dom';
 import { HorizontalContainer, Loading } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import { NetWorthInfo } from '../../../models';
+import { GetNetWorth } from './__generated__/GetNetWorth';
 import './NetWorth.css';
 
 const { formatAsMoney } = NumberUtils;
-
-interface NetWorthData {
-  netWorthInfo: NetWorthInfo;
-}
 
 export const GET_NET_WORTH = gql`
   query GetNetWorth($accountId: ID!) {
@@ -35,7 +31,7 @@ const LabelValue = ({ label, value }: { label: string; value: number }) => {
 export const NetWorth = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<NetWorthData>(GET_NET_WORTH, {
+  const { loading, data, refetch } = useQuery<GetNetWorth>(GET_NET_WORTH, {
     variables: {
       accountId,
     },

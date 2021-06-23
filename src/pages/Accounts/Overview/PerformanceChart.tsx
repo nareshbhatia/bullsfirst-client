@@ -3,11 +3,10 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { LineChart, Loading } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import { Series } from '../../../models';
-
-interface AccountPerformanceData {
-  accountPerformance: Array<Series>;
-}
+import {
+  GetAccountPerformance,
+  GetAccountPerformance_accountPerformance as Series,
+} from './__generated__/GetAccountPerformance';
 
 export const GET_ACCOUNT_PERFORMANCE = gql`
   query GetAccountPerformance($accountId: ID!) {
@@ -32,7 +31,7 @@ export function computeLineChartSeries(accountPerformance: Array<Series>) {
 export const PerformanceChart = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<AccountPerformanceData>(
+  const { loading, data, refetch } = useQuery<GetAccountPerformance>(
     GET_ACCOUNT_PERFORMANCE,
     {
       variables: {

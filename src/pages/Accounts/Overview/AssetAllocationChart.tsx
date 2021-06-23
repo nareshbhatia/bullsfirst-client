@@ -3,11 +3,10 @@ import { gql, useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Loading, PieChart } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import { AssetAllocation } from '../../../models';
-
-interface AssetAllocationData {
-  assetAllocations: Array<AssetAllocation>;
-}
+import {
+  GetAssetAllocations,
+  GetAssetAllocations_assetAllocations as AssetAllocation,
+} from './__generated__/GetAssetAllocations';
 
 export const GET_ASSET_ALLOCATIONS = gql`
   query GetAssetAllocations($accountId: ID!) {
@@ -72,7 +71,7 @@ export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
 export const AssetAllocationChart = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<AssetAllocationData>(
+  const { loading, data, refetch } = useQuery<GetAssetAllocations>(
     GET_ASSET_ALLOCATIONS,
     {
       variables: {
