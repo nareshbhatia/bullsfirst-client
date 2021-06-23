@@ -9,11 +9,7 @@ import {
   ViewVerticalContainer,
 } from '../../components';
 import { RefreshContextProvider } from '../../contexts';
-import { Account } from '../../models';
-
-interface AccountData {
-  accounts: Array<Account>;
-}
+import { GetAccounts } from './__generated__/GetAccounts';
 
 const GET_ACCOUNTS = gql`
   query GetAccounts {
@@ -25,7 +21,7 @@ const GET_ACCOUNTS = gql`
 `;
 
 export const Accounts = () => {
-  const { loading, error, data } = useQuery<AccountData>(GET_ACCOUNTS);
+  const { loading, error, data } = useQuery<GetAccounts>(GET_ACCOUNTS);
   const [selectedNavId, setSelectedNavId] = useState<string | undefined>();
   const navigate = useNavigate();
 

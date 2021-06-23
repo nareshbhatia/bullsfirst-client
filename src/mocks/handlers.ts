@@ -1,6 +1,5 @@
 import { graphql, GraphQLRequest } from 'msw';
 import { v4 as uuidv4 } from 'uuid';
-import { Holding, Industry, Sector, Security } from '../models';
 import accounts from './data/accounts.json';
 import cashBalances from './data/cash-balances.json';
 import holdings from './data/holdings.json';
@@ -8,7 +7,14 @@ import industries from './data/industries.json';
 import performances from './data/performances.json';
 import sectors from './data/sectors.json';
 import securities from './data/securities.json';
-import { AssetAllocation, Series } from './models';
+import {
+  AssetAllocation,
+  Holding,
+  Industry,
+  Sector,
+  Security,
+  Series,
+} from './models';
 import { mockDb } from './mockDb';
 
 const {

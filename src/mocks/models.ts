@@ -37,3 +37,28 @@ export interface Series {
   name: string;
   data: Array<DataPoint>;
 }
+
+export interface Holding {
+  id: string;
+  symbol: string;
+  quantity: number;
+  accountId: string;
+}
+
+export interface Sector {
+  id: string;
+  name: string;
+}
+
+export interface Industry {
+  id: string;
+  name: string;
+  sectorId: string;
+}
+
+export interface Security {
+  id: string;
+  name: string;
+  price: number;
+  industryId: string;
+}
