@@ -30,7 +30,7 @@
     "ag-grid-community": "^25.3.0",
     "ag-grid-enterprise": "^25.3.0",
     "ag-grid-react": "^25.3.0",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "highcharts": "^9.1.2",
     "highcharts-react-official": "^3.0.0",
     "history": "5.0.0",
@@ -84,6 +84,7 @@
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.stories.{js,jsx,ts,tsx}",
+      "!src/**/__generated__/**",
       "!src/mocks/**",
       "!src/stories/**",
       "!src/test/**",
