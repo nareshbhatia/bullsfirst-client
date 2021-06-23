@@ -4,11 +4,8 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
+import { SignOut } from './__generated__/SignOut';
 import './Navbar.css';
-
-interface SignOutData {
-  signOut: string;
-}
 
 const SIGN_OUT = gql`
   mutation SignOut {
@@ -20,7 +17,7 @@ export const Navbar = () => {
   const { authState, setAuthState } = useAuthContext();
   const { user } = authState;
   const navigate = useNavigate();
-  const [signOut] = useMutation<SignOutData>(SIGN_OUT);
+  const [signOut] = useMutation<SignOut>(SIGN_OUT);
   const apolloClient = useApolloClient();
 
   /* istanbul ignore next */

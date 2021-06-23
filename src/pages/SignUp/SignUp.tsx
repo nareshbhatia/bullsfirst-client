@@ -3,13 +3,12 @@ import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
-import { UserInfo } from '../../models';
 import { AuthService } from '../../services';
 import { SignUpForm, FormEntity } from './SignUpForm';
-
-interface UserInfoData {
-  signUp: UserInfo;
-}
+import {
+  SignUp as SignUpResult,
+  SignUpVariables,
+} from './__generated__/SignUp';
 
 const SIGN_UP = gql`
   mutation SignUp($signUpInput: SignUpInput!) {
@@ -27,7 +26,9 @@ const SIGN_UP = gql`
 export const SignUp = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signUp, { data, error }] = useMutation<UserInfoData>(SIGN_UP);
+  const [signUp, { data, error }] = useMutation<SignUpResult, SignUpVariables>(
+    SIGN_UP
+  );
   const signUpError = error ? error.message : undefined;
 
   // redirect if user is already logged in

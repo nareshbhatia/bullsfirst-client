@@ -1,5 +1,5 @@
-import { SignUpInput } from '../models';
 import { Storage } from '../utils';
+import { DbUser, UserId } from './models';
 
 const USERS_KEY = 'mockDbUsers';
 const TOKENS_KEY = 'mockDbTokens';
@@ -10,29 +10,28 @@ const TOKENS_KEY = 'mockDbTokens';
 
 // -------------------- Initialize in-memory database --------------------
 // users & tokens
-const users: { [key: string]: SignUpInput } = Storage.get(USERS_KEY, {});
-const tokens: { [key: string]: string } = Storage.get(TOKENS_KEY, {});
+const users: Array<DbUser> = Storage.get(USERS_KEY, []);
+const tokens: { [token: string]: UserId } = Storage.get(TOKENS_KEY, {});
 // -----------------------------------------------------------------------
 
-function getUser(email: string): SignUpInput | undefined {
-  return users[email];
+function getUser(id: string): DbUser | undefined {
+  return users.find((user) => user.id === id);
 }
 
-function setUser(signUpInput: SignUpInput): SignUpInput | undefined {
-  if (signUpInput?.email) {
-    users[signUpInput.email] = signUpInput;
-    Storage.set(USERS_KEY, users);
-    return signUpInput;
-  } else {
-    return undefined;
-  }
+function getUserByEmail(email: string): DbUser | undefined {
+  return users.find((user) => user.email === email);
 }
 
-function getTokenValue(token: string): string | undefined {
+function createUser(dbUser: DbUser) {
+  users.push(dbUser);
+  Storage.set(USERS_KEY, users);
+}
+
+function getTokenValue(token: string): UserId | undefined {
   return tokens[token];
 }
 
-function setTokenValue(token: string, value: string) {
+function setTokenValue(token: string, value: UserId) {
   tokens[token] = value;
   Storage.set(TOKENS_KEY, tokens);
 }
@@ -44,7 +43,8 @@ function removeToken(token: string) {
 
 export const mockDb = {
   getUser,
-  setUser,
+  getUserByEmail,
+  createUser,
   getTokenValue,
   setTokenValue,
   removeToken,

@@ -15,16 +15,13 @@ import {
   SignIn,
   SignUp,
 } from './pages';
-import { User } from './models';
 import { AuthService } from './services';
-
-interface UserData {
-  user: User;
-}
+import { GetUser } from './__generated__/GetUser';
 
 export const GET_USER = gql`
   query GetUser {
     user {
+      id
       name
       email
     }
@@ -33,7 +30,7 @@ export const GET_USER = gql`
 
 export const App = () => {
   const { authState, setAuthState } = useAuthContext();
-  const { data } = useQuery<UserData>(GET_USER, {
+  const { data } = useQuery<GetUser>(GET_USER, {
     skip:
       authState.user !== undefined ||
       AuthService.getAccessToken() === undefined,

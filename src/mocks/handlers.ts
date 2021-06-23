@@ -17,7 +17,14 @@ import sectors from './data/sectors.json';
 import securities from './data/securities.json';
 import { mockDb } from './mockDb';
 
-const { getUser, setUser, getTokenValue, setTokenValue, removeToken } = mockDb;
+const {
+  createUser,
+  getUser,
+  getUserByEmail,
+  getTokenValue,
+  setTokenValue,
+  removeToken,
+} = mockDb;
 
 function parseAccessToken(req: GraphQLRequest<any>) {
   const authHeader = req.headers.get('Authorization');
@@ -80,14 +87,14 @@ export const handlers = [
       );
     }
 
-    const email = getTokenValue(accessToken);
-    if (!email) {
+    const userId = getTokenValue(accessToken);
+    if (!userId) {
       return res(
         ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
       );
     }
 
-    const existingUser = getUser(email);
+    const existingUser = getUser(userId);
     if (!existingUser) {
       return res(
         ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
@@ -102,7 +109,7 @@ export const handlers = [
   graphql.mutation('SignIn', (req, res, ctx) => {
     const { credentials } = req.variables;
 
-    const existingUser = getUser(credentials.email);
+    const existingUser = getUserByEmail(credentials.email);
     if (!existingUser || existingUser.password !== credentials.password) {
       return res(
         ctx.errors([
@@ -115,7 +122,7 @@ export const handlers = [
     }
 
     const accessToken = uuidv4();
-    setTokenValue(accessToken, existingUser.email);
+    setTokenValue(accessToken, existingUser.id);
 
     const { password, ...user } = existingUser;
     return res(
@@ -149,7 +156,7 @@ export const handlers = [
   graphql.mutation('SignUp', (req, res, ctx) => {
     const { signUpInput } = req.variables;
 
-    const existingUser = getUser(signUpInput.email);
+    const existingUser = getUserByEmail(signUpInput.email);
     if (existingUser) {
       return res(
         ctx.errors([
@@ -161,21 +168,21 @@ export const handlers = [
       );
     }
 
-    const createdUser = setUser(signUpInput);
-    if (createdUser) {
-      const accessToken = uuidv4();
-      setTokenValue(accessToken, signUpInput.email);
+    const userId = uuidv4();
+    const accessToken = uuidv4();
+    const newUser = { id: userId, ...signUpInput };
+    createUser(newUser);
+    setTokenValue(accessToken, newUser.id);
 
-      const { password, ...user } = createdUser;
-      return res(
-        ctx.data({
-          signUp: {
-            user,
-            accessToken: accessToken,
-          },
-        })
-      );
-    }
+    const { password, ...user } = newUser;
+    return res(
+      ctx.data({
+        signUp: {
+          user,
+          accessToken: accessToken,
+        },
+      })
+    );
   }),
 
   /** get accounts */

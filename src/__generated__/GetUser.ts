@@ -9,6 +9,7 @@
 
 export interface GetUser_user {
   __typename: 'User';
+  id: string;
   name: string;
   email: string;
 }

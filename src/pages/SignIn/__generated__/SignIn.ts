@@ -11,6 +11,7 @@ import { Credentials } from './../../../graphql-types';
 
 export interface SignIn_signIn_user {
   __typename: 'User';
+  id: string;
   name: string;
   email: string;
 }
