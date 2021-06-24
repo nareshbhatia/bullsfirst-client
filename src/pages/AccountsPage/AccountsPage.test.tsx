@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '../../test/test-utils';
-import { Accounts } from './Accounts';
+import { AccountsPage } from './AccountsPage';
 
 describe('Accounts', () => {
   it('renders accounts in the sidebar', async () => {
-    const { findByTestId } = render(<Accounts />);
+    const { findByTestId } = render(<AccountsPage />);
     const sidebar = await findByTestId('sidebar');
     const navItems = sidebar.querySelectorAll('li.sidebar__item');
 

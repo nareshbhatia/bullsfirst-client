@@ -3,7 +3,7 @@ import { Content } from './Content';
 import { Footer } from './Footer';
 import { Hero } from './Hero';
 
-export const Home = () => {
+export const HomePage = () => {
   return (
     <main>
       <Hero />

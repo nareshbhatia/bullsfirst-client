@@ -4,16 +4,16 @@ import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components';
 import { useAuthContext } from './contexts';
 import {
-  Accounts,
+  AccountsPage,
   AccountView,
   Activity,
   Holdings,
-  Home,
-  NotFound,
+  HomePage,
+  NotFoundPage,
   Orders,
   Overview,
-  SignIn,
-  SignUp,
+  SignInPage,
+  SignUpPage,
 } from './pages';
 import { AuthService } from './services';
 import { GetUser } from './__generated__/GetUser';
@@ -46,11 +46,11 @@ export const App = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<HomePage />} />
       <PrivateRoute
         path="/accounts"
         redirectPath="/signin"
-        element={<Accounts />}
+        element={<AccountsPage />}
       >
         <Route path=":accountId" element={<AccountView />}>
           <Route path="overview" element={<Overview />} />
@@ -59,9 +59,9 @@ export const App = () => {
           <Route path="activity" element={<Activity />} />
         </Route>
       </PrivateRoute>
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="/signin" element={<SignInPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

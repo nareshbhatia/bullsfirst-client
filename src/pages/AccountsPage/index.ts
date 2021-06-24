@@ -1,4 +1,4 @@
-export * from './Accounts';
+export * from './AccountsPage';
 export * from './AccountView';
 export * from './Activity';
 export * from './Holdings';

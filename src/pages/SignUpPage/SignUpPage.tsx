@@ -23,7 +23,7 @@ const SIGN_UP = gql`
   }
 `;
 
-export const SignUp = () => {
+export const SignUpPage = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
   const [signUp, { data, error }] = useMutation<SignUpResult, SignUpVariables>(

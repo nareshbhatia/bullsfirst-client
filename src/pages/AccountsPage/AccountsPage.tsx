@@ -20,7 +20,7 @@ const GET_ACCOUNTS = gql`
   }
 `;
 
-export const Accounts = () => {
+export const AccountsPage = () => {
   const { loading, error, data } = useQuery<GetAccounts>(GET_ACCOUNTS);
   const [selectedNavId, setSelectedNavId] = useState<string | undefined>();
   const navigate = useNavigate();
