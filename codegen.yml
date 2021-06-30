@@ -8,3 +8,6 @@ generates:
       - typed-document-node
     config:
       preResolveTypes: true
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
