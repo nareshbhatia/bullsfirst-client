@@ -1,23 +1,17 @@
 import React, { Fragment } from 'react';
-import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
-import { SignOut } from './__generated__/SignOut';
+import { SignOutDocument } from '../../graphql/generated';
 import './Navbar.css';
-
-const SIGN_OUT = gql`
-  mutation SignOut {
-    signOut
-  }
-`;
 
 export const Navbar = () => {
   const { authState, setAuthState } = useAuthContext();
   const { user } = authState;
   const navigate = useNavigate();
-  const [signOut] = useMutation<SignOut>(SIGN_OUT);
+  const [signOut] = useMutation(SignOutDocument);
   const apolloClient = useApolloClient();
 
   /* istanbul ignore next */

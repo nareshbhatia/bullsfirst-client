@@ -1,0 +1,5 @@
+query GetAccountPerformance($accountId: ID!) {
+  accountPerformance(accountId: $accountId) {
+    ...SeriesFields
+  }
+}

@@ -3,12 +3,14 @@ import { User } from '../models';
 export type UserId = string;
 
 export interface DbUser extends User {
+  __typename: string;
   password: string;
 }
 
 export interface AssetAllocation {
-  id: string;
-  name: string;
+  __typename: string;
+  categoryId: string;
+  categoryName: string;
   value: number;
   percentage: number;
   children?: Array<AssetAllocation>;

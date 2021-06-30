@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
   Header,
@@ -9,19 +9,10 @@ import {
   ViewVerticalContainer,
 } from '../../components';
 import { RefreshContextProvider } from '../../contexts';
-import { GetAccounts } from './__generated__/GetAccounts';
-
-const GET_ACCOUNTS = gql`
-  query GetAccounts {
-    accounts {
-      id
-      name
-    }
-  }
-`;
+import { GetAccountsDocument } from '../../graphql/generated';
 
 export const AccountsPage = () => {
-  const { loading, error, data } = useQuery<GetAccounts>(GET_ACCOUNTS);
+  const { loading, error, data } = useQuery(GetAccountsDocument);
   const [selectedNavId, setSelectedNavId] = useState<string | undefined>();
   const navigate = useNavigate();
 

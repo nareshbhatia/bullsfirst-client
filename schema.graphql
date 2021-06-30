@@ -1,0 +1,157 @@
+enum Side {
+  BUY
+  SELL
+}
+
+enum Direction {
+  IN
+  OUT
+}
+
+enum OrderType {
+  MARKET
+  LIMIT
+}
+
+enum TransactionType {
+  CASH_TRANSFER
+  TRADE
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+}
+
+type UserInfo {
+  user: User!
+  accessToken: String!
+}
+
+input SignUpInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input Credentials {
+  email: String!
+  password: String!
+}
+
+type Security {
+  id: ID!
+  name: String!
+  price: Float!
+}
+
+type Account {
+  id: ID!
+  name: String!
+  owner: User!
+  holdings: [Holding!]!
+  cashBalance: CashBalance!
+  orders: [Order!]!
+  transactions: [Transaction!]!
+}
+
+type Holding {
+  id: ID!
+  security: Security!
+  quantity: Int!
+  account: Account!
+  value: Float!
+}
+
+type CashBalance {
+  balance: Float!
+  account: Account!
+}
+
+type Order {
+  id: ID!
+  side: Side!
+  security: Security!
+  quantity: Int!
+  type: OrderType!
+  limitPrice: Float!
+  account: Account!
+}
+
+interface Transaction {
+  id: ID!
+  account: Account!
+}
+
+type CashTransfer implements Transaction {
+  id: ID!
+  account: Account!
+  direction: Direction!
+  amount: Float!
+}
+
+type Trade implements Transaction {
+  id: ID!
+  account: Account!
+  side: Side!
+  security: Security!
+  quantity: Int!
+  price: Float!
+  amount: Float!
+}
+
+type NetWorthInfo {
+  netWorth: Float!
+  investments: Float!
+  cash: Float!
+}
+
+type AssetAllocation {
+  categoryId: String!
+  categoryName: String!
+  value: Float!
+  percentage: Float!
+  children: [AssetAllocation!]
+}
+
+type DataPoint {
+  x: Float!
+  y: Float!
+}
+
+type Series {
+  name: String!
+  data: [DataPoint!]!
+}
+
+type Query {
+  "returns the user identified by the access token in the request header"
+  user: User!
+
+  "returns the accounts owned by the requesting user"
+  accounts: [Account!]!
+
+  "returns the holdings for the specified account"
+  holdings(accountId: ID!): [Holding!]!
+
+  "returns the net worth for the specified account"
+  netWorthInfo(accountId: ID!): NetWorthInfo!
+
+  "returns the asset allocations for the specified account"
+  assetAllocations(accountId: ID!): [AssetAllocation!]!
+
+  "returns the performance for the specified account"
+  accountPerformance(accountId: ID!): [Series!]!
+}
+
+type Mutation {
+  "signs in the user with the specified credentials and returns an access token for future requests"
+  signIn(credentials: Credentials!): UserInfo!
+
+  "signs up a new user and returns an access token for future requests"
+  signUp(signUpInput: SignUpInput!): UserInfo!
+
+  "invalidates the access token that was used to sign in and returns it"
+  signOut: String!
+}

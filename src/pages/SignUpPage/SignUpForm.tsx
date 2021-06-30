@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import * as yup from 'yup';
 import logo from '../../assets/bullsfirst-logo.svg';
 import { TextField } from '../../components';
-import { SignUpInput } from '../../graphql-types';
+import { SignUpInput } from '../../graphql/generated';
 import './SignUpForm.css';
 
 const schema = yup.object().shape({

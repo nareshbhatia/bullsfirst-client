@@ -1,35 +1,17 @@
 import React, { useCallback, useEffect } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
-import { Credentials } from '../../graphql-types';
+import { Credentials } from '../../graphql/generated';
 import { AuthService } from '../../services';
+import { SignInDocument } from '../../graphql/generated';
 import { SignInForm } from './SignInForm';
-import {
-  SignIn as SignInResult,
-  SignInVariables,
-} from './__generated__/SignIn';
-
-const SIGN_IN = gql`
-  mutation SignIn($credentials: Credentials!) {
-    signIn(credentials: $credentials) {
-      user {
-        id
-        name
-        email
-      }
-      accessToken
-    }
-  }
-`;
 
 export const SignInPage = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signIn, { data, error }] = useMutation<SignInResult, SignInVariables>(
-    SIGN_IN
-  );
+  const [signIn, { data, error }] = useMutation(SignInDocument);
   const signInError = error ? error.message : undefined;
 
   /* istanbul ignore next */

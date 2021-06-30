@@ -15,8 +15,7 @@
     "cypress:open": "cypress open",
     "eject": "react-scripts eject",
     "format": "prettier --write README.md 'src/**/{*.md,*.json,*.css,*.ts*}' 'cypress/integration/**/*'",
-    "graphql:schema": "apollo service:download --endpoint=http://localhost:4000/ graphql-schema.json",
-    "graphql:codegen": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --globalTypesFile=src/graphql-types.ts",
+    "graphql:codegen": "graphql-codegen --config codegen.yml",
     "start": "react-scripts start",
     "storybook": "start-storybook -p 6006 -s public",
     "test": "react-scripts test",
@@ -44,6 +43,10 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.21.5",
+    "@graphql-codegen/typed-document-node": "^1.18.8",
+    "@graphql-codegen/typescript": "1.22.3",
+    "@graphql-codegen/typescript-operations": "1.18.2",
     "@storybook/addon-actions": "^6.3.0",
     "@storybook/addon-essentials": "^6.3.0",
     "@storybook/addon-links": "^6.3.0",

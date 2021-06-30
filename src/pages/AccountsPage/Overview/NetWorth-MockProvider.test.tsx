@@ -1,13 +1,24 @@
 import React from 'react';
+import { gql } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, waitForElementToBeRemoved } from '@testing-library/react';
 import { RefreshContextProvider } from '../../../contexts';
-import { GET_NET_WORTH, NetWorth } from './NetWorth';
+import { NetWorth } from './NetWorth';
+
+export const GetNetWorthQuery = gql`
+  query GetNetWorth($accountId: ID!) {
+    netWorthInfo(accountId: $accountId) {
+      netWorth
+      investments
+      cash
+    }
+  }
+`;
 
 const mocks = [
   {
     request: {
-      query: GET_NET_WORTH,
+      query: GetNetWorthQuery,
       variables: {
         accountId: 'brokerage-account',
       },

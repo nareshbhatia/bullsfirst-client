@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components';
 import { useAuthContext } from './contexts';
@@ -16,21 +16,11 @@ import {
   SignUpPage,
 } from './pages';
 import { AuthService } from './services';
-import { GetUser } from './__generated__/GetUser';
-
-export const GET_USER = gql`
-  query GetUser {
-    user {
-      id
-      name
-      email
-    }
-  }
-`;
+import { GetUserDocument } from './graphql/generated';
 
 export const App = () => {
   const { authState, setAuthState } = useAuthContext();
-  const { data } = useQuery<GetUser>(GET_USER, {
+  const { data } = useQuery(GetUserDocument, {
     skip:
       authState.user !== undefined ||
       AuthService.getAccessToken() === undefined,

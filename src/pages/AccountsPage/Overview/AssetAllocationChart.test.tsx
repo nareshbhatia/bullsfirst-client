@@ -9,40 +9,40 @@ import {
 
 const sectorAllocations = [
   {
-    id: 'consumer-cyclical',
-    name: 'Consumer Cyclical',
+    categoryId: 'consumer-cyclical',
+    categoryName: 'Consumer Cyclical',
     value: 2000,
     percentage: 0.2,
     children: [
       {
-        id: 'autos',
-        name: 'Autos',
+        categoryId: 'autos',
+        categoryName: 'Autos',
         value: 500,
         percentage: 0.25,
       },
       {
-        id: 'restaurants',
-        name: 'Restaurants',
+        categoryId: 'restaurants',
+        categoryName: 'Restaurants',
         value: 1500,
         percentage: 0.75,
       },
     ],
   },
   {
-    id: 'technology',
-    name: 'Technology',
+    categoryId: 'technology',
+    categoryName: 'Technology',
     value: 8000,
     percentage: 0.8,
     children: [
       {
-        id: 'computer-hardware',
-        name: 'Computer Hardware',
+        categoryId: 'computer-hardware',
+        categoryName: 'Computer Hardware',
         value: 1000,
         percentage: 0.125,
       },
       {
-        id: 'application-software',
-        name: 'Application Software',
+        categoryId: 'application-software',
+        categoryName: 'Application Software',
         value: 7000,
         percentage: 0.875,
       },

@@ -23,7 +23,7 @@ import { AuthService } from '../services';
 
 // Create Apollo client
 const httpLink = createHttpLink({
-  uri: 'https://localhost:8080',
+  uri: 'https://localhost:4000',
 });
 const authLink = setContext((_, { headers }) => {
   const token = AuthService.getAccessToken();

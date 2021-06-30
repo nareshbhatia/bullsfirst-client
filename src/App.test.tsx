@@ -1,18 +1,28 @@
 import React from 'react';
+import { gql } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import { App, GET_USER } from './App';
+import { App } from './App';
 import { AuthContextProvider } from './contexts';
 import { HomePage, NotFoundPage } from './pages';
 
 jest.mock('./pages/HomePage/HomePage');
 jest.mock('./pages/NotFoundPage/NotFoundPage');
 
+export const GetUserQuery = gql`
+  query GetAccounts {
+    accounts {
+      id
+      name
+    }
+  }
+`;
+
 const mocks = [
   {
     request: {
-      query: GET_USER,
+      query: GetUserQuery,
     },
   },
 ];

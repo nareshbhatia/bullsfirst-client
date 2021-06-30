@@ -1,46 +1,33 @@
 import React, { useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import { Loading, PieChart } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
 import {
-  GetAssetAllocations,
-  GetAssetAllocations_assetAllocations as AssetAllocation,
-} from './__generated__/GetAssetAllocations';
+  AssetAllocationFieldsFragment,
+  GetAssetAllocationsDocument,
+} from '../../../graphql/generated';
 
-export const GET_ASSET_ALLOCATIONS = gql`
-  query GetAssetAllocations($accountId: ID!) {
-    assetAllocations(accountId: $accountId) {
-      id
-      name
-      value
-      percentage
-      children {
-        id
-        name
-        value
-        percentage
-      }
-    }
-  }
-`;
-
-export function computePieSeries(sectorAllocations: Array<AssetAllocation>) {
+export function computePieSeries(
+  sectorAllocations: Array<AssetAllocationFieldsFragment>
+) {
   return [
     {
       name: 'Sectors',
       data: sectorAllocations
         .map((sectorAllocation) => ({
-          name: sectorAllocation.name,
+          name: sectorAllocation.categoryName,
           y: Math.round(sectorAllocation.percentage * 100),
-          drilldown: sectorAllocation.id,
+          drilldown: sectorAllocation.categoryId,
         }))
         .sort((a, b) => b.y - a.y), // descending order
     },
   ];
 }
 
-export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
+export function computePieDrilldown(
+  sectorAllocations: Array<AssetAllocationFieldsFragment>
+) {
   return {
     activeDataLabelStyle: {
       color: '#000000',
@@ -48,22 +35,26 @@ export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
       textDecoration: 'none',
     },
     series: sectorAllocations.map((sectorAllocation) => {
-      const { id, name, children: industryAllocations } = sectorAllocation;
+      const {
+        categoryId,
+        categoryName,
+        children: industryAllocations,
+      } = sectorAllocation;
 
       if (!industryAllocations) {
-        return { id, name, data: [] };
+        return { id: categoryId, name: categoryName, data: [] };
       }
 
       const data = industryAllocations
         .map((industryAllocation) => {
           return [
-            industryAllocation.name,
+            industryAllocation.categoryName,
             Math.round(industryAllocation.percentage * 100),
           ];
         })
         .sort((a: any, b: any) => b[1] - a[1]); // descending order
 
-      return { id, name, data };
+      return { id: categoryId, name: categoryName, data };
     }),
   };
 }
@@ -71,8 +62,8 @@ export function computePieDrilldown(sectorAllocations: Array<AssetAllocation>) {
 export const AssetAllocationChart = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<GetAssetAllocations>(
-    GET_ASSET_ALLOCATIONS,
+  const { loading, error, data, refetch } = useQuery(
+    GetAssetAllocationsDocument,
     {
       variables: {
         accountId,
@@ -84,8 +75,14 @@ export const AssetAllocationChart = () => {
     refetch();
   }, [refreshCount, refetch]);
 
-  if (loading || !data) {
+  if (loading) {
     return <Loading />;
+  }
+  if (error) {
+    throw error;
+  }
+  if (!data) {
+    throw new Error('Something went wrong');
   }
 
   const { assetAllocations } = data;

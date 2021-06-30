@@ -1,0 +1,5 @@
+query GetNetWorth($accountId: ID!) {
+  netWorthInfo(accountId: $accountId) {
+    ...NetWorthFields
+  }
+}

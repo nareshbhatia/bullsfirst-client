@@ -1,23 +1,13 @@
 import React, { useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { NumberUtils } from '@react-force/number-utils';
 import { useParams } from 'react-router-dom';
 import { HorizontalContainer, Loading } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import { GetNetWorth } from './__generated__/GetNetWorth';
+import { GetNetWorthDocument } from '../../../graphql/generated';
 import './NetWorth.css';
 
 const { formatAsMoney } = NumberUtils;
-
-export const GET_NET_WORTH = gql`
-  query GetNetWorth($accountId: ID!) {
-    netWorthInfo(accountId: $accountId) {
-      netWorth
-      investments
-      cash
-    }
-  }
-`;
 
 const LabelValue = ({ label, value }: { label: string; value: number }) => {
   return (
@@ -31,7 +21,7 @@ const LabelValue = ({ label, value }: { label: string; value: number }) => {
 export const NetWorth = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<GetNetWorth>(GET_NET_WORTH, {
+  const { loading, error, data, refetch } = useQuery(GetNetWorthDocument, {
     variables: {
       accountId,
     },
@@ -41,8 +31,14 @@ export const NetWorth = () => {
     refetch();
   }, [refreshCount, refetch]);
 
-  if (loading || !data) {
+  if (loading) {
     return <Loading />;
+  }
+  if (error) {
+    throw error;
+  }
+  if (!data) {
+    throw new Error('Something went wrong');
   }
 
   const { cash, investments, netWorth } = data.netWorthInfo;

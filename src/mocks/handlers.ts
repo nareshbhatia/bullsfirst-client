@@ -9,6 +9,7 @@ import sectors from './data/sectors.json';
 import securities from './data/securities.json';
 import {
   AssetAllocation,
+  DbUser,
   Holding,
   Industry,
   Sector,
@@ -128,6 +129,7 @@ export const handlers = [
     return res(
       ctx.data({
         signIn: {
+          __typename: 'UserInfo',
           user,
           accessToken: accessToken,
         },
@@ -170,7 +172,7 @@ export const handlers = [
 
     const userId = uuidv4();
     const accessToken = uuidv4();
-    const newUser = { id: userId, ...signUpInput };
+    const newUser: DbUser = { __typename: 'User', id: userId, ...signUpInput };
     createUser(newUser);
     setTokenValue(accessToken, newUser.id);
 
@@ -178,8 +180,9 @@ export const handlers = [
     return res(
       ctx.data({
         signUp: {
+          __typename: 'UserInfo',
           user,
-          accessToken: accessToken,
+          accessToken,
         },
       })
     );
@@ -209,6 +212,7 @@ export const handlers = [
     return res(
       ctx.data({
         netWorthInfo: {
+          __typename: 'NetWorthInfo',
           netWorth: investments + cashBalance,
           investments: investments,
           cash: cashBalance,
@@ -238,12 +242,13 @@ export const handlers = [
 
             // create a sector allocation if needed
             let sectorAllocation = sectorAllocations.find(
-              (allocation) => allocation.id === sectorId
+              (allocation) => allocation.categoryId === sectorId
             );
             if (sectorAllocation === undefined) {
               sectorAllocation = {
-                id: sectorId,
-                name: sectorName,
+                __typename: 'AssetAllocation',
+                categoryId: sectorId,
+                categoryName: sectorName,
                 value: 0,
                 percentage: 0,
                 children: [],
@@ -254,12 +259,13 @@ export const handlers = [
 
             // create a industryAllocation if needed
             let industryAllocation = industryAllocations!.find(
-              (allocation) => allocation.id === industryId
+              (allocation) => allocation.categoryId === industryId
             );
             if (industryAllocation === undefined) {
               industryAllocation = {
-                id: industryId,
-                name: industryName,
+                __typename: 'AssetAllocation',
+                categoryId: industryId,
+                categoryName: industryName,
                 value: 0,
                 percentage: 0,
               };
@@ -317,19 +323,20 @@ export const handlers = [
     return res(
       ctx.data({
         holdings: accountHoldings.map((holding) => {
-          const security = getSecurity(holding.symbol);
+          const { accountId, symbol, ...holdingFields } = holding;
+          const security = getSecurity(symbol);
           return security
             ? {
-                id: holding.id,
-                quantity: holding.quantity,
+                ...holdingFields,
                 value: security.price * holding.quantity,
                 security: {
+                  __typename: 'Security',
                   id: security.id,
                   name: security.name,
                   price: security.price,
                 },
               }
-            : holding;
+            : { ...holdingFields };
         }),
       })
     );

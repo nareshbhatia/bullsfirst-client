@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { NumberUtils } from '@react-force/number-utils';
 import { ColDef, ValueFormatterParams } from 'ag-grid-community';
 import { useParams } from 'react-router-dom';
@@ -11,27 +11,12 @@ import {
   VerticalContainer,
 } from '../../../components';
 import { GridContextProvider, useRefreshContext } from '../../../contexts';
-import { GetHoldings } from './__generated__/GetHoldings';
-
-export const GET_HOLDINGS = gql`
-  query GetHoldings($accountId: ID!) {
-    holdings(accountId: $accountId) {
-      id
-      quantity
-      value
-      security {
-        id
-        name
-        price
-      }
-    }
-  }
-`;
+import { GetHoldingsDocument } from '../../../graphql/generated';
 
 export const Holdings = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
-  const { loading, data, refetch } = useQuery<GetHoldings>(GET_HOLDINGS, {
+  const { loading, error, data, refetch } = useQuery(GetHoldingsDocument, {
     variables: {
       accountId,
     },
@@ -41,8 +26,14 @@ export const Holdings = () => {
     refetch();
   }, [refreshCount, refetch]);
 
-  if (loading || !data) {
+  if (loading) {
     return <Loading />;
+  }
+  if (error) {
+    throw error;
+  }
+  if (!data) {
+    throw new Error('Something went wrong');
   }
 
   const currencyFormatter = (params: ValueFormatterParams) => {

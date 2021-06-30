@@ -1,34 +1,16 @@
 import React, { useEffect } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
+import { SignUpDocument } from '../../graphql/generated';
 import { SignUpForm, FormEntity } from './SignUpForm';
-import {
-  SignUp as SignUpResult,
-  SignUpVariables,
-} from './__generated__/SignUp';
-
-const SIGN_UP = gql`
-  mutation SignUp($signUpInput: SignUpInput!) {
-    signUp(signUpInput: $signUpInput) {
-      user {
-        id
-        name
-        email
-      }
-      accessToken
-    }
-  }
-`;
 
 export const SignUpPage = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signUp, { data, error }] = useMutation<SignUpResult, SignUpVariables>(
-    SIGN_UP
-  );
+  const [signUp, { data, error }] = useMutation(SignUpDocument);
   const signUpError = error ? error.message : undefined;
 
   // redirect if user is already logged in
