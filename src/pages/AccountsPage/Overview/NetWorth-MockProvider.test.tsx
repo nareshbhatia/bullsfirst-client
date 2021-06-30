@@ -1,24 +1,14 @@
 import React from 'react';
-import { gql } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, waitForElementToBeRemoved } from '@testing-library/react';
 import { RefreshContextProvider } from '../../../contexts';
+import { GetNetWorthDocument } from '../../../graphql/generated';
 import { NetWorth } from './NetWorth';
-
-export const GetNetWorthQuery = gql`
-  query GetNetWorth($accountId: ID!) {
-    netWorthInfo(accountId: $accountId) {
-      netWorth
-      investments
-      cash
-    }
-  }
-`;
 
 const mocks = [
   {
     request: {
-      query: GetNetWorthQuery,
+      query: GetNetWorthDocument,
       variables: {
         accountId: 'brokerage-account',
       },
@@ -26,6 +16,7 @@ const mocks = [
     result: {
       data: {
         netWorthInfo: {
+          __typename: 'NetWorthInfo',
           netWorth: 14500.12,
           investments: 11000.12,
           cash: 3500.0,
