@@ -22,9 +22,12 @@ export type Account = {
   name: Scalars['String'];
   owner: User;
   holdings: Array<Holding>;
-  cashBalance: CashBalance;
+  investmentTotal: Scalars['Float'];
+  cashBalance: Scalars['Float'];
   orders: Array<Order>;
   transactions: Array<Transaction>;
+  assetAllocations: Array<AssetAllocation>;
+  performance: Array<Series>;
 };
 
 export type AssetAllocation = {
@@ -34,12 +37,6 @@ export type AssetAllocation = {
   value: Scalars['Float'];
   percentage: Scalars['Float'];
   children?: Maybe<Array<AssetAllocation>>;
-};
-
-export type CashBalance = {
-  __typename?: 'CashBalance';
-  balance: Scalars['Float'];
-  account: Account;
 };
 
 export type CashTransfer = Transaction & {
@@ -93,13 +90,6 @@ export type MutationSignUpArgs = {
   signUpInput: SignUpInput;
 };
 
-export type NetWorthInfo = {
-  __typename?: 'NetWorthInfo';
-  netWorth: Scalars['Float'];
-  investments: Scalars['Float'];
-  cash: Scalars['Float'];
-};
-
 export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
@@ -122,29 +112,17 @@ export type Query = {
   user: User;
   /** returns the accounts owned by the requesting user */
   accounts: Array<Account>;
+  /** returns the account with the specified accountId */
+  account?: Maybe<Account>;
   /** returns the holdings for the specified account */
   holdings: Array<Holding>;
-  /** returns the net worth for the specified account */
-  netWorthInfo: NetWorthInfo;
-  /** returns the asset allocations for the specified account */
-  assetAllocations: Array<AssetAllocation>;
-  /** returns the performance for the specified account */
-  accountPerformance: Array<Series>;
+};
+
+export type QueryAccountArgs = {
+  accountId: Scalars['ID'];
 };
 
 export type QueryHoldingsArgs = {
-  accountId: Scalars['ID'];
-};
-
-export type QueryNetWorthInfoArgs = {
-  accountId: Scalars['ID'];
-};
-
-export type QueryAssetAllocationsArgs = {
-  accountId: Scalars['ID'];
-};
-
-export type QueryAccountPerformanceArgs = {
   accountId: Scalars['ID'];
 };
 
@@ -236,24 +214,10 @@ export type AccountFieldsFragment = {
   name: string;
 };
 
-export type HoldingFieldsFragment = {
-  __typename?: 'Holding';
-  id: string;
-  quantity: number;
-  value: number;
-  security: {
-    __typename?: 'Security';
-    id: string;
-    name: string;
-    price: number;
-  };
-};
-
 export type NetWorthFieldsFragment = {
-  __typename?: 'NetWorthInfo';
-  netWorth: number;
-  investments: number;
-  cash: number;
+  __typename?: 'Account';
+  investmentTotal: number;
+  cashBalance: number;
 };
 
 export type AssetAllocationFieldsFragment = {
@@ -271,6 +235,19 @@ export type AssetAllocationFieldsFragment = {
       percentage: number;
     }>
   >;
+};
+
+export type HoldingFieldsFragment = {
+  __typename?: 'Holding';
+  id: string;
+  quantity: number;
+  value: number;
+  security: {
+    __typename?: 'Security';
+    id: string;
+    name: string;
+    price: number;
+  };
 };
 
 export type SeriesFieldsFragment = {
@@ -301,9 +278,13 @@ export type GetAssetAllocationsQueryVariables = Exact<{
 
 export type GetAssetAllocationsQuery = {
   __typename?: 'Query';
-  assetAllocations: Array<
-    { __typename?: 'AssetAllocation' } & AssetAllocationFieldsFragment
-  >;
+  account?: Maybe<{
+    __typename?: 'Account';
+    id: string;
+    assetAllocations: Array<
+      { __typename?: 'AssetAllocation' } & AssetAllocationFieldsFragment
+    >;
+  }>;
 };
 
 export type GetNetWorthQueryVariables = Exact<{
@@ -312,7 +293,9 @@ export type GetNetWorthQueryVariables = Exact<{
 
 export type GetNetWorthQuery = {
   __typename?: 'Query';
-  netWorthInfo: { __typename?: 'NetWorthInfo' } & NetWorthFieldsFragment;
+  account?: Maybe<
+    { __typename?: 'Account'; id: string } & NetWorthFieldsFragment
+  >;
 };
 
 export type GetAccountPerformanceQueryVariables = Exact<{
@@ -321,7 +304,11 @@ export type GetAccountPerformanceQueryVariables = Exact<{
 
 export type GetAccountPerformanceQuery = {
   __typename?: 'Query';
-  accountPerformance: Array<{ __typename?: 'Series' } & SeriesFieldsFragment>;
+  account?: Maybe<{
+    __typename?: 'Account';
+    id: string;
+    performance: Array<{ __typename?: 'Series' } & SeriesFieldsFragment>;
+  }>;
 };
 
 export type SignInMutationVariables = Exact<{
@@ -414,39 +401,6 @@ export const AccountFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<AccountFieldsFragment, unknown>;
-export const HoldingFieldsFragmentDoc = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'HoldingFields' },
-      typeCondition: {
-        kind: 'NamedType',
-        name: { kind: 'Name', value: 'Holding' },
-      },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'quantity' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'value' } },
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'security' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'price' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<HoldingFieldsFragment, unknown>;
 export const NetWorthFieldsFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -455,14 +409,13 @@ export const NetWorthFieldsFragmentDoc = {
       name: { kind: 'Name', value: 'NetWorthFields' },
       typeCondition: {
         kind: 'NamedType',
-        name: { kind: 'Name', value: 'NetWorthInfo' },
+        name: { kind: 'Name', value: 'Account' },
       },
       selectionSet: {
         kind: 'SelectionSet',
         selections: [
-          { kind: 'Field', name: { kind: 'Name', value: 'netWorth' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'investments' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'cash' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'investmentTotal' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'cashBalance' } },
         ],
       },
     },
@@ -506,6 +459,39 @@ export const AssetAllocationFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<AssetAllocationFieldsFragment, unknown>;
+export const HoldingFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'HoldingFields' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Holding' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'quantity' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'value' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'security' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<HoldingFieldsFragment, unknown>;
 export const SeriesFieldsFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -687,7 +673,7 @@ export const GetAssetAllocationsDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'assetAllocations' },
+            name: { kind: 'Name', value: 'account' },
             arguments: [
               {
                 kind: 'Argument',
@@ -701,9 +687,19 @@ export const GetAssetAllocationsDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 {
-                  kind: 'FragmentSpread',
-                  name: { kind: 'Name', value: 'AssetAllocationFields' },
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'assetAllocations' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'AssetAllocationFields' },
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -742,7 +738,7 @@ export const GetNetWorthDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'netWorthInfo' },
+            name: { kind: 'Name', value: 'account' },
             arguments: [
               {
                 kind: 'Argument',
@@ -756,6 +752,7 @@ export const GetNetWorthDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 {
                   kind: 'FragmentSpread',
                   name: { kind: 'Name', value: 'NetWorthFields' },
@@ -794,7 +791,7 @@ export const GetAccountPerformanceDocument = {
         selections: [
           {
             kind: 'Field',
-            name: { kind: 'Name', value: 'accountPerformance' },
+            name: { kind: 'Name', value: 'account' },
             arguments: [
               {
                 kind: 'Argument',
@@ -808,9 +805,19 @@ export const GetAccountPerformanceDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 {
-                  kind: 'FragmentSpread',
-                  name: { kind: 'Name', value: 'SeriesFields' },
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'performance' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'FragmentSpread',
+                        name: { kind: 'Name', value: 'SeriesFields' },
+                      },
+                    ],
+                  },
                 },
               ],
             },

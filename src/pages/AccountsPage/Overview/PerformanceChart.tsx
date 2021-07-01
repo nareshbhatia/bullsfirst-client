@@ -41,12 +41,11 @@ export const PerformanceChart = () => {
   if (error) {
     throw error;
   }
-  if (!data) {
+  if (!data?.account) {
     throw new Error('Something went wrong');
   }
 
-  const { accountPerformance } = data;
-  const series = computeLineChartSeries(accountPerformance);
+  const series = computeLineChartSeries(data.account.performance);
 
   return <LineChart title="PERFORMANCE" series={series} />;
 };

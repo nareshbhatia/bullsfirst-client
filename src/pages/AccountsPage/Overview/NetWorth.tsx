@@ -37,16 +37,16 @@ export const NetWorth = () => {
   if (error) {
     throw error;
   }
-  if (!data) {
+  if (!data?.account) {
     throw new Error('Something went wrong');
   }
 
-  const { cash, investments, netWorth } = data.netWorthInfo;
+  const { investmentTotal, cashBalance } = data.account;
   return (
     <HorizontalContainer className="p-2">
-      <LabelValue label="Net Worth" value={netWorth} />
-      <LabelValue label="Investments" value={investments} />
-      <LabelValue label="Cash" value={cash} />
+      <LabelValue label="Net Worth" value={investmentTotal + cashBalance} />
+      <LabelValue label="Investments" value={investmentTotal} />
+      <LabelValue label="Cash" value={cashBalance} />
     </HorizontalContainer>
   );
 };

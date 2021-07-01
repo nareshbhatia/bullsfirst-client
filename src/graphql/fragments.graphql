@@ -18,21 +18,9 @@ fragment AccountFields on Account {
   name
 }
 
-fragment HoldingFields on Holding {
-  id
-  quantity
-  value
-  security {
-    id
-    name
-    price
-  }
-}
-
-fragment NetWorthFields on NetWorthInfo {
-  netWorth
-  investments
-  cash
+fragment NetWorthFields on Account {
+  investmentTotal
+  cashBalance
 }
 
 fragment AssetAllocationFields on AssetAllocation {
@@ -45,6 +33,17 @@ fragment AssetAllocationFields on AssetAllocation {
     categoryName
     value
     percentage
+  }
+}
+
+fragment HoldingFields on Holding {
+  id
+  quantity
+  value
+  security {
+    id
+    name
+    price
   }
 }
 

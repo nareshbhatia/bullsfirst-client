@@ -1,5 +1,8 @@
 query GetAssetAllocations($accountId: ID!) {
-  assetAllocations(accountId: $accountId) {
-    ...AssetAllocationFields
+  account(accountId: $accountId) {
+    id
+    assetAllocations {
+      ...AssetAllocationFields
+    }
   }
 }

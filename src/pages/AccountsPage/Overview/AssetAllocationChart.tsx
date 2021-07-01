@@ -81,13 +81,12 @@ export const AssetAllocationChart = () => {
   if (error) {
     throw error;
   }
-  if (!data) {
+  if (!data?.account) {
     throw new Error('Something went wrong');
   }
 
-  const { assetAllocations } = data;
-  const series = computePieSeries(assetAllocations);
-  const drilldown = computePieDrilldown(assetAllocations);
+  const series = computePieSeries(data.account.assetAllocations);
+  const drilldown = computePieDrilldown(data.account.assetAllocations);
 
   return (
     <PieChart title="ASSET ALLOCATION" series={series} drilldown={drilldown} />

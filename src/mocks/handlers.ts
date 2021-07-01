@@ -199,7 +199,7 @@ export const handlers = [
 
     const cashBalance = getAccountCashBalance(accountId);
     const accountHoldings = getAccountHoldings(accountId);
-    const investments = accountHoldings.reduce(
+    const investmentTotal = accountHoldings.reduce(
       (accumulator: number, holding: Holding) => {
         const security = getSecurity(holding.symbol);
         return security
@@ -211,11 +211,11 @@ export const handlers = [
 
     return res(
       ctx.data({
-        netWorthInfo: {
-          __typename: 'NetWorthInfo',
-          netWorth: investments + cashBalance,
-          investments: investments,
-          cash: cashBalance,
+        account: {
+          __typename: 'Account',
+          id: accountId,
+          investmentTotal,
+          cashBalance,
         },
       })
     );
@@ -301,7 +301,15 @@ export const handlers = [
       });
     });
 
-    return res(ctx.data({ assetAllocations: sectorAllocations }));
+    return res(
+      ctx.data({
+        account: {
+          __typename: 'Account',
+          id: accountId,
+          assetAllocations: sectorAllocations,
+        },
+      })
+    );
   }),
 
   /** get account performance */
@@ -310,7 +318,11 @@ export const handlers = [
 
     return res(
       ctx.data({
-        accountPerformance: getAccountPerformance(accountId),
+        account: {
+          __typename: 'Account',
+          id: accountId,
+          performance: getAccountPerformance(accountId),
+        },
       })
     );
   }),
