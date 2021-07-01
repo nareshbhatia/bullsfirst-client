@@ -15,11 +15,11 @@ const mocks = [
     },
     result: {
       data: {
-        netWorthInfo: {
-          __typename: 'NetWorthInfo',
-          netWorth: 14500.12,
-          investments: 11000.12,
-          cash: 3500.0,
+        account: {
+          __typename: 'Account',
+          id: 'brokerage-account',
+          investmentTotal: 11000.12,
+          cashBalance: 3500.0,
         },
       },
     },
