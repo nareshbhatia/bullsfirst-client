@@ -12,6 +12,7 @@ import {
 } from '../../../components';
 import { GridContextProvider, useRefreshContext } from '../../../contexts';
 import { GetHoldingsDocument } from '../../../graphql/generated';
+import { ActionsRenderer } from './ActionsRenderer';
 
 export const Holdings = () => {
   const { accountId } = useParams();
@@ -60,7 +61,7 @@ export const Holdings = () => {
     {
       field: 'quantity',
       headerName: 'Qty',
-      width: 130,
+      width: 120,
       suppressSizeToFit: true,
       type: 'rightAligned',
       valueFormatter: intFormatter,
@@ -84,7 +85,23 @@ export const Holdings = () => {
       valueFormatter: currencyFormatter,
       filter: 'agNumberColumnFilter',
     },
+    {
+      field: 'actions',
+      headerName: '',
+      cellRenderer: 'actionsRenderer',
+      width: 148,
+      suppressSizeToFit: true,
+      // suppress column menu, sorting and filtering
+      menuTabs: [],
+      resizable: false,
+      sortable: false,
+      filter: false,
+    },
   ];
+
+  const frameworkComponents = {
+    actionsRenderer: ActionsRenderer,
+  };
 
   return (
     <VerticalContainer className="p-2">
@@ -94,7 +111,11 @@ export const Holdings = () => {
             <h1 className="title flex-1">Holdings</h1>
             <GridToolbar />
           </HorizontalContainer>
-          <CustomGrid columnDefs={columnDefs} rowData={holdings} />
+          <CustomGrid
+            columnDefs={columnDefs}
+            frameworkComponents={frameworkComponents}
+            rowData={holdings}
+          />
         </GridContextProvider>
       </VerticalContainer>
     </VerticalContainer>

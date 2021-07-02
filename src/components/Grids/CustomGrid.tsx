@@ -6,10 +6,15 @@ import { useGridContext } from '../../contexts';
 
 export interface CustomGridProps {
   columnDefs: Array<ColDef>;
+  frameworkComponents?: any;
   rowData: Array<any>;
 }
 
-export const CustomGrid = ({ columnDefs, rowData }: CustomGridProps) => {
+export const CustomGrid = ({
+  columnDefs,
+  frameworkComponents,
+  rowData,
+}: CustomGridProps) => {
   const { setGridState } = useGridContext();
 
   const handleGridReady = (event: GridReadyEvent) => {
@@ -33,6 +38,7 @@ export const CustomGrid = ({ columnDefs, rowData }: CustomGridProps) => {
     suppressCellSelection: true,
     defaultColDef,
     columnDefs,
+    frameworkComponents,
     rowData,
     onGridReady: handleGridReady,
   };

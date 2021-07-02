@@ -390,6 +390,11 @@ label {
   padding: 1rem 2rem;
 }
 
+.btn-xs {
+  font-size: 12px;
+  padding: 0.3rem 1.5rem;
+}
+
 .btn-sm {
   padding: 0.6rem 1rem;
 }
@@ -420,6 +425,18 @@ label {
   background-color: transparent;
   color: var(--text-secondary-default);
   border: 1px solid var(--text-secondary-default);
+}
+
+.btn-outline-buy {
+  background-color: transparent;
+  color: var(--trade-buy);
+  border: 1px solid var(--trade-buy);
+}
+
+.btn-outline-sell {
+  background-color: transparent;
+  color: var(--trade-sell);
+  border: 1px solid var(--trade-sell);
 }
 
 :root {
@@ -501,6 +518,10 @@ label {
   /* sidebar */
   --sidebar-item: var(--grey-400);
   --sidebar-item-ative: var(--primary-200);
+
+  /* trade */
+  --trade-buy: #014d40;
+  --trade-sell: #610316;
 
   /* ----- Chota Overrides ----- */
   --bg-color: var(--grey-50);
