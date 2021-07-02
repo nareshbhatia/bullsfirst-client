@@ -68,11 +68,11 @@ type Account {
   id: ID!
   name: String!
   owner: User!
-  holdings: [Holding!]!
-  investmentTotal: Float!
   cashBalance: Float!
+  holdings: [Holding!]!
   orders: [Order!]!
   transactions: [Transaction!]!
+  investmentTotal: Float!
   assetAllocations: [AssetAllocation!]!
   performance: [Series!]!
 }
