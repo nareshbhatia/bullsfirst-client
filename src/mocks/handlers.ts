@@ -131,7 +131,7 @@ export const handlers = [
         signIn: {
           __typename: 'UserInfo',
           user,
-          accessToken: accessToken,
+          accessToken,
         },
       })
     );
