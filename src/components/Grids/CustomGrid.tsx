@@ -1,6 +1,5 @@
 import React from 'react';
 import { ColDef, GridOptions, GridReadyEvent } from 'ag-grid-community';
-import 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { useGridContext } from '../../contexts';
 
