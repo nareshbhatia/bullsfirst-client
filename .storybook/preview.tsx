@@ -10,8 +10,11 @@ import { addDecorator } from '@storybook/react';
 import Highcharts from 'highcharts';
 import { AuthContextProvider, EnvProvider } from '../src/contexts';
 import { AuthService } from '../src/services';
-import '../src/styles/main.css';
 import { ChartColors } from '../src/utils';
+
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import '../src/styles/main.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
