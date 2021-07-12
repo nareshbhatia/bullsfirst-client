@@ -6,7 +6,7 @@ import { useRefreshContext } from '../../../contexts';
 import {
   AssetAllocationFieldsFragment,
   GetAssetAllocationsDocument,
-} from '../../../graphql/generated';
+} from '../../../graphql';
 
 export function computePieSeries(
   sectorAllocations: Array<AssetAllocationFieldsFragment>

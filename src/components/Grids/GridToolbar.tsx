@@ -23,11 +23,17 @@ export const GridToolbar = () => {
       <button
         className="btn-icon mr-1"
         title="Size to Fit"
+        aria-labelledby="Size to Fit"
         onClick={handleSizeToFit}
       >
         <CgArrowsShrinkH />
       </button>
-      <button className="btn-icon" title="Auto-Size" onClick={handleAutoSize}>
+      <button
+        className="btn-icon"
+        title="Auto-Size"
+        aria-labelledby="Auto-Size"
+        onClick={handleAutoSize}
+      >
         <CgArrowsHAlt />
       </button>
     </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, waitForElementToBeRemoved } from '@testing-library/react';
 import { RefreshContextProvider } from '../../../contexts';
-import { GetNetWorthDocument } from '../../../graphql/generated';
+import { GetNetWorthDocument } from '../../../graphql';
 import { NetWorth } from './NetWorth';
 
 const mocks = [

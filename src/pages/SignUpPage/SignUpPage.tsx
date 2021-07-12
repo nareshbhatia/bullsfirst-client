@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
-import { SignUpDocument } from '../../graphql/generated';
+import { SignUpDocument } from '../../graphql';
 import { SignUpForm, FormEntity } from './SignUpForm';
 
 export const SignUpPage = () => {

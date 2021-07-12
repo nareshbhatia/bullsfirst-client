@@ -6,7 +6,7 @@ import { useRefreshContext } from '../../../contexts';
 import {
   GetAccountPerformanceDocument,
   SeriesFieldsFragment,
-} from '../../../graphql/generated';
+} from '../../../graphql';
 
 // transform series to format required by LineChart
 export function computeLineChartSeries(

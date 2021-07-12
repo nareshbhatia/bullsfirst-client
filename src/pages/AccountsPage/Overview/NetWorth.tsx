@@ -4,7 +4,7 @@ import { NumberUtils } from '@react-force/number-utils';
 import { useParams } from 'react-router-dom';
 import { HorizontalContainer, Loading } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import { GetNetWorthDocument } from '../../../graphql/generated';
+import { GetNetWorthDocument } from '../../../graphql';
 import './NetWorth.css';
 
 const { formatAsMoney } = NumberUtils;

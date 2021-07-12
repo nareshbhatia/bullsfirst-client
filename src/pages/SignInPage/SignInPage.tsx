@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { ViewVerticalContainer } from '../../components';
 import { useAuthContext } from '../../contexts';
-import { Credentials, SignInDocument } from '../../graphql/generated';
+import { Credentials, SignInDocument } from '../../graphql';
 import { AuthService } from '../../services';
 import { SignInForm } from './SignInForm';
 

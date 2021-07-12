@@ -14,6 +14,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
 };
 
 export type Account = {
@@ -21,11 +22,11 @@ export type Account = {
   id: Scalars['ID'];
   name: Scalars['String'];
   owner: User;
-  holdings: Array<Holding>;
-  investmentTotal: Scalars['Float'];
   cashBalance: Scalars['Float'];
+  holdings: Array<Holding>;
   orders: Array<Order>;
   transactions: Array<Transaction>;
+  investmentTotal: Scalars['Float'];
   assetAllocations: Array<AssetAllocation>;
   performance: Array<Series>;
 };
@@ -97,9 +98,19 @@ export type Order = {
   security: Security;
   quantity: Scalars['Int'];
   type: OrderType;
-  limitPrice: Scalars['Float'];
+  limitPrice?: Maybe<Scalars['Float']>;
+  status: OrderStatus;
   account: Account;
+  createdAt: Scalars['DateTime'];
+  createdBy: Scalars['ID'];
 };
+
+export enum OrderStatus {
+  New = 'NEW',
+  Placed = 'PLACED',
+  Executed = 'EXECUTED',
+  Canceled = 'CANCELED',
+}
 
 export enum OrderType {
   Market = 'MARKET',
@@ -116,6 +127,8 @@ export type Query = {
   account?: Maybe<Account>;
   /** returns the holdings for the specified account */
   holdings: Array<Holding>;
+  /** returns the orders for the specified account */
+  orders: Array<Order>;
 };
 
 export type QueryAccountArgs = {
@@ -123,6 +136,10 @@ export type QueryAccountArgs = {
 };
 
 export type QueryHoldingsArgs = {
+  accountId: Scalars['ID'];
+};
+
+export type QueryOrdersArgs = {
   accountId: Scalars['ID'];
 };
 
@@ -250,6 +267,19 @@ export type HoldingFieldsFragment = {
   };
 };
 
+export type OrderFieldsFragment = {
+  __typename?: 'Order';
+  id: string;
+  side: Side;
+  quantity: number;
+  type: OrderType;
+  limitPrice?: Maybe<number>;
+  status: OrderStatus;
+  createdAt: any;
+  createdBy: string;
+  security: { __typename?: 'Security'; id: string; name: string };
+};
+
 export type SeriesFieldsFragment = {
   __typename?: 'Series';
   name: string;
@@ -270,6 +300,15 @@ export type GetHoldingsQueryVariables = Exact<{
 export type GetHoldingsQuery = {
   __typename?: 'Query';
   holdings: Array<{ __typename?: 'Holding' } & HoldingFieldsFragment>;
+};
+
+export type GetOrdersQueryVariables = Exact<{
+  accountId: Scalars['ID'];
+}>;
+
+export type GetOrdersQuery = {
+  __typename?: 'Query';
+  orders: Array<{ __typename?: 'Order' } & OrderFieldsFragment>;
 };
 
 export type GetAssetAllocationsQueryVariables = Exact<{
@@ -492,6 +531,43 @@ export const HoldingFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<HoldingFieldsFragment, unknown>;
+export const OrderFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'OrderFields' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Order' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'side' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'security' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+              ],
+            },
+          },
+          { kind: 'Field', name: { kind: 'Name', value: 'quantity' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'limitPrice' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdBy' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<OrderFieldsFragment, unknown>;
 export const SeriesFieldsFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -648,6 +724,58 @@ export const GetHoldingsDocument = {
     ...HoldingFieldsFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetHoldingsQuery, GetHoldingsQueryVariables>;
+export const GetOrdersDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetOrders' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'accountId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'orders' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'accountId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'accountId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'OrderFields' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...OrderFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GetOrdersQuery, GetOrdersQueryVariables>;
 export const GetAssetAllocationsDocument = {
   kind: 'Document',
   definitions: [

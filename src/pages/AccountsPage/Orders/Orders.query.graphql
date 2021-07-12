@@ -1,0 +1,5 @@
+query GetOrders($accountId: ID!) {
+  orders(accountId: $accountId) {
+    ...OrderFields
+  }
+}

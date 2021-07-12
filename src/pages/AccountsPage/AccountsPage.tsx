@@ -9,7 +9,7 @@ import {
   ViewVerticalContainer,
 } from '../../components';
 import { RefreshContextProvider } from '../../contexts';
-import { GetAccountsDocument } from '../../graphql/generated';
+import { GetAccountsDocument } from '../../graphql';
 
 export const AccountsPage = () => {
   const { loading, error, data } = useQuery(GetAccountsDocument);

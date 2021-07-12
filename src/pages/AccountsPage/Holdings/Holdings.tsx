@@ -11,7 +11,7 @@ import {
   VerticalContainer,
 } from '../../../components';
 import { GridContextProvider, useRefreshContext } from '../../../contexts';
-import { GetHoldingsDocument } from '../../../graphql/generated';
+import { GetHoldingsDocument } from '../../../graphql';
 import { ActionsRenderer } from './ActionsRenderer';
 
 export const Holdings = () => {

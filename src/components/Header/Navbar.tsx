@@ -4,7 +4,7 @@ import { FaSignOutAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../contexts';
 import { AuthService } from '../../services';
-import { SignOutDocument } from '../../graphql/generated';
+import { SignOutDocument } from '../../graphql';
 import './Navbar.css';
 
 export const Navbar = () => {

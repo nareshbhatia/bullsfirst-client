@@ -47,6 +47,19 @@ export interface Holding {
   accountId: string;
 }
 
+export interface Order {
+  id: string;
+  side: string;
+  symbol: string;
+  quantity: number;
+  type: string;
+  limitPrice: number | null;
+  status: string;
+  accountId: string;
+  createdAt: string;
+  createdBy: string;
+}
+
 export interface Sector {
   id: string;
   name: string;

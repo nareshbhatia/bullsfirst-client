@@ -4,6 +4,7 @@ import accounts from './data/accounts.json';
 import cashBalances from './data/cash-balances.json';
 import holdings from './data/holdings.json';
 import industries from './data/industries.json';
+import orders from './data/orders.json';
 import performances from './data/performances.json';
 import sectors from './data/sectors.json';
 import securities from './data/securities.json';
@@ -12,6 +13,7 @@ import {
   DbUser,
   Holding,
   Industry,
+  Order,
   Sector,
   Security,
   Series,
@@ -55,6 +57,10 @@ const getAccountCashBalance = (accountId: string): number => {
 
 const getAccountHoldings = (accountId: string): Array<Holding> => {
   return holdings.filter((holding) => holding.accountId === accountId);
+};
+
+const getAccountOrders = (accountId: string): Array<Order> => {
+  return orders.filter((order) => order.accountId === accountId);
 };
 
 const getAccountPerformance = (
@@ -349,6 +355,32 @@ export const handlers = [
                 },
               }
             : { ...holdingFields };
+        }),
+      })
+    );
+  }),
+
+  /** get account orders */
+  graphql.query('GetOrders', (req, res, ctx) => {
+    const { accountId } = req.variables;
+    const accountOrders = getAccountOrders(accountId);
+
+    return res(
+      ctx.data({
+        orders: accountOrders.map((order) => {
+          const { accountId, symbol, ...orderFields } = order;
+          const security = getSecurity(symbol);
+          return security
+            ? {
+                ...orderFields,
+                security: {
+                  __typename: 'Security',
+                  id: security.id,
+                  name: security.name,
+                  price: security.price,
+                },
+              }
+            : { ...orderFields };
         }),
       })
     );

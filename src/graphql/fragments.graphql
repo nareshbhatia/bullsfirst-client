@@ -47,6 +47,21 @@ fragment HoldingFields on Holding {
   }
 }
 
+fragment OrderFields on Order {
+  id
+  side
+  security {
+    id
+    name
+  }
+  quantity
+  type
+  limitPrice
+  status
+  createdAt
+  createdBy
+}
+
 fragment SeriesFields on Series {
   name
   data {

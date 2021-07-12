@@ -1,16 +1,10 @@
 import React, { ReactElement, Suspense } from 'react';
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloProvider } from '@apollo/client';
 import { render, RenderOptions } from '@testing-library/react';
 import { MemoryRouter as Router } from 'react-router-dom';
 import { ErrorBoundary, Loading } from '../components';
 import { AuthContextProvider, EnvProvider } from '../contexts';
-import { AuthService } from '../services';
+import { GraphQlUtils } from '../utils';
 
 // -----------------------------------------------------------------------------
 // This file re-exports everything from React Testing Library and then overrides
@@ -21,30 +15,19 @@ import { AuthService } from '../services';
 // https://testing-library.com/docs/react-testing-library/setup/#custom-render
 // -----------------------------------------------------------------------------
 
-// Create Apollo client
-const httpLink = createHttpLink({
-  uri: 'https://localhost:4000',
-});
-const authLink = setContext((_, { headers }) => {
-  const token = AuthService.getAccessToken();
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  };
-});
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
+(window as any)._env_ = {
+  API_URL: 'http://localhost:4000',
+};
+
+// Create Apollo Client
+const apolloClient = GraphQlUtils.createApolloClient();
 
 const AllProviders: React.FC = ({ children }) => {
   return (
     <Suspense fallback={<Loading />}>
       <ErrorBoundary>
         <EnvProvider>
-          <ApolloProvider client={client}>
+          <ApolloProvider client={apolloClient}>
             <AuthContextProvider>
               <Router>{children}</Router>
             </AuthContextProvider>

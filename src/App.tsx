@@ -16,7 +16,7 @@ import {
   SignUpPage,
 } from './pages';
 import { AuthService } from './services';
-import { GetUserDocument } from './graphql/generated';
+import { GetUserDocument } from './graphql';
 
 export const App = () => {
   const { authState, setAuthState } = useAuthContext();
