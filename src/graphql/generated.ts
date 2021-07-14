@@ -40,10 +40,13 @@ export type AssetAllocation = {
   children?: Maybe<Array<AssetAllocation>>;
 };
 
-export type CashTransfer = Transaction & {
+export type CashTransfer = {
   __typename?: 'CashTransfer';
   id: Scalars['ID'];
+  type: TransactionType;
   account: Account;
+  createdAt: Scalars['DateTime'];
+  createdBy: Scalars['ID'];
   direction: Direction;
   amount: Scalars['Float'];
 };
@@ -129,6 +132,8 @@ export type Query = {
   holdings: Array<Holding>;
   /** returns the orders for the specified account */
   orders: Array<Order>;
+  /** returns the transactions for the specified account */
+  transactions: Array<Transaction>;
 };
 
 export type QueryAccountArgs = {
@@ -140,6 +145,10 @@ export type QueryHoldingsArgs = {
 };
 
 export type QueryOrdersArgs = {
+  accountId: Scalars['ID'];
+};
+
+export type QueryTransactionsArgs = {
   accountId: Scalars['ID'];
 };
 
@@ -167,10 +176,13 @@ export type SignUpInput = {
   password: Scalars['String'];
 };
 
-export type Trade = Transaction & {
+export type Trade = {
   __typename?: 'Trade';
   id: Scalars['ID'];
+  type: TransactionType;
   account: Account;
+  createdAt: Scalars['DateTime'];
+  createdBy: Scalars['ID'];
   side: Side;
   security: Security;
   quantity: Scalars['Int'];
@@ -178,10 +190,7 @@ export type Trade = Transaction & {
   amount: Scalars['Float'];
 };
 
-export type Transaction = {
-  id: Scalars['ID'];
-  account: Account;
-};
+export type Transaction = CashTransfer | Trade;
 
 export enum TransactionType {
   CashTransfer = 'CASH_TRANSFER',
@@ -291,6 +300,37 @@ export type GetAccountsQueryVariables = Exact<{ [key: string]: never }>;
 export type GetAccountsQuery = {
   __typename?: 'Query';
   accounts: Array<{ __typename?: 'Account' } & AccountFieldsFragment>;
+};
+
+export type GetTransactionsQueryVariables = Exact<{
+  accountId: Scalars['ID'];
+}>;
+
+export type GetTransactionsQuery = {
+  __typename?: 'Query';
+  transactions: Array<
+    | {
+        __typename?: 'CashTransfer';
+        id: string;
+        type: TransactionType;
+        createdAt: any;
+        createdBy: string;
+        amount: number;
+        direction: Direction;
+      }
+    | {
+        __typename?: 'Trade';
+        id: string;
+        type: TransactionType;
+        createdAt: any;
+        createdBy: string;
+        amount: number;
+        side: Side;
+        quantity: number;
+        price: number;
+        security: { __typename?: 'Security'; id: string; name: string };
+      }
+  >;
 };
 
 export type GetHoldingsQueryVariables = Exact<{
@@ -672,6 +712,135 @@ export const GetAccountsDocument = {
     ...AccountFieldsFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetAccountsQuery, GetAccountsQueryVariables>;
+export const GetTransactionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GetTransactions' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'accountId' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'transactions' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'accountId' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'accountId' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'CashTransfer' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdBy' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'amount' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'direction' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'Trade' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdAt' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'createdBy' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'amount' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'side' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'security' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'name' },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'quantity' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'price' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTransactionsQuery,
+  GetTransactionsQueryVariables
+>;
 export const GetHoldingsDocument = {
   kind: 'Document',
   definitions: [

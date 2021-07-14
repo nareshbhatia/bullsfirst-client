@@ -8,6 +8,7 @@ import orders from './data/orders.json';
 import performances from './data/performances.json';
 import sectors from './data/sectors.json';
 import securities from './data/securities.json';
+import transactions from './data/transactions.json';
 import {
   AssetAllocation,
   DbUser,
@@ -17,8 +18,10 @@ import {
   Sector,
   Security,
   Series,
+  Transaction,
 } from './models';
 import { mockDb } from './mockDb';
+import { TransactionType } from '../graphql';
 
 const {
   createUser,
@@ -61,6 +64,12 @@ const getAccountHoldings = (accountId: string): Array<Holding> => {
 
 const getAccountOrders = (accountId: string): Array<Order> => {
   return orders.filter((order) => order.accountId === accountId);
+};
+
+const getAccountTransactions = (accountId: string): Array<Transaction> => {
+  return (transactions as Array<Transaction>).filter(
+    (transaction) => transaction.accountId === accountId
+  );
 };
 
 const getAccountPerformance = (
@@ -381,6 +390,50 @@ export const handlers = [
                 },
               }
             : { ...orderFields };
+        }),
+      })
+    );
+  }),
+
+  /** get account transactions */
+  graphql.query('GetTransactions', (req, res, ctx) => {
+    const { accountId } = req.variables;
+    const accountTransactions = getAccountTransactions(accountId);
+
+    return res(
+      ctx.data({
+        transactions: accountTransactions.map((t) => {
+          switch (t.type) {
+            case TransactionType.CashTransfer:
+              return {
+                __typename: 'CashTransfer',
+                id: t.id,
+                type: t.type,
+                createdAt: t.createdAt,
+                createdBy: t.createdBy,
+                direction: t.direction,
+                amount: t.amount,
+              };
+            case TransactionType.Trade:
+              const security = getSecurity(t.symbol);
+              return {
+                __typename: 'Trade',
+                id: t.id,
+                type: t.type,
+                createdAt: t.createdAt,
+                createdBy: t.createdBy,
+                side: t.side,
+                security: {
+                  id: security?.id,
+                  name: security?.name,
+                },
+                quantity: t.quantity,
+                price: t.price,
+                amount: t.amount,
+              };
+            default:
+              return null;
+          }
         }),
       })
     );

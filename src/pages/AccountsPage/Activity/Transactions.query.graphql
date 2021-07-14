@@ -1,0 +1,31 @@
+# Note that fragments don't work automatically with unions.
+# You must use Apollo Client's Fragment Matcher for these.
+# See
+#   https://www.apollographql.com/docs/react/data/fragments/#using-fragments-with-unions-and-interfaces
+#   https://www.graphql-code-generator.com/docs/plugins/fragment-matcher
+query GetTransactions($accountId: ID!) {
+  transactions(accountId: $accountId) {
+    ... on CashTransfer {
+      id
+      type
+      createdAt
+      createdBy
+      amount
+      direction
+    }
+    ... on Trade {
+      id
+      type
+      createdAt
+      createdBy
+      amount
+      side
+      security {
+        id
+        name
+      }
+      quantity
+      price
+    }
+  }
+}

@@ -107,27 +107,30 @@ type Order {
   createdBy: ID!
 }
 
-interface Transaction {
+type CashTransfer {
   id: ID!
+  type: TransactionType!
   account: Account!
-}
-
-type CashTransfer implements Transaction {
-  id: ID!
-  account: Account!
+  createdAt: DateTime!
+  createdBy: ID!
   direction: Direction!
   amount: Float!
 }
 
-type Trade implements Transaction {
+type Trade {
   id: ID!
+  type: TransactionType!
   account: Account!
+  createdAt: DateTime!
+  createdBy: ID!
   side: Side!
   security: Security!
   quantity: Int!
   price: Float!
   amount: Float!
 }
+
+union Transaction = CashTransfer | Trade
 
 type Query {
   "returns the user identified by the access token in the request header"
@@ -144,6 +147,9 @@ type Query {
 
   "returns the orders for the specified account"
   orders(accountId: ID!): [Order!]!
+
+  "returns the transactions for the specified account"
+  transactions(accountId: ID!): [Transaction!]!
 }
 
 type Mutation {

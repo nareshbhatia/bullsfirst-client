@@ -60,6 +60,31 @@ export interface Order {
   createdBy: string;
 }
 
+export type CashTransfer = {
+  id: string;
+  type: 'CASH_TRANSFER';
+  accountId: string;
+  createdAt: string;
+  createdBy: string;
+  direction: string;
+  amount: number;
+};
+
+export type Trade = {
+  id: string;
+  type: 'TRADE';
+  accountId: string;
+  createdAt: string;
+  createdBy: string;
+  side: string;
+  symbol: string;
+  quantity: number;
+  price: number;
+  amount: number;
+};
+
+export type Transaction = CashTransfer | Trade;
+
 export interface Sector {
   id: string;
   name: string;
