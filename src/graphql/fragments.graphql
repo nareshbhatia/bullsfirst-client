@@ -62,6 +62,15 @@ fragment OrderFields on Order {
   createdBy
 }
 
+fragment CashTransferFields on CashTransfer {
+  id
+  type
+  createdAt
+  createdBy
+  amount
+  direction
+}
+
 fragment SeriesFields on Series {
   name
   data {

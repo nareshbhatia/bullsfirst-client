@@ -84,6 +84,8 @@ export type Mutation = {
   signUp: UserInfo;
   /** invalidates the access token that was used to sign in and returns it */
   signOut: Scalars['String'];
+  /** transfers cash in or out of an account */
+  transferCash: CashTransfer;
 };
 
 export type MutationSignInArgs = {
@@ -92,6 +94,10 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   signUpInput: SignUpInput;
+};
+
+export type MutationTransferCashArgs = {
+  transferCashInput: TransferCashInput;
 };
 
 export type Order = {
@@ -197,6 +203,12 @@ export enum TransactionType {
   Trade = 'TRADE',
 }
 
+export type TransferCashInput = {
+  accountId: Scalars['ID'];
+  direction: Direction;
+  amount: Scalars['Float'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -287,6 +299,16 @@ export type OrderFieldsFragment = {
   createdAt: any;
   createdBy: string;
   security: { __typename?: 'Security'; id: string; name: string };
+};
+
+export type CashTransferFieldsFragment = {
+  __typename?: 'CashTransfer';
+  id: string;
+  type: TransactionType;
+  createdAt: any;
+  createdBy: string;
+  amount: number;
+  direction: Direction;
 };
 
 export type SeriesFieldsFragment = {
@@ -388,6 +410,15 @@ export type GetAccountPerformanceQuery = {
     id: string;
     performance: Array<{ __typename?: 'Series' } & SeriesFieldsFragment>;
   }>;
+};
+
+export type TransferCashMutationVariables = Exact<{
+  transferCashInput: TransferCashInput;
+}>;
+
+export type TransferCashMutation = {
+  __typename?: 'Mutation';
+  transferCash: { __typename?: 'CashTransfer' } & CashTransferFieldsFragment;
 };
 
 export type SignInMutationVariables = Exact<{
@@ -608,6 +639,30 @@ export const OrderFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<OrderFieldsFragment, unknown>;
+export const CashTransferFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'CashTransferFields' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'CashTransfer' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'createdBy' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'amount' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'direction' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CashTransferFieldsFragment, unknown>;
 export const SeriesFieldsFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -1127,6 +1182,64 @@ export const GetAccountPerformanceDocument = {
 } as unknown as DocumentNode<
   GetAccountPerformanceQuery,
   GetAccountPerformanceQueryVariables
+>;
+export const TransferCashDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'TransferCash' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'transferCashInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'TransferCashInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'transferCash' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'transferCashInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'transferCashInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'CashTransferFields' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...CashTransferFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<
+  TransferCashMutation,
+  TransferCashMutationVariables
 >;
 export const SignInDocument = {
   kind: 'Document',

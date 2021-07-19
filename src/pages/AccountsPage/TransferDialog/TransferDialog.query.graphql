@@ -1,0 +1,5 @@
+mutation TransferCash($transferCashInput: TransferCashInput!) {
+    transferCash(transferCashInput: $transferCashInput) {
+        ...CashTransferFields
+    }
+}

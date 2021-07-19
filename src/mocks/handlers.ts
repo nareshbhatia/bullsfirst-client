@@ -11,6 +11,7 @@ import securities from './data/securities.json';
 import transactions from './data/transactions.json';
 import {
   AssetAllocation,
+  CashTransfer,
   DbUser,
   Holding,
   Industry,
@@ -21,7 +22,7 @@ import {
   Transaction,
 } from './models';
 import { mockDb } from './mockDb';
-import { TransactionType } from '../graphql';
+import { Direction, TransactionType, TransferCashInput } from '../graphql';
 
 const {
   createUser,
@@ -51,11 +52,63 @@ function parseAccessToken(req: GraphQLRequest<any>) {
   }
 }
 
+function getUserFromRequest(req: GraphQLRequest<any>): DbUser | undefined {
+  const accessToken = parseAccessToken(req);
+  if (!accessToken) {
+    return;
+  }
+
+  const userId = getTokenValue(accessToken);
+  if (!userId) {
+    return;
+  }
+
+  return getUser(userId);
+}
+
 const getAccountCashBalance = (accountId: string): number => {
   const cashBalance = cashBalances.find(
     (cashBalance) => cashBalance.id === accountId
   );
   return cashBalance ? cashBalance.balance : 0;
+};
+
+const transferCash = (
+  userId: string,
+  transferCashInput: TransferCashInput
+): CashTransfer => {
+  const { accountId, direction, amount } =
+    transferCashInput as TransferCashInput;
+
+  const cashBalance = cashBalances.find(
+    (cashBalance) => cashBalance.id === accountId
+  );
+  if (cashBalance === undefined) {
+    throw new Error('Account not found');
+  }
+
+  if (direction === Direction.In) {
+    cashBalance.balance += amount;
+  } else {
+    if (cashBalance.balance < amount) {
+      throw new Error('Insufficient funds');
+    }
+    cashBalance.balance -= amount;
+  }
+
+  const cashTransfer: CashTransfer = {
+    __typename: 'CashTransfer',
+    id: uuidv4(),
+    type: 'CASH_TRANSFER',
+    accountId,
+    createdAt: new Date().toISOString(),
+    createdBy: userId,
+    direction,
+    amount: direction === Direction.In ? amount : -amount,
+  };
+  transactions.push(cashTransfer);
+
+  return cashTransfer;
 };
 
 const getAccountHoldings = (accountId: string): Array<Holding> => {
@@ -96,21 +149,7 @@ const getSecurity = (symbol: string): Security | undefined => {
 export const handlers = [
   /** get user */
   graphql.query('GetUser', (req, res, ctx) => {
-    const accessToken = parseAccessToken(req);
-    if (!accessToken) {
-      return res(
-        ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
-      );
-    }
-
-    const userId = getTokenValue(accessToken);
-    if (!userId) {
-      return res(
-        ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
-      );
-    }
-
-    const existingUser = getUser(userId);
+    const existingUser = getUserFromRequest(req);
     if (!existingUser) {
       return res(
         ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
@@ -437,5 +476,34 @@ export const handlers = [
         }),
       })
     );
+  }),
+
+  /** transfer cash */
+  graphql.mutation('TransferCash', (req, res, ctx) => {
+    const user = getUserFromRequest(req);
+    if (!user) {
+      return res(
+        ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
+      );
+    }
+    const { transferCashInput } = req.variables;
+
+    try {
+      const cashTransfer = transferCash(user.id, transferCashInput);
+      return res(
+        ctx.data({
+          transferCash: cashTransfer,
+        })
+      );
+    } catch (e) {
+      return res(
+        ctx.errors([
+          {
+            message: e.message,
+            errorType: 'OperationFailed',
+          },
+        ])
+      );
+    }
   }),
 ];
