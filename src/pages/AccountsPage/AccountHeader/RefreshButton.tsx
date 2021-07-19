@@ -5,8 +5,8 @@ import { useRefreshContext } from '../../../contexts';
 export const RefreshButton = () => {
   const { refreshCount, setRefreshCount } = useRefreshContext();
 
-  const handleRefresh = async () => {
-    await setRefreshCount(refreshCount + 1);
+  const handleRefresh = () => {
+    setRefreshCount(refreshCount + 1);
   };
 
   return (

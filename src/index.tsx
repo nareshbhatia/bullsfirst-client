@@ -4,11 +4,17 @@ import { ApolloProvider } from '@apollo/client';
 import Highcharts from 'highcharts';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { App } from './App';
-import { ErrorBoundary, Loading } from './components';
+import {
+  ErrorBoundary,
+  Loading,
+  MessageContextProvider,
+  MessageDialog,
+} from './components';
 import { AuthContextProvider, EnvProvider } from './contexts';
 import reportWebVitals from './reportWebVitals';
 import { ChartColors, GraphQlUtils } from './utils';
 
+import 'reactjs-popup/dist/index.css';
 import './index.scss';
 import './styles/main.css';
 
@@ -30,17 +36,20 @@ const apolloClient = GraphQlUtils.createApolloClient();
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Loading />}>
-      <ErrorBoundary>
-        <EnvProvider>
-          <ApolloProvider client={apolloClient}>
-            <AuthContextProvider>
-              <Router>
-                <App />
-              </Router>
-            </AuthContextProvider>
-          </ApolloProvider>
-        </EnvProvider>
-      </ErrorBoundary>
+      <MessageContextProvider>
+        <ErrorBoundary>
+          <EnvProvider>
+            <ApolloProvider client={apolloClient}>
+              <AuthContextProvider>
+                <Router>
+                  <App />
+                  <MessageDialog />
+                </Router>
+              </AuthContextProvider>
+            </ApolloProvider>
+          </EnvProvider>
+        </ErrorBoundary>
+      </MessageContextProvider>
     </Suspense>
   </React.StrictMode>,
   document.getElementById('root')

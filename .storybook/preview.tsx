@@ -8,12 +8,14 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { addDecorator } from '@storybook/react';
 import Highcharts from 'highcharts';
+import { MessageContextProvider, MessageDialog } from '../src/components';
 import { AuthContextProvider, EnvProvider } from '../src/contexts';
 import { AuthService } from '../src/services';
 import { ChartColors } from '../src/utils';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'reactjs-popup/dist/index.css';
 import '../src/styles/main.css';
 
 export const parameters = {
@@ -54,13 +56,16 @@ const client = new ApolloClient({
 });
 
 const StoryDecorator = (Story: any) => (
-  <EnvProvider>
-    <ApolloProvider client={client}>
-      <AuthContextProvider>
-        <Story />
-      </AuthContextProvider>
-    </ApolloProvider>
-  </EnvProvider>
+  <MessageContextProvider>
+    <EnvProvider>
+      <ApolloProvider client={client}>
+        <AuthContextProvider>
+          <Story />
+          <MessageDialog />
+        </AuthContextProvider>
+      </ApolloProvider>
+    </EnvProvider>
+  </MessageContextProvider>
 );
 
 addDecorator(StoryDecorator);

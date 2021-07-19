@@ -10,8 +10,7 @@ import { SignInForm } from './SignInForm';
 export const SignInPage = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signIn, { data, error }] = useMutation(SignInDocument);
-  const signInError = error ? error.message : undefined;
+  const [signIn, { error }] = useMutation(SignInDocument);
 
   /* istanbul ignore next */
   const navigateToSignInRedirect = useCallback(() => {
@@ -27,25 +26,24 @@ export const SignInPage = () => {
     }
   }, [authState.user, navigateToSignInRedirect]);
 
-  // set authState if user has signed in successfully
-  /* istanbul ignore next */
-  useEffect(() => {
-    if (data?.signIn) {
-      const { user, accessToken } = data.signIn;
-      AuthService.setAccessToken(accessToken);
-      setAuthState({ ...authState, user });
-    }
-  }, [data?.signIn, authState, setAuthState]);
-
   /* istanbul ignore next */
   const handleSubmit = async (credentials: Credentials) => {
-    await signIn({ variables: { credentials } });
+    try {
+      const result = await signIn({ variables: { credentials } });
+      if (result.data) {
+        const { user, accessToken } = result.data.signIn;
+        AuthService.setAccessToken(accessToken);
+        setAuthState({ ...authState, user });
+      }
+    } catch (e) {
+      // eat error because it is already captured in useMutation result
+    }
   };
 
   return (
     <ViewVerticalContainer>
       <div className="flex-grow-1" />
-      <SignInForm signInError={signInError} onSubmit={handleSubmit} />
+      <SignInForm signInError={error?.message} onSubmit={handleSubmit} />
       <div className="flex-grow-2" />
     </ViewVerticalContainer>
   );

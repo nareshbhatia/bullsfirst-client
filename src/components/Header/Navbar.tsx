@@ -16,7 +16,11 @@ export const Navbar = () => {
 
   /* istanbul ignore next */
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (e) {
+      // eat error - no point showing a sign out error
+    }
 
     // clear the apollo cache to remove the user and any other query results
     await apolloClient.clearStore();

@@ -61,6 +61,7 @@ export interface Order {
 }
 
 export type CashTransfer = {
+  __typename: string;
   id: string;
   type: 'CASH_TRANSFER';
   accountId: string;
@@ -71,6 +72,7 @@ export type CashTransfer = {
 };
 
 export type Trade = {
+  __typename: string;
   id: string;
   type: 'TRADE';
   accountId: string;

@@ -2,7 +2,12 @@ import React, { ReactElement, Suspense } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { render, RenderOptions } from '@testing-library/react';
 import { MemoryRouter as Router } from 'react-router-dom';
-import { ErrorBoundary, Loading } from '../components';
+import {
+  ErrorBoundary,
+  Loading,
+  MessageContextProvider,
+  MessageDialog,
+} from '../components';
 import { AuthContextProvider, EnvProvider } from '../contexts';
 import { GraphQlUtils } from '../utils';
 
@@ -25,15 +30,18 @@ const apolloClient = GraphQlUtils.createApolloClient();
 const AllProviders: React.FC = ({ children }) => {
   return (
     <Suspense fallback={<Loading />}>
-      <ErrorBoundary>
-        <EnvProvider>
-          <ApolloProvider client={apolloClient}>
-            <AuthContextProvider>
-              <Router>{children}</Router>
-            </AuthContextProvider>
-          </ApolloProvider>
-        </EnvProvider>
-      </ErrorBoundary>
+      <MessageContextProvider>
+        <ErrorBoundary>
+          <EnvProvider>
+            <ApolloProvider client={apolloClient}>
+              <AuthContextProvider>
+                <Router>{children}</Router>
+                <MessageDialog />
+              </AuthContextProvider>
+            </ApolloProvider>
+          </EnvProvider>
+        </ErrorBoundary>
+      </MessageContextProvider>
     </Suspense>
   );
 };

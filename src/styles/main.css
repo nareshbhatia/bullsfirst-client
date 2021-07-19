@@ -311,6 +311,11 @@
   margin: 0;
 }
 
+.dialog-title {
+  margin: 0;
+  line-height: 1;
+}
+
 /* ----- Backgrounds ----- */
 .bg-primary-50 {
   background-color: var(--primary-50);
@@ -332,6 +337,22 @@
   background-color: var(--neutral-light);
 }
 
+.bg-buy {
+  background-color: var(--trade-buy-light);
+}
+
+.bg-sell {
+  background-color: var(--trade-sell-light);
+}
+
+.bg-xfer-in {
+  background-color: var(--trade-buy-light);
+}
+
+.bg-xfer-out {
+  background-color: var(--trade-sell-light);
+}
+
 /* ----- Text Colors ----- */
 .color-default {
   color: var(--text-default);
@@ -351,6 +372,22 @@
 
 .color-secondary-default {
   color: var(--text-secondary-default);
+}
+
+.color-buy {
+  color: var(--trade-buy);
+}
+
+.color-sell {
+  color: var(--trade-sell);
+}
+
+.color-xfer-in {
+  color: var(--trade-buy);
+}
+
+.color-xfer-out {
+  color: var(--trade-sell);
 }
 
 /* ----- Paper ----- */
@@ -416,6 +453,11 @@ label {
   padding: 6px 7px;
 }
 
+.btn-primary {
+  background-color: var(--primary-main);
+  color: var(--text-primary-default);
+}
+
 .btn-secondary {
   background-color: var(--secondary-main);
   color: var(--text-secondary-default);
@@ -437,6 +479,19 @@ label {
   background-color: transparent;
   color: var(--trade-sell);
   border: 1px solid var(--trade-sell);
+}
+
+/* ----- Interactivity ----- */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* ----- Reactjs-popup Overrides ----- */
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  width: auto;
+  padding: 0;
 }
 
 :root {
@@ -521,7 +576,9 @@ label {
 
   /* trade */
   --trade-buy: #014d40;
+  --trade-buy-light: #e8eeed;
   --trade-sell: #610316;
+  --trade-sell-light: #f0e9ea;
 
   /* ----- Chota Overrides ----- */
   --bg-color: var(--grey-50);

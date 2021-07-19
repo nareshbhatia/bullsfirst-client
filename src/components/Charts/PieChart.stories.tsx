@@ -61,7 +61,7 @@ const drilldown = {
 };
 
 export default {
-  title: 'Components/Charts',
+  title: 'Components/Charts/PieChart',
   component: PieChart,
 } as Meta;
 

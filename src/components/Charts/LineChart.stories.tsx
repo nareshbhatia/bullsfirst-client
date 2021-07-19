@@ -30,7 +30,7 @@ const series = [
 ];
 
 export default {
-  title: 'Components/Charts',
+  title: 'Components/Charts/LineChart',
   component: LineChart,
 } as Meta;
 

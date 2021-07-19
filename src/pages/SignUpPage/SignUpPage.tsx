@@ -10,8 +10,7 @@ import { SignUpForm, FormEntity } from './SignUpForm';
 export const SignUpPage = () => {
   const { authState, setAuthState } = useAuthContext();
   const navigate = useNavigate();
-  const [signUp, { data, error }] = useMutation(SignUpDocument);
-  const signUpError = error ? error.message : undefined;
+  const [signUp, { error }] = useMutation(SignUpDocument);
 
   // redirect if user is already logged in
   /* istanbul ignore next */
@@ -21,28 +20,27 @@ export const SignUpPage = () => {
     }
   }, [authState.user, navigate]);
 
-  // set authState if user has signed up successfully
-  /* istanbul ignore next */
-  useEffect(() => {
-    if (data?.signUp) {
-      const { user, accessToken } = data.signUp;
-      AuthService.setAccessToken(accessToken);
-      // navigate before setting authState to avoid saving incorrect signInRedirect
-      navigate('/accounts');
-      setAuthState({ ...authState, user });
-    }
-  }, [data?.signUp, authState, setAuthState, navigate]);
-
   /* istanbul ignore next */
   const handleSubmit = async (formEntity: FormEntity) => {
-    const { confirmPassword, ...signUpInput } = formEntity;
-    await signUp({ variables: { signUpInput } });
+    try {
+      const { confirmPassword, ...signUpInput } = formEntity;
+      const result = await signUp({ variables: { signUpInput } });
+      if (result.data) {
+        const { user, accessToken } = result.data.signUp;
+        AuthService.setAccessToken(accessToken);
+        // navigate before setting authState to avoid saving incorrect signInRedirect
+        navigate('/accounts');
+        setAuthState({ ...authState, user });
+      }
+    } catch (e) {
+      // eat error because it is already captured in useMutation result
+    }
   };
 
   return (
     <ViewVerticalContainer>
       <div className="flex-grow-1" />
-      <SignUpForm signUpError={signUpError} onSubmit={handleSubmit} />
+      <SignUpForm signUpError={error?.message} onSubmit={handleSubmit} />
       <div className="flex-grow-2" />
     </ViewVerticalContainer>
   );
