@@ -219,7 +219,7 @@ const placeOrder = (userId: string, orderInput: OrderInput) => {
     symbol,
     quantity,
     type,
-    limitPrice,
+    limitPrice: limitPrice ? limitPrice : null,
     status: OrderStatus.Placed,
     accountId,
     createdAt: now,
@@ -251,6 +251,15 @@ const placeOrder = (userId: string, orderInput: OrderInput) => {
         // should always be true
         if (holding) {
           holding.quantity -= quantity;
+          if (holding.quantity <= 0) {
+            // remove holding
+            const index = holdings.findIndex(
+              (holding) => holding.symbol === symbol
+            );
+            if (index >= 0) {
+              holdings.splice(index, 1);
+            }
+          }
         }
         break;
     }

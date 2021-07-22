@@ -6,20 +6,22 @@ import { HorizontalContainer, NumberField } from '../../../components';
 import { Direction, TransferCashInput } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
 import { DirectionToggle } from './DirectionToggle';
-import { useTransferContext } from './TransferContext';
+import { TransferDefaults, useTransferContext } from './TransferContext';
 import './TransferForm.css';
 
 const schema = yup.object().shape({
+  accountId: yup.string().required(),
+  direction: yup.string().required(),
   amount: yup.number().required(),
 });
 
 export interface TransferFormProps {
-  defaultValues: Omit<TransferCashInput, 'amount'>;
+  transferDefaults: TransferDefaults;
   onSubmit: (transferCashInput: TransferCashInput) => void;
 }
 
 export const TransferForm = ({
-  defaultValues,
+  transferDefaults,
   onSubmit,
 }: TransferFormProps) => {
   const { accountState } = useAccountContext();
@@ -30,7 +32,7 @@ export const TransferForm = ({
     useForm<TransferCashInput>({
       mode: 'onBlur',
       resolver: yupResolver(schema),
-      defaultValues,
+      defaultValues: transferDefaults,
     });
   const { errors } = formState;
   const direction = watch('direction');

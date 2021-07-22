@@ -81,7 +81,7 @@ export const TransferDialog = () => {
       modal
       nested
     >
-      <TransferForm defaultValues={defaultValues} onSubmit={handleSubmit} />
+      <TransferForm transferDefaults={defaultValues} onSubmit={handleSubmit} />
     </Popup>
   );
 };

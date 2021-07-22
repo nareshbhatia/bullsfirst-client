@@ -1,8 +1,17 @@
 import React, { useContext, useState } from 'react';
+import { Direction } from '../../../graphql';
 
 // ---------- TransferContext ----------
+// everything that TransferDialog allows to enter is kept as optional
+export type TransferDefaults = {
+  accountId: string;
+  direction?: Direction;
+  amount?: number;
+};
+
 type TransferState = {
   showDialog: boolean;
+  transferDefaults?: TransferDefaults;
 };
 type TransferStateSetter = (transferState: TransferState) => void;
 
