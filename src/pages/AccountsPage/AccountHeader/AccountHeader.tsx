@@ -1,12 +1,18 @@
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
+import { useOrderContext } from '../OrderDialog';
 import { useTransferContext } from '../TransferDialog';
 import { RefreshButton } from './RefreshButton';
 import './AccountHeader.css';
 
 export const AccountHeader = () => {
   const { accountId } = useParams();
+  const { setOrderState } = useOrderContext();
   const { setTransferState } = useTransferContext();
+
+  const handleTradeClicked = () => {
+    setOrderState({ showDialog: true });
+  };
 
   const handleTransferClicked = () => {
     setTransferState({ showDialog: true });
@@ -60,7 +66,12 @@ export const AccountHeader = () => {
         Transfer
       </button>
 
-      <button className="btn-sm btn-secondary mr-1">Trade</button>
+      <button
+        className="btn-sm btn-secondary mr-1"
+        onClick={handleTradeClicked}
+      >
+        Trade
+      </button>
       <RefreshButton />
     </nav>
   );

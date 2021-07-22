@@ -11,6 +11,7 @@ import securities from './data/securities.json';
 import transactions from './data/transactions.json';
 import {
   AssetAllocation,
+  CashBalance,
   CashTransfer,
   DbUser,
   Holding,
@@ -19,10 +20,19 @@ import {
   Sector,
   Security,
   Series,
+  Trade,
   Transaction,
 } from './models';
 import { mockDb } from './mockDb';
-import { Direction, TransactionType, TransferCashInput } from '../graphql';
+import {
+  Direction,
+  OrderInput,
+  OrderStatus,
+  OrderType,
+  Side,
+  TransactionType,
+  TransferCashInput,
+} from '../graphql';
 
 const {
   createUser,
@@ -66,11 +76,40 @@ function getUserFromRequest(req: GraphQLRequest<any>): DbUser | undefined {
   return getUser(userId);
 }
 
-const getAccountCashBalance = (accountId: string): number => {
-  const cashBalance = cashBalances.find(
-    (cashBalance) => cashBalance.id === accountId
+const getIndustry = (industryId: string): Industry | undefined => {
+  return industries.find((industry) => industry.id === industryId);
+};
+
+const getSector = (sectorId: string): Sector | undefined => {
+  return sectors.find((sector) => sector.id === sectorId);
+};
+
+const getSecurity = (symbol: string): Security | undefined => {
+  return securities.find((security) => security.id === symbol);
+};
+
+const getCashBalance = (accountId: string): CashBalance | undefined => {
+  return cashBalances.find((cashBalance) => cashBalance.id === accountId);
+};
+
+const getHolding = (accountId: string, symbol: string): Holding | undefined => {
+  return holdings.find(
+    (holding) => holding.accountId === accountId && holding.symbol === symbol
   );
-  return cashBalance ? cashBalance.balance : 0;
+};
+
+const getAccountHoldings = (accountId: string): Array<Holding> => {
+  return holdings.filter((holding) => holding.accountId === accountId);
+};
+
+const getAccountOrders = (accountId: string): Array<Order> => {
+  return orders.filter((order) => order.accountId === accountId);
+};
+
+const getAccountTransactions = (accountId: string): Array<Transaction> => {
+  return (transactions as Array<Transaction>).filter(
+    (transaction) => transaction.accountId === accountId
+  );
 };
 
 const transferCash = (
@@ -80,9 +119,7 @@ const transferCash = (
   const { accountId, direction, amount } =
     transferCashInput as TransferCashInput;
 
-  const cashBalance = cashBalances.find(
-    (cashBalance) => cashBalance.id === accountId
-  );
+  const cashBalance = getCashBalance(accountId);
   if (cashBalance === undefined) {
     throw new Error('Account not found');
   }
@@ -111,18 +148,142 @@ const transferCash = (
   return cashTransfer;
 };
 
-const getAccountHoldings = (accountId: string): Array<Holding> => {
-  return holdings.filter((holding) => holding.accountId === accountId);
-};
+// Returns an order, but we don't specify a return type because it is in the wire format
+const placeOrder = (userId: string, orderInput: OrderInput) => {
+  const { accountId, side, symbol, quantity, type, limitPrice } =
+    orderInput as OrderInput;
 
-const getAccountOrders = (accountId: string): Array<Order> => {
-  return orders.filter((order) => order.accountId === accountId);
-};
+  // get cash balance in the account
+  const cashBalance = getCashBalance(accountId);
+  if (cashBalance === undefined) {
+    throw new Error('Account not found');
+  }
 
-const getAccountTransactions = (accountId: string): Array<Transaction> => {
-  return (transactions as Array<Transaction>).filter(
-    (transaction) => transaction.accountId === accountId
-  );
+  // get existing holdings in the account (if any)
+  let holding = getHolding(accountId, symbol);
+
+  // get the data for the security that needs to be traded
+  const security = getSecurity(symbol);
+  if (security === undefined) {
+    throw new Error('Security not found');
+  }
+
+  // compute total market price for the order based on the current security price
+  const totalMarketPrice = quantity * security.price;
+
+  // assume that the order is executable
+  let executable = true;
+
+  // if limit price is not met, then mark executable = false
+  if (type === OrderType.Limit) {
+    if (limitPrice === undefined || limitPrice === null) {
+      throw new Error('Limit price not specified');
+    }
+
+    switch (side) {
+      case Side.Buy:
+        if (security.price > limitPrice) {
+          executable = false;
+        }
+        break;
+      case Side.Sell:
+        if (security.price < limitPrice) {
+          executable = false;
+        }
+        break;
+    }
+  }
+
+  // validate for cash or holdings availability
+  if (executable) {
+    switch (side) {
+      case Side.Buy:
+        if (cashBalance.balance < totalMarketPrice) {
+          throw new Error('Insufficient funds');
+        }
+        break;
+      case Side.Sell:
+        if (holding === undefined || holding.quantity < quantity) {
+          throw new Error(`Insufficient shares of ${symbol} in your account`);
+        }
+        break;
+    }
+  }
+
+  // at this point the order is valid, record it
+  const now = new Date().toISOString();
+  const order: Order = {
+    __typename: 'Order',
+    id: uuidv4(),
+    side,
+    symbol,
+    quantity,
+    type,
+    limitPrice,
+    status: OrderStatus.Placed,
+    accountId,
+    createdAt: now,
+    createdBy: userId,
+  };
+  // @ts-ignore
+  orders.push(order);
+
+  // now execute it (if it is executable, otherwise it just sits as PLACED)
+  if (executable) {
+    switch (side) {
+      case Side.Buy:
+        cashBalance.balance -= totalMarketPrice;
+        if (holding) {
+          holding.quantity += quantity;
+        } else {
+          holding = {
+            __typename: 'Holding',
+            id: uuidv4(),
+            symbol,
+            quantity,
+            accountId,
+          };
+          holdings.push(holding);
+        }
+        break;
+      case Side.Sell:
+        cashBalance.balance += totalMarketPrice;
+        // should always be true
+        if (holding) {
+          holding.quantity -= quantity;
+        }
+        break;
+    }
+
+    // create the transaction
+    const trade: Trade = {
+      __typename: 'Trade',
+      id: uuidv4(),
+      type: 'TRADE',
+      accountId,
+      createdAt: now,
+      createdBy: userId,
+      side,
+      symbol,
+      quantity,
+      price: security.price,
+      amount: side === Side.Buy ? -totalMarketPrice : totalMarketPrice,
+    };
+    transactions.push(trade);
+
+    // mark the order as executed
+    order.status = OrderStatus.Executed;
+  }
+
+  const { accountId: _, symbol: __, ...orderFields } = order;
+  return {
+    ...orderFields,
+    security: {
+      __typename: 'Security',
+      id: security.id,
+      name: security.name,
+    },
+  };
 };
 
 const getAccountPerformance = (
@@ -132,18 +293,6 @@ const getAccountPerformance = (
     (accountPerformance) => accountPerformance.id === accountId
   );
   return accountPerformance?.performance;
-};
-
-const getIndustry = (industryId: string): Industry | undefined => {
-  return industries.find((industry) => industry.id === industryId);
-};
-
-const getSector = (sectorId: string): Sector | undefined => {
-  return sectors.find((sector) => sector.id === sectorId);
-};
-
-const getSecurity = (symbol: string): Security | undefined => {
-  return securities.find((security) => security.id === symbol);
 };
 
 export const handlers = [
@@ -251,7 +400,7 @@ export const handlers = [
   graphql.query('GetNetWorth', (req, res, ctx) => {
     const { accountId } = req.variables;
 
-    const cashBalance = getAccountCashBalance(accountId);
+    const cashBalance = getCashBalance(accountId);
     const accountHoldings = getAccountHoldings(accountId);
     const investmentTotal = accountHoldings.reduce(
       (accumulator: number, holding: Holding) => {
@@ -269,7 +418,7 @@ export const handlers = [
           __typename: 'Account',
           id: accountId,
           investmentTotal,
-          cashBalance,
+          cashBalance: cashBalance !== undefined ? cashBalance.balance : 0,
         },
       })
     );
@@ -425,7 +574,6 @@ export const handlers = [
                   __typename: 'Security',
                   id: security.id,
                   name: security.name,
-                  price: security.price,
                 },
               }
             : { ...orderFields };
@@ -493,6 +641,35 @@ export const handlers = [
       return res(
         ctx.data({
           transferCash: cashTransfer,
+        })
+      );
+    } catch (e) {
+      return res(
+        ctx.errors([
+          {
+            message: e.message,
+            errorType: 'OperationFailed',
+          },
+        ])
+      );
+    }
+  }),
+
+  /** place order */
+  graphql.mutation('PlaceOrder', (req, res, ctx) => {
+    const user = getUserFromRequest(req);
+    if (!user) {
+      return res(
+        ctx.errors([{ message: 'Unauthorized', errorType: 'Unauthorized' }])
+      );
+    }
+    const { orderInput } = req.variables;
+
+    try {
+      const order = placeOrder(user.id, orderInput);
+      return res(
+        ctx.data({
+          placeOrder: order,
         })
       );
     } catch (e) {

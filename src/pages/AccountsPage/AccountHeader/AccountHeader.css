@@ -1,7 +1,7 @@
 .account-header {
   display: flex;
   align-items: center;
-  height: 56px;
+  height: var(--spacing-7);
   padding: 0 var(--spacing-2);
   background-color: var(--neutral-light);
 }

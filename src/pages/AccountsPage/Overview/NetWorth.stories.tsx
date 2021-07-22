@@ -5,7 +5,7 @@ import { RefreshContextProvider } from '../../../contexts';
 import { NetWorth } from './NetWorth';
 
 export default {
-  title: 'Pages/Accounts',
+  title: 'Pages/Accounts/NetWorth',
   component: NetWorth,
 } as Meta;
 

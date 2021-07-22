@@ -86,6 +86,8 @@ export type Mutation = {
   signOut: Scalars['String'];
   /** transfers cash in or out of an account */
   transferCash: CashTransfer;
+  /** place a buy or sell order for a security */
+  placeOrder: Order;
 };
 
 export type MutationSignInArgs = {
@@ -100,6 +102,10 @@ export type MutationTransferCashArgs = {
   transferCashInput: TransferCashInput;
 };
 
+export type MutationPlaceOrderArgs = {
+  orderInput: OrderInput;
+};
+
 export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
@@ -112,6 +118,15 @@ export type Order = {
   account: Account;
   createdAt: Scalars['DateTime'];
   createdBy: Scalars['ID'];
+};
+
+export type OrderInput = {
+  accountId: Scalars['ID'];
+  side: Side;
+  symbol: Scalars['ID'];
+  quantity: Scalars['Int'];
+  type: OrderType;
+  limitPrice?: Maybe<Scalars['Float']>;
 };
 
 export enum OrderStatus {
@@ -362,6 +377,15 @@ export type GetHoldingsQueryVariables = Exact<{
 export type GetHoldingsQuery = {
   __typename?: 'Query';
   holdings: Array<{ __typename?: 'Holding' } & HoldingFieldsFragment>;
+};
+
+export type PlaceOrderMutationVariables = Exact<{
+  orderInput: OrderInput;
+}>;
+
+export type PlaceOrderMutation = {
+  __typename?: 'Mutation';
+  placeOrder: { __typename?: 'Order' } & OrderFieldsFragment;
 };
 
 export type GetOrdersQueryVariables = Exact<{
@@ -948,6 +972,61 @@ export const GetHoldingsDocument = {
     ...HoldingFieldsFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetHoldingsQuery, GetHoldingsQueryVariables>;
+export const PlaceOrderDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'PlaceOrder' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'OrderInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'placeOrder' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'OrderFields' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...OrderFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<PlaceOrderMutation, PlaceOrderMutationVariables>;
 export const GetOrdersDocument = {
   kind: 'Document',
   definitions: [

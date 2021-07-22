@@ -4,8 +4,8 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { HorizontalContainer } from '../../../components';
 import { RefreshContextProvider } from '../../../contexts';
 import { AccountContextProvider, useAccountContext } from '../AccountContext';
-import { TransferContextProvider, useTransferContext } from './TransferContext';
-import { TransferDialog } from './TransferDialog';
+import { OrderContextProvider, useOrderContext } from './OrderContext';
+import { OrderDialog } from './OrderDialog';
 
 const AccountInitializer = () => {
   const { setAccountState } = useAccountContext();
@@ -20,19 +20,16 @@ const AccountInitializer = () => {
 };
 
 const AccountHeader = () => {
-  const { setTransferState } = useTransferContext();
+  const { setOrderState } = useOrderContext();
 
-  const handleTransferClicked = () => {
-    setTransferState({ showDialog: true });
+  const handleOrderClicked = () => {
+    setOrderState({ showDialog: true });
   };
 
   return (
     <HorizontalContainer className="paper border-paper p-2">
-      <button
-        className="btn-sm btn-outline-secondary"
-        onClick={handleTransferClicked}
-      >
-        Transfer
+      <button className="btn-sm btn-secondary" onClick={handleOrderClicked}>
+        Trade
       </button>
     </HorizontalContainer>
   );
@@ -43,11 +40,11 @@ const TestContainer = () => {
     <Router>
       <AccountContextProvider>
         <RefreshContextProvider>
-          <TransferContextProvider>
+          <OrderContextProvider>
             <AccountInitializer />
             <AccountHeader />
-            <TransferDialog />
-          </TransferContextProvider>
+            <OrderDialog />
+          </OrderContextProvider>
         </RefreshContextProvider>
       </AccountContextProvider>
     </Router>
@@ -55,11 +52,11 @@ const TestContainer = () => {
 };
 
 export default {
-  title: 'Pages/Accounts/TransferDialog',
-  component: TransferDialog,
+  title: 'Pages/Accounts/OrderDialog',
+  component: OrderDialog,
 } as Meta;
 
-export const TransferDialogStory = () => {
+export const OrderDialogStory = () => {
   return <TestContainer />;
 };
-TransferDialogStory.storyName = 'TransferDialog';
+OrderDialogStory.storyName = 'OrderDialog';

@@ -1,3 +1,4 @@
+import { Maybe } from '../graphql';
 import { User } from '../models';
 
 export type UserId = string;
@@ -40,7 +41,13 @@ export interface Series {
   data: Array<DataPoint>;
 }
 
+export interface CashBalance {
+  id: string;
+  balance: number;
+}
+
 export interface Holding {
+  __typename: string;
   id: string;
   symbol: string;
   quantity: number;
@@ -48,12 +55,13 @@ export interface Holding {
 }
 
 export interface Order {
+  __typename: string;
   id: string;
   side: string;
   symbol: string;
   quantity: number;
   type: string;
-  limitPrice: number | null;
+  limitPrice: Maybe<number> | undefined;
   status: string;
   accountId: string;
   createdAt: string;

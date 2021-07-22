@@ -1,0 +1,5 @@
+mutation PlaceOrder($orderInput: OrderInput!) {
+  placeOrder(orderInput: $orderInput) {
+    ...OrderFields
+  }
+}

@@ -1,8 +1,11 @@
 import { ICellRendererParams } from 'ag-grid-community';
+import { useOrderContext } from '../OrderDialog';
 
 export const ActionsRenderer = ({ data }: ICellRendererParams) => {
+  const { setOrderState } = useOrderContext();
+
   const btnClickedHandler = () => {
-    alert(data.security.id);
+    setOrderState({ showDialog: true });
   };
 
   return (
