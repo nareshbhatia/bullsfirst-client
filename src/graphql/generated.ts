@@ -391,11 +391,11 @@ export type GetHoldingsQuery = {
   holdings: Array<{ __typename?: 'Holding' } & HoldingFieldsFragment>;
 };
 
-export type GerSecuritiesQueryVariables = Exact<{
+export type GetSecuritiesQueryVariables = Exact<{
   query: Scalars['String'];
 }>;
 
-export type GerSecuritiesQuery = {
+export type GetSecuritiesQuery = {
   __typename?: 'Query';
   securities: Array<{ __typename?: 'Security' } & SecurityFieldsFragment>;
 };
@@ -1013,13 +1013,13 @@ export const GetHoldingsDocument = {
     ...HoldingFieldsFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetHoldingsQuery, GetHoldingsQueryVariables>;
-export const GerSecuritiesDocument = {
+export const GetSecuritiesDocument = {
   kind: 'Document',
   definitions: [
     {
       kind: 'OperationDefinition',
       operation: 'query',
-      name: { kind: 'Name', value: 'GerSecurities' },
+      name: { kind: 'Name', value: 'GetSecurities' },
       variableDefinitions: [
         {
           kind: 'VariableDefinition',
@@ -1067,7 +1067,7 @@ export const GerSecuritiesDocument = {
     },
     ...SecurityFieldsFragmentDoc.definitions,
   ],
-} as unknown as DocumentNode<GerSecuritiesQuery, GerSecuritiesQueryVariables>;
+} as unknown as DocumentNode<GetSecuritiesQuery, GetSecuritiesQueryVariables>;
 export const PlaceOrderDocument = {
   kind: 'Document',
   definitions: [

@@ -1,4 +1,4 @@
-query GerSecurities($query: String!) {
+query GetSecurities($query: String!) {
   securities(query: $query) {
     ...SecurityFields
   }

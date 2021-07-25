@@ -11,12 +11,11 @@ import {
   ToggleButtonGroup,
 } from '../../../components';
 import {
-  GerSecuritiesDocument,
+  GetSecuritiesDocument,
   OrderInput,
   OrderType,
   Side,
 } from '../../../graphql';
-import { SecurityService } from '../../../services';
 import { useAccountContext } from '../AccountContext';
 import { SideToggle } from './SideToggle';
 import { OrderDefaults, useOrderContext } from './OrderContext';
@@ -77,13 +76,13 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
 
   const loadOptions = async (inputValue: string): Promise<OptionTypeBase[]> => {
     const result = await apolloClient.query({
-      query: GerSecuritiesDocument,
+      query: GetSecuritiesDocument,
       variables: {
         query: inputValue,
       },
       fetchPolicy: 'network-only',
     });
-    return result.securities.map((security) => ({
+    return result.data.securities.map((security) => ({
       value: security.id,
       label: `${security.id} (${security.name})`,
     }));
