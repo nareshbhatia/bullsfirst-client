@@ -1,19 +1,28 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useApolloClient } from '@apollo/client';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { OptionTypeBase } from 'react-select/src/types';
 import * as yup from 'yup';
 import {
+  AutocompleteField,
   HorizontalContainer,
   NumberField,
-  TextField,
   ToggleButtonGroup,
 } from '../../../components';
-import { OrderInput, OrderType, Side } from '../../../graphql';
+import {
+  GerSecuritiesDocument,
+  OrderInput,
+  OrderType,
+  Side,
+} from '../../../graphql';
+import { SecurityService } from '../../../services';
 import { useAccountContext } from '../AccountContext';
 import { SideToggle } from './SideToggle';
 import { OrderDefaults, useOrderContext } from './OrderContext';
 import './OrderForm.css';
 
+// ---------- Form ----------
 const schema = yup.object().shape({
   accountId: yup.string().required(),
   side: yup.string().required(),
@@ -33,11 +42,13 @@ export interface OrderFormProps {
 }
 
 export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
+  const apolloClient = useApolloClient();
+
   const { accountState } = useAccountContext();
   const { account } = accountState;
 
   const { setOrderState } = useOrderContext();
-  const { control, formState, handleSubmit, register, setValue, watch } =
+  const { control, formState, handleSubmit, setValue, watch } =
     useForm<OrderInput>({
       mode: 'onBlur',
       resolver: yupResolver(schema),
@@ -64,6 +75,20 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
     );
   };
 
+  const loadOptions = async (inputValue: string): Promise<OptionTypeBase[]> => {
+    const result = await apolloClient.query({
+      query: GerSecuritiesDocument,
+      variables: {
+        query: inputValue,
+      },
+      fetchPolicy: 'network-only',
+    });
+    return result.securities.map((security) => ({
+      value: security.id,
+      label: `${security.id} (${security.name})`,
+    }));
+  };
+
   return (
     <form className={`order-form ${bgColor}`} onSubmit={handleSubmit(onSubmit)}>
       <HorizontalContainer>
@@ -78,11 +103,13 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
       <p className={`mb-4 ${titleColor}`}>{account?.name}</p>
 
       <div className="mb-3">
-        <TextField
+        <AutocompleteField
           id="symbol"
-          {...register('symbol')}
+          name="symbol"
           label="Symbol"
           error={errors.symbol?.message}
+          control={control}
+          loadOptions={loadOptions}
         />
       </div>
 

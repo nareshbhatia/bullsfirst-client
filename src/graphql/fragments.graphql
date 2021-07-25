@@ -13,6 +13,11 @@ fragment UserInfoFields on UserInfo {
   accessToken
 }
 
+fragment SecurityFields on Security {
+  id
+  name
+}
+
 fragment AccountFields on Account {
   id
   name

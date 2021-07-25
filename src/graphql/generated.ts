@@ -145,6 +145,8 @@ export type Query = {
   __typename?: 'Query';
   /** returns the user identified by the access token in the request header */
   user: User;
+  /** returns all securities whose id or name matches the query string */
+  securities: Array<Security>;
   /** returns the accounts owned by the requesting user */
   accounts: Array<Account>;
   /** returns the account with the specified accountId */
@@ -155,6 +157,10 @@ export type Query = {
   orders: Array<Order>;
   /** returns the transactions for the specified account */
   transactions: Array<Transaction>;
+};
+
+export type QuerySecuritiesArgs = {
+  query: Scalars['String'];
 };
 
 export type QueryAccountArgs = {
@@ -259,6 +265,12 @@ export type UserInfoFieldsFragment = {
   __typename?: 'UserInfo';
   accessToken: string;
   user: { __typename?: 'User'; id: string; name: string; email: string };
+};
+
+export type SecurityFieldsFragment = {
+  __typename?: 'Security';
+  id: string;
+  name: string;
 };
 
 export type AccountFieldsFragment = {
@@ -377,6 +389,15 @@ export type GetHoldingsQueryVariables = Exact<{
 export type GetHoldingsQuery = {
   __typename?: 'Query';
   holdings: Array<{ __typename?: 'Holding' } & HoldingFieldsFragment>;
+};
+
+export type GerSecuritiesQueryVariables = Exact<{
+  query: Scalars['String'];
+}>;
+
+export type GerSecuritiesQuery = {
+  __typename?: 'Query';
+  securities: Array<{ __typename?: 'Security' } & SecurityFieldsFragment>;
 };
 
 export type PlaceOrderMutationVariables = Exact<{
@@ -515,6 +536,26 @@ export const UserInfoFieldsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<UserInfoFieldsFragment, unknown>;
+export const SecurityFieldsFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'SecurityFields' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Security' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<SecurityFieldsFragment, unknown>;
 export const AccountFieldsFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -972,6 +1013,61 @@ export const GetHoldingsDocument = {
     ...HoldingFieldsFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<GetHoldingsQuery, GetHoldingsQueryVariables>;
+export const GerSecuritiesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'GerSecurities' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'query' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'String' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'securities' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'query' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'query' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'SecurityFields' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    ...SecurityFieldsFragmentDoc.definitions,
+  ],
+} as unknown as DocumentNode<GerSecuritiesQuery, GerSecuritiesQueryVariables>;
 export const PlaceOrderDocument = {
   kind: 'Document',
   definitions: [

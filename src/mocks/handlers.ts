@@ -400,6 +400,27 @@ export const handlers = [
     );
   }),
 
+  /** get securities */
+  graphql.query('GetSecurities', (req, res, ctx) => {
+    const { query } = req.variables;
+
+    const filtered = securities.filter(
+      (security) =>
+        security.id.toLowerCase().includes(query.toLowerCase()) ||
+        security.name.toLowerCase().includes(query.toLowerCase())
+    );
+
+    return res(
+      ctx.data({
+        securities: filtered.map((security) => ({
+          __typename: 'Security',
+          id: security.id,
+          name: security.name,
+        })),
+      })
+    );
+  }),
+
   /** get accounts */
   graphql.query('GetAccounts', (req, res, ctx) => {
     return res(ctx.data({ accounts }));

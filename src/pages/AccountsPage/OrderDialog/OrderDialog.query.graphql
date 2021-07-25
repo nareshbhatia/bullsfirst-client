@@ -1,3 +1,9 @@
+query GerSecurities($query: String!) {
+  securities(query: $query) {
+    ...SecurityFields
+  }
+}
+
 mutation PlaceOrder($orderInput: OrderInput!) {
   placeOrder(orderInput: $orderInput) {
     ...OrderFields
