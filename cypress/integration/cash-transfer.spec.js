@@ -11,12 +11,12 @@ describe('Cash Transfer', function () {
     cy.contains('Transfer').click();
 
     // Verify that Transfer Dialog opens
-    cy.contains('XFER IN');
+    cy.contains('TRANSFER IN');
     cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
     cy.get('[data-testid="direction-toggle-button"').click();
-    cy.contains('XFER OUT');
+    cy.contains('TRANSFER OUT');
 
     // Enter amount and submit
     cy.get('input[name="amount"]').type('1000');
@@ -42,12 +42,12 @@ describe('Cash Transfer', function () {
     cy.contains('Transfer').click();
 
     // Verify that Transfer Dialog opens
-    cy.contains('XFER IN');
+    cy.contains('TRANSFER IN');
     cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
     cy.get('[data-testid="direction-toggle-button"').click();
-    cy.contains('XFER OUT');
+    cy.contains('TRANSFER OUT');
 
     // Enter amount and submit
     cy.get('input[name="amount"]').type('20000');

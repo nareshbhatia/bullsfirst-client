@@ -57,9 +57,9 @@ export const TransferForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <HorizontalContainer>
-        <h1 className={`dialog-title flex-1 ${titleColor}`}>
-          XFER {direction === Direction.In ? 'IN' : 'OUT'}
-        </h1>
+        <h2 className={`dialog-title flex-1 ${titleColor}`}>
+          TRANSFER {direction === Direction.In ? 'IN' : 'OUT'}
+        </h2>
         <DirectionToggle
           direction={direction === Direction.In ? Direction.Out : Direction.In}
           onClick={handleDirectionToggle}

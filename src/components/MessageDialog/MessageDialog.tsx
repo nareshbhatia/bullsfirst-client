@@ -20,7 +20,7 @@ export const MessageDialog = () => {
       <div className="message-dialog">
         {title && (
           <div className="mb-4">
-            <h1 className="dialog-title">{title}</h1>
+            <h2 className="dialog-title">{title}</h2>
           </div>
         )}
         {message && <div className="mb-4">{message}</div>}

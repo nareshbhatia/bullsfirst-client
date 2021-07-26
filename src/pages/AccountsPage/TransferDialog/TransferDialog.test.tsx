@@ -78,14 +78,14 @@ describe('TransferDialog', () => {
 
     // Open TransferDialog by clicking on the Transfer button
     userEvent.click(getByText('Transfer'));
-    await findByText('XFER IN');
+    await findByText('TRANSFER IN');
 
     // Check account name under title
     expect(getByText('Brokerage Account')).toBeTruthy();
 
     // Click on direction toggle to change direction
     userEvent.click(getByTestId('direction-toggle-button'));
-    expect(getByText('XFER OUT')).toBeTruthy();
+    expect(getByText('TRANSFER OUT')).toBeTruthy();
 
     // Transfer $1000 out of this account
     userEvent.type(getByLabelText('Amount'), '1000');

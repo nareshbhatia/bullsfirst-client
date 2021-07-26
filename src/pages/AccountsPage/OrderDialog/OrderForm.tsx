@@ -99,9 +99,9 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
   return (
     <form className={`order-form ${bgColor}`} onSubmit={handleSubmit(onSubmit)}>
       <HorizontalContainer>
-        <h1 className={`dialog-title flex-1 ${titleColor}`}>
+        <h2 className={`dialog-title flex-1 ${titleColor}`}>
           {side === Side.Buy ? 'BUY' : 'SELL'}
-        </h1>
+        </h2>
         <SideToggle
           side={side === Side.Buy ? Side.Sell : Side.Buy}
           onClick={handleSideToggle}
