@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Controller } from 'react-hook-form';
 import AsyncSelect from 'react-select/async';
 import { OptionTypeBase } from 'react-select/src/types';
 import { ErrorMessage } from './ErrorMessage';
 
-export interface AutocompleteFieldProps {
+export interface AutocompleteFieldProps<OptionType extends OptionTypeBase> {
   /** used to make label and errorText accessible for screen readers */
   id?: string;
 
@@ -20,22 +20,26 @@ export interface AutocompleteFieldProps {
   /* RHF object containing methods to register components */
   control: any;
 
+  /* function to get the value of an option */
+  getOptionValue: (option: OptionType) => string;
+
+  /* function to get the label for an option */
+  getOptionLabel: (option: OptionType) => string;
+
   /* function to load options based on input value */
-  loadOptions: (inputValue: string) => Promise<OptionTypeBase[]>;
+  loadOptions: (inputValue: string) => Promise<Array<OptionType>>;
 }
 
-export const AutocompleteField = ({
+export function AutocompleteField<OptionType extends OptionTypeBase>({
   id,
   name,
   label,
   error,
   control,
+  getOptionValue,
+  getOptionLabel,
   loadOptions,
-}: AutocompleteFieldProps) => {
-  const [selectedOption, setSelectedOption] = useState<
-    OptionTypeBase | undefined
-  >();
-
+}: AutocompleteFieldProps<OptionType>) {
   const customStyles = {
     valueContainer: () => ({
       padding: 8,
@@ -49,21 +53,12 @@ export const AutocompleteField = ({
         name={name}
         control={control}
         render={({ field }) => {
-          const { value, onChange, ...rest } = field;
           return (
             <AsyncSelect
-              {...rest}
-              className="autocomplete-field"
+              {...field}
               styles={customStyles}
-              value={selectedOption}
-              onChange={(option: OptionTypeBase) => {
-                if (option) {
-                  setSelectedOption(option);
-                  onChange(option.value);
-                } else {
-                  setSelectedOption(undefined);
-                }
-              }}
+              getOptionValue={getOptionValue}
+              getOptionLabel={getOptionLabel}
               loadOptions={loadOptions}
               isClearable
             />
@@ -73,4 +68,4 @@ export const AutocompleteField = ({
       <ErrorMessage error={error} />
     </Fragment>
   );
-};
+}

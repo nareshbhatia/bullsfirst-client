@@ -17,7 +17,7 @@ export const ActionsRenderer = ({ data }: ICellRendererParams) => {
         orderDefaults: {
           accountId: account?.id,
           side,
-          symbol: security.id,
+          security: { id: security.id, name: security.name },
           quantity,
           type: OrderType.Market,
         },

@@ -6,7 +6,10 @@ import { OrderType, Side } from '../../../graphql';
 export type OrderDefaults = {
   accountId: string;
   side?: Side;
-  symbol?: string;
+  security?: {
+    id: string;
+    name: string;
+  };
   quantity?: number;
   type?: OrderType;
   limitPrice?: number;

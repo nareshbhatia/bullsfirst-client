@@ -12,7 +12,7 @@ import {
 } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
 import { OrderDefaults, useOrderContext } from './OrderContext';
-import { OrderForm } from './OrderForm';
+import { Order, OrderForm } from './OrderForm';
 
 export const OrderDialog = () => {
   const { accountState } = useAccountContext();
@@ -53,8 +53,13 @@ export const OrderDialog = () => {
         type: OrderType.Market,
       };
 
-  const handleSubmit = async (orderInput: OrderInput) => {
+  const handleSubmit = async (order: Order) => {
     try {
+      const { security, ...rest } = order;
+      const orderInput: OrderInput = {
+        symbol: security.id,
+        ...rest,
+      };
       await placeOrder({ variables: { orderInput } });
       setOrderState({ showDialog: false });
       setMessageState({
