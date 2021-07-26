@@ -91,7 +91,7 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
       variables: {
         query: inputValue,
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'no-cache',
     });
     return result.data.securities;
   };
@@ -107,7 +107,9 @@ export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
           onClick={handleSideToggle}
         />
       </HorizontalContainer>
-      <p className={`mb-4 ${titleColor}`}>{account?.name}</p>
+      <p data-testid="order-account" className={`mb-4 ${titleColor}`}>
+        {account?.name}
+      </p>
 
       <div className="mb-3">
         <AutocompleteField<Security>

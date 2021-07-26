@@ -3,6 +3,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 import { RefreshContextProvider } from '../../../contexts';
 import {
+  GetSecuritiesDocument,
   OrderStatus,
   OrderType,
   PlaceOrderDocument,
@@ -15,6 +16,25 @@ import { OrderDialog } from './OrderDialog';
 import { v4 as uuidv4 } from 'uuid';
 
 const mocks = [
+  {
+    request: {
+      query: GetSecuritiesDocument,
+      variables: {
+        query: 'AAPL',
+      },
+    },
+    result: {
+      data: {
+        securities: [
+          {
+            __typename: 'Security',
+            id: 'AAPL',
+            name: 'Apple Inc',
+          },
+        ],
+      },
+    },
+  },
   {
     request: {
       query: PlaceOrderDocument,
@@ -99,8 +119,12 @@ describe('OrderDialog', () => {
     userEvent.click(getByTestId('side-toggle-button'));
     expect(getByText('SELL')).toBeTruthy();
 
-    // Sell 100 shares of AAPL at a limit price of 130
+    // Select AAPL from the autocomplete field
     userEvent.type(getByLabelText('Symbol'), 'AAPL');
+    const appleOption = await findByText('AAPL (Apple Inc)');
+    userEvent.click(appleOption);
+
+    // Sell 100 shares at a limit price of 130
     userEvent.type(getByLabelText('Quantity'), '100');
     userEvent.click(getByText('Limit'));
     userEvent.type(getByLabelText('Limit Price'), '130');

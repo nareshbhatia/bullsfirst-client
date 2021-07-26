@@ -48,7 +48,7 @@ function TestForm({ onSubmit }: TestFormProps) {
       variables: {
         query: inputValue,
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy: 'no-cache',
     });
     return result.data.securities;
   };

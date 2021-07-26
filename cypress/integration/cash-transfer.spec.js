@@ -12,7 +12,7 @@ describe('Cash Transfer', function () {
 
     // Verify that Transfer Dialog opens
     cy.contains('XFER IN');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
     cy.get('[data-testid="direction-toggle-button"').click();
@@ -43,7 +43,7 @@ describe('Cash Transfer', function () {
 
     // Verify that Transfer Dialog opens
     cy.contains('XFER IN');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
     cy.get('[data-testid="direction-toggle-button"').click();

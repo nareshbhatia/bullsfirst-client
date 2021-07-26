@@ -65,7 +65,9 @@ export const TransferForm = ({
           onClick={handleDirectionToggle}
         />
       </HorizontalContainer>
-      <p className={`mb-4 ${titleColor}`}>{account?.name}</p>
+      <p data-testid="transfer-account" className={`mb-4 ${titleColor}`}>
+        {account?.name}
+      </p>
 
       <div className="mb-4">
         <NumberField

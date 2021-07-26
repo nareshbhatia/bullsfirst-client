@@ -55,6 +55,7 @@ export function AutocompleteField<OptionType extends OptionTypeBase>({
         render={({ field }) => {
           return (
             <AsyncSelect
+              inputId={id}
               {...field}
               styles={customStyles}
               getOptionValue={getOptionValue}

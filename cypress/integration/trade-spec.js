@@ -12,10 +12,20 @@ describe('Trade Button', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="order-account"').contains('Brokerage Account');
 
     // Enter order details and submit
-    cy.get('input[name="symbol"]').type('AAPL');
+
+    // Note: it is very difficult to choose an option from react-select:
+    // cy.get('input[id="security"]').type('AAPL');
+    // cy.contains('AAPL (Apple Inc)').click({ force: true });
+    // Hence we are waiting for 100ms and pressing enter
+    cy.get('input[id="security"]')
+      .focus()
+      .type('AAPL')
+      .wait(100)
+      .type('{enter}');
+
     cy.get('input[name="quantity"]').type('10');
     cy.contains('Submit').click();
 
@@ -40,14 +50,18 @@ describe('Trade Button', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="order-account"').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
     cy.get('[data-testid="side-toggle-button"').click();
     cy.contains('SELL');
 
     // Enter order details and submit
-    cy.get('input[name="symbol"]').type('AAPL');
+    cy.get('input[id="security"]')
+      .focus()
+      .type('AAPL')
+      .wait(100)
+      .type('{enter}');
     cy.get('input[name="quantity"]').type('10');
     cy.contains('Submit').click();
 
@@ -66,14 +80,18 @@ describe('Trade Button', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="order-account"').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
     cy.get('[data-testid="side-toggle-button"').click();
     cy.contains('SELL');
 
     // Enter order details and submit
-    cy.get('input[name="symbol"]').type('AAPL');
+    cy.get('input[id="security"]')
+      .focus()
+      .type('AAPL')
+      .wait(100)
+      .type('{enter}');
     cy.get('input[name="quantity"]').type('10');
     cy.contains('Limit').click();
     cy.get('input[name="limitPrice"]').type('130');
@@ -94,10 +112,14 @@ describe('Trade Button', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="order-account"').contains('Brokerage Account');
 
     // Enter order details and submit
-    cy.get('input[name="symbol"]').type('AAPL');
+    cy.get('input[id="security"]')
+      .focus()
+      .type('AAPL')
+      .wait(100)
+      .type('{enter}');
     cy.get('input[name="quantity"]').type('1000');
     cy.contains('Submit').click();
 
@@ -117,19 +139,26 @@ describe('Trade Button', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.contains('Brokerage Account');
+    cy.get('[data-testid="order-account"').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
     cy.get('[data-testid="side-toggle-button"').click();
     cy.contains('SELL');
 
     // Enter order details and submit
-    cy.get('input[name="symbol"]').type('AAPL');
+    cy.get('input[id="security"]')
+      .focus()
+      .type('AAPL')
+      .wait(100)
+      .type('{enter}');
     cy.get('input[name="quantity"]').type('1001');
     cy.contains('Submit').click();
 
     // Verify that error message opens
     cy.contains('ERROR');
     cy.contains('Insufficient shares of AAPL in your account');
+
+    // Close the error message
+    cy.contains('Close').click();
   });
 });
