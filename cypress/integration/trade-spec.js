@@ -1,6 +1,6 @@
 const baseUrl = 'http://localhost:3000';
 
-describe('Trade Button', function () {
+describe('Order Dialog', function () {
   it('allows user to place a buy order at market price', function () {
     cy.signupJohnSmith();
 
