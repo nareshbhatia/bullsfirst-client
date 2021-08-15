@@ -247,7 +247,7 @@ export type GetUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetUserQuery = {
   __typename?: 'Query';
-  user: { __typename?: 'User' } & UserFieldsFragment;
+  user: { __typename?: 'User'; id: string; name: string; email: string };
 };
 
 export type SignOutMutationVariables = Exact<{ [key: string]: never }>;
@@ -348,7 +348,7 @@ export type GetAccountsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetAccountsQuery = {
   __typename?: 'Query';
-  accounts: Array<{ __typename?: 'Account' } & AccountFieldsFragment>;
+  accounts: Array<{ __typename?: 'Account'; id: string; name: string }>;
 };
 
 export type GetTransactionsQueryVariables = Exact<{
@@ -388,7 +388,18 @@ export type GetHoldingsQueryVariables = Exact<{
 
 export type GetHoldingsQuery = {
   __typename?: 'Query';
-  holdings: Array<{ __typename?: 'Holding' } & HoldingFieldsFragment>;
+  holdings: Array<{
+    __typename?: 'Holding';
+    id: string;
+    quantity: number;
+    value: number;
+    security: {
+      __typename?: 'Security';
+      id: string;
+      name: string;
+      price: number;
+    };
+  }>;
 };
 
 export type GetSecuritiesQueryVariables = Exact<{
@@ -397,7 +408,7 @@ export type GetSecuritiesQueryVariables = Exact<{
 
 export type GetSecuritiesQuery = {
   __typename?: 'Query';
-  securities: Array<{ __typename?: 'Security' } & SecurityFieldsFragment>;
+  securities: Array<{ __typename?: 'Security'; id: string; name: string }>;
 };
 
 export type PlaceOrderMutationVariables = Exact<{
@@ -406,7 +417,18 @@ export type PlaceOrderMutationVariables = Exact<{
 
 export type PlaceOrderMutation = {
   __typename?: 'Mutation';
-  placeOrder: { __typename?: 'Order' } & OrderFieldsFragment;
+  placeOrder: {
+    __typename?: 'Order';
+    id: string;
+    side: Side;
+    quantity: number;
+    type: OrderType;
+    limitPrice?: Maybe<number>;
+    status: OrderStatus;
+    createdAt: any;
+    createdBy: string;
+    security: { __typename?: 'Security'; id: string; name: string };
+  };
 };
 
 export type GetOrdersQueryVariables = Exact<{
@@ -415,7 +437,18 @@ export type GetOrdersQueryVariables = Exact<{
 
 export type GetOrdersQuery = {
   __typename?: 'Query';
-  orders: Array<{ __typename?: 'Order' } & OrderFieldsFragment>;
+  orders: Array<{
+    __typename?: 'Order';
+    id: string;
+    side: Side;
+    quantity: number;
+    type: OrderType;
+    limitPrice?: Maybe<number>;
+    status: OrderStatus;
+    createdAt: any;
+    createdBy: string;
+    security: { __typename?: 'Security'; id: string; name: string };
+  }>;
 };
 
 export type GetAssetAllocationsQueryVariables = Exact<{
@@ -427,9 +460,22 @@ export type GetAssetAllocationsQuery = {
   account?: Maybe<{
     __typename?: 'Account';
     id: string;
-    assetAllocations: Array<
-      { __typename?: 'AssetAllocation' } & AssetAllocationFieldsFragment
-    >;
+    assetAllocations: Array<{
+      __typename?: 'AssetAllocation';
+      categoryId: string;
+      categoryName: string;
+      value: number;
+      percentage: number;
+      children?: Maybe<
+        Array<{
+          __typename?: 'AssetAllocation';
+          categoryId: string;
+          categoryName: string;
+          value: number;
+          percentage: number;
+        }>
+      >;
+    }>;
   }>;
 };
 
@@ -439,9 +485,12 @@ export type GetNetWorthQueryVariables = Exact<{
 
 export type GetNetWorthQuery = {
   __typename?: 'Query';
-  account?: Maybe<
-    { __typename?: 'Account'; id: string } & NetWorthFieldsFragment
-  >;
+  account?: Maybe<{
+    __typename?: 'Account';
+    id: string;
+    investmentTotal: number;
+    cashBalance: number;
+  }>;
 };
 
 export type GetAccountPerformanceQueryVariables = Exact<{
@@ -453,7 +502,11 @@ export type GetAccountPerformanceQuery = {
   account?: Maybe<{
     __typename?: 'Account';
     id: string;
-    performance: Array<{ __typename?: 'Series' } & SeriesFieldsFragment>;
+    performance: Array<{
+      __typename?: 'Series';
+      name: string;
+      data: Array<{ __typename?: 'DataPoint'; x: number; y: number }>;
+    }>;
   }>;
 };
 
@@ -463,7 +516,15 @@ export type TransferCashMutationVariables = Exact<{
 
 export type TransferCashMutation = {
   __typename?: 'Mutation';
-  transferCash: { __typename?: 'CashTransfer' } & CashTransferFieldsFragment;
+  transferCash: {
+    __typename?: 'CashTransfer';
+    id: string;
+    type: TransactionType;
+    createdAt: any;
+    createdBy: string;
+    amount: number;
+    direction: Direction;
+  };
 };
 
 export type SignInMutationVariables = Exact<{
@@ -472,7 +533,11 @@ export type SignInMutationVariables = Exact<{
 
 export type SignInMutation = {
   __typename?: 'Mutation';
-  signIn: { __typename?: 'UserInfo' } & UserInfoFieldsFragment;
+  signIn: {
+    __typename?: 'UserInfo';
+    accessToken: string;
+    user: { __typename?: 'User'; id: string; name: string; email: string };
+  };
 };
 
 export type SignUpMutationVariables = Exact<{
@@ -481,7 +546,11 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = {
   __typename?: 'Mutation';
-  signUp: { __typename?: 'UserInfo' } & UserInfoFieldsFragment;
+  signUp: {
+    __typename?: 'UserInfo';
+    accessToken: string;
+    user: { __typename?: 'User'; id: string; name: string; email: string };
+  };
 };
 
 export const UserFieldsFragmentDoc = {

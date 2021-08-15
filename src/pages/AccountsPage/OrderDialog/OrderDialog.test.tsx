@@ -51,11 +51,15 @@ const mocks = [
     },
     result: {
       data: {
-        order: {
+        placeOrder: {
           __typename: 'Order',
           id: uuidv4(),
           side: Side.Sell,
-          symbol: 'AAPL',
+          security: {
+            __typename: 'Security',
+            id: 'AAPL',
+            name: 'Apple Inc',
+          },
           quantity: 100,
           type: OrderType.Market,
           limitPrice: null,
