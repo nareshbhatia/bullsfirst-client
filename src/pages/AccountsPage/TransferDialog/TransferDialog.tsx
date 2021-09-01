@@ -67,7 +67,7 @@ export const TransferDialog = () => {
       setMessageState({
         showDialog: true,
         title: 'ERROR',
-        message: e instanceof Error ? e.message : "Unknown error",
+        message: e instanceof Error ? e.message : 'Unknown error',
         buttonSpecs: [closeButton],
       });
     }

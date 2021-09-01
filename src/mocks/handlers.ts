@@ -678,7 +678,7 @@ export const handlers = [
       return res(
         ctx.errors([
           {
-            message: e instanceof Error ? e.message : "Unknown error",
+            message: e instanceof Error ? e.message : 'Unknown error',
             errorType: 'OperationFailed',
           },
         ])
@@ -707,7 +707,7 @@ export const handlers = [
       return res(
         ctx.errors([
           {
-            message: e instanceof Error ? e.message : "Unknown error",
+            message: e instanceof Error ? e.message : 'Unknown error',
             errorType: 'OperationFailed',
           },
         ])
