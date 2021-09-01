@@ -315,6 +315,7 @@ export const handlers = [
     }
 
     const { password, ...user } = existingUser;
+    user['__typename'] = 'User';
     return res(ctx.data({ user }));
   }),
 
@@ -677,7 +678,7 @@ export const handlers = [
       return res(
         ctx.errors([
           {
-            message: e.message,
+            message: e instanceof Error ? e.message : "Unknown error",
             errorType: 'OperationFailed',
           },
         ])
@@ -706,7 +707,7 @@ export const handlers = [
       return res(
         ctx.errors([
           {
-            message: e.message,
+            message: e instanceof Error ? e.message : "Unknown error",
             errorType: 'OperationFailed',
           },
         ])

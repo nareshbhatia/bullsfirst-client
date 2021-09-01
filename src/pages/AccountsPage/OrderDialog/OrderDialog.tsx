@@ -76,7 +76,7 @@ export const OrderDialog = () => {
       setMessageState({
         showDialog: true,
         title: 'ERROR',
-        message: e.message,
+        message: e instanceof Error ? e.message : "Unknown error",
         buttonSpecs: [closeButton],
       });
     }
