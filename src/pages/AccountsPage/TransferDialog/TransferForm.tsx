@@ -6,7 +6,7 @@ import { HorizontalContainer, NumberField } from '../../../components';
 import { Direction, TransferCashInput } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
 import { DirectionToggle } from './DirectionToggle';
-import { TransferDefaults, useTransferContext } from './TransferContext';
+import { useTransferContext } from './TransferContext';
 import './TransferForm.css';
 
 const schema = yup.object().shape({
@@ -16,25 +16,29 @@ const schema = yup.object().shape({
 });
 
 export interface TransferFormProps {
-  transferDefaults: TransferDefaults;
   onSubmit: (transferCashInput: TransferCashInput) => void;
 }
 
-export const TransferForm = ({
-  transferDefaults,
-  onSubmit,
-}: TransferFormProps) => {
+export const TransferForm = ({ onSubmit }: TransferFormProps) => {
   const { accountState } = useAccountContext();
   const { account } = accountState;
 
-  const { setTransferState } = useTransferContext();
+  const { transferState, setTransferState } = useTransferContext();
+  const { transferDefaults } = transferState;
+
   const { control, formState, handleSubmit, setValue, watch } =
     useForm<TransferCashInput>({
       mode: 'onBlur',
       resolver: yupResolver(schema),
-      defaultValues: transferDefaults,
+      defaultValues: transferDefaults
+        ? transferDefaults
+        : {
+            accountId: account?.id,
+            direction: Direction.In,
+          },
     });
   const { errors } = formState;
+
   const direction = watch('direction');
   const bgColor = direction === Direction.In ? 'bg-xfer-in' : 'bg-xfer-out';
   const titleColor =

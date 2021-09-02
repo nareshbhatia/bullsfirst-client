@@ -12,7 +12,7 @@ import {
 import { GetSecuritiesDocument, OrderType, Side } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
 import { SideToggle } from './SideToggle';
-import { OrderDefaults, useOrderContext } from './OrderContext';
+import { useOrderContext } from './OrderContext';
 import './OrderForm.css';
 
 // ---------- Form ----------
@@ -48,23 +48,31 @@ export type Order = {
 };
 
 export interface OrderFormProps {
-  orderDefaults: OrderDefaults;
   onSubmit: (order: Order) => void;
 }
 
-export const OrderForm = ({ orderDefaults, onSubmit }: OrderFormProps) => {
+export const OrderForm = ({ onSubmit }: OrderFormProps) => {
   const apolloClient = useApolloClient();
 
   const { accountState } = useAccountContext();
   const { account } = accountState;
 
-  const { setOrderState } = useOrderContext();
+  const { orderState, setOrderState } = useOrderContext();
+  const { orderDefaults } = orderState;
+
   const { control, formState, handleSubmit, setValue, watch } = useForm<Order>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
-    defaultValues: orderDefaults,
+    defaultValues: orderDefaults
+      ? orderDefaults
+      : {
+          accountId: account?.id,
+          side: Side.Buy,
+          type: OrderType.Market,
+        },
   });
   const { errors } = formState;
+
   const side = watch('side');
   const orderType = watch('type');
   const bgColor = side === Side.Buy ? 'bg-buy' : 'bg-sell';

@@ -4,21 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useMessageContext } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import {
-  OrderInput,
-  OrderType,
-  PlaceOrderDocument,
-  Side,
-} from '../../../graphql';
+import { OrderInput, PlaceOrderDocument } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
-import { OrderDefaults, useOrderContext } from './OrderContext';
+import { useOrderContext } from './OrderContext';
 import { Order, OrderForm } from './OrderForm';
 
 export const OrderDialog = () => {
   const { accountState } = useAccountContext();
   const { account } = accountState;
   const { orderState, setOrderState } = useOrderContext();
-  const { showDialog, orderDefaults } = orderState;
+  const { showDialog } = orderState;
   const { setMessageState } = useMessageContext();
   const [placeOrder] = useMutation(PlaceOrderDocument);
   const { refreshCount, setRefreshCount } = useRefreshContext();
@@ -44,14 +39,6 @@ export const OrderDialog = () => {
   if (account === undefined) {
     return null;
   }
-
-  const defaultValues: OrderDefaults = orderDefaults
-    ? orderDefaults
-    : {
-        accountId: account.id,
-        side: Side.Buy,
-        type: OrderType.Market,
-      };
 
   const handleSubmit = async (order: Order) => {
     try {
@@ -90,7 +77,7 @@ export const OrderDialog = () => {
       modal
       nested
     >
-      <OrderForm orderDefaults={defaultValues} onSubmit={handleSubmit} />
+      <OrderForm onSubmit={handleSubmit} />
     </Popup>
   );
 };

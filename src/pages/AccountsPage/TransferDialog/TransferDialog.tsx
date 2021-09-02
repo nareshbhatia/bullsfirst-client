@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useMessageContext } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
-import {
-  Direction,
-  TransferCashDocument,
-  TransferCashInput,
-} from '../../../graphql';
+import { TransferCashDocument, TransferCashInput } from '../../../graphql';
 import { useAccountContext } from '../AccountContext';
 import { useTransferContext } from './TransferContext';
 import { TransferForm } from './TransferForm';
@@ -44,11 +40,6 @@ export const TransferDialog = () => {
     return null;
   }
 
-  const defaultValues: Omit<TransferCashInput, 'amount'> = {
-    accountId: account.id,
-    direction: Direction.In,
-  };
-
   const handleSubmit = async (transferCashInput: TransferCashInput) => {
     try {
       await transferCash({ variables: { transferCashInput } });
@@ -81,7 +72,7 @@ export const TransferDialog = () => {
       modal
       nested
     >
-      <TransferForm transferDefaults={defaultValues} onSubmit={handleSubmit} />
+      <TransferForm onSubmit={handleSubmit} />
     </Popup>
   );
 };
