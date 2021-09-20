@@ -20,10 +20,6 @@ import { GraphQlUtils } from '../utils';
 // https://testing-library.com/docs/react-testing-library/setup/#custom-render
 // -----------------------------------------------------------------------------
 
-(window as any)._env_ = {
-  API_URL: 'http://localhost:4000',
-};
-
 // Create Apollo Client
 const apolloClient = GraphQlUtils.createApolloClient();
 
