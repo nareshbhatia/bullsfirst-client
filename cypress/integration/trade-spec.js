@@ -12,7 +12,7 @@ describe('Order Dialog', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.get('[data-testid="order-account"').contains('Brokerage Account');
+    cy.get('[data-testid="order-account"]').contains('Brokerage Account');
 
     // Enter order details and submit
 
@@ -50,10 +50,10 @@ describe('Order Dialog', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.get('[data-testid="order-account"').contains('Brokerage Account');
+    cy.get('[data-testid="order-account"]').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
-    cy.get('[data-testid="side-toggle-button"').click();
+    cy.get('[data-testid="side-toggle-button"]').click();
     cy.contains('SELL');
 
     // Enter order details and submit
@@ -80,10 +80,10 @@ describe('Order Dialog', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.get('[data-testid="order-account"').contains('Brokerage Account');
+    cy.get('[data-testid="order-account"]').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
-    cy.get('[data-testid="side-toggle-button"').click();
+    cy.get('[data-testid="side-toggle-button"]').click();
     cy.contains('SELL');
 
     // Enter order details and submit
@@ -112,7 +112,7 @@ describe('Order Dialog', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.get('[data-testid="order-account"').contains('Brokerage Account');
+    cy.get('[data-testid="order-account"]').contains('Brokerage Account');
 
     // Enter order details and submit
     cy.get('input[id="security"]')
@@ -139,10 +139,10 @@ describe('Order Dialog', function () {
 
     // Verify that Order Dialog opens
     cy.contains('BUY');
-    cy.get('[data-testid="order-account"').contains('Brokerage Account');
+    cy.get('[data-testid="order-account"]').contains('Brokerage Account');
 
     // Order Dialog: Switch to sell
-    cy.get('[data-testid="side-toggle-button"').click();
+    cy.get('[data-testid="side-toggle-button"]').click();
     cy.contains('SELL');
 
     // Enter order details and submit

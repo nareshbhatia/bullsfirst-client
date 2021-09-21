@@ -7,7 +7,7 @@ import { server } from './mocks/server';
 
 // ----- Set API_URL in window environment -----
 (window as any)._env_ = {
-    API_URL: 'http://localhost:4000',
+  API_URL: 'http://localhost:4000',
 };
 
 // ----- Set up Mock Service Worker -----

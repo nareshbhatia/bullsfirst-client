@@ -12,10 +12,10 @@ describe('Cash Transfer', function () {
 
     // Verify that Transfer Dialog opens
     cy.contains('TRANSFER IN');
-    cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
+    cy.get('[data-testid="transfer-account"]').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
-    cy.get('[data-testid="direction-toggle-button"').click();
+    cy.get('[data-testid="direction-toggle-button"]').click();
     cy.contains('TRANSFER OUT');
 
     // Enter amount and submit
@@ -43,10 +43,10 @@ describe('Cash Transfer', function () {
 
     // Verify that Transfer Dialog opens
     cy.contains('TRANSFER IN');
-    cy.get('[data-testid="transfer-account"').contains('Brokerage Account');
+    cy.get('[data-testid="transfer-account"]').contains('Brokerage Account');
 
     // Transfer Dialog: Switch to transfer out
-    cy.get('[data-testid="direction-toggle-button"').click();
+    cy.get('[data-testid="direction-toggle-button"]').click();
     cy.contains('TRANSFER OUT');
 
     // Enter amount and submit
