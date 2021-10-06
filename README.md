@@ -42,7 +42,7 @@ This project was bootstrapped with
 
 Make sure your development machine is set up for building React apps. See the
 recommended setup procedure
-[here](https://github.com/nareshbhatia/react-learning-resources/blob/main/docs/mac-setup.md).
+[here](https://github.com/nareshbhatia/react-learning-resources#developer-machine-setup).
 
 Execute the following commands to install dependencies:
 
