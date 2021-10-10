@@ -11,7 +11,7 @@ exports[`AccountHeader renders correctly 1`] = `
       <li>
         <a
           class="account-header__link"
-          href="/accounts/undefined/overview"
+          href="/overview"
         >
           Overview
         </a>
@@ -19,7 +19,7 @@ exports[`AccountHeader renders correctly 1`] = `
       <li>
         <a
           class="account-header__link"
-          href="/accounts/undefined/holdings"
+          href="/holdings"
         >
           Holdings
         </a>
@@ -27,7 +27,7 @@ exports[`AccountHeader renders correctly 1`] = `
       <li>
         <a
           class="account-header__link"
-          href="/accounts/undefined/orders"
+          href="/orders"
         >
           Orders
         </a>
@@ -35,7 +35,7 @@ exports[`AccountHeader renders correctly 1`] = `
       <li>
         <a
           class="account-header__link"
-          href="/accounts/undefined/activity"
+          href="/activity"
         >
           Activity
         </a>

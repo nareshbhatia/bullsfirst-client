@@ -56,7 +56,7 @@ function TestForm({ onSubmit }: TestFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
-        <AutocompleteField<Security>
+        <AutocompleteField
           id="security"
           name="security"
           label="Symbol"

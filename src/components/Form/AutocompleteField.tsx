@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 import { Controller } from 'react-hook-form';
 import AsyncSelect from 'react-select/async';
-import { OptionTypeBase } from 'react-select/src/types';
 import { ErrorMessage } from './ErrorMessage';
 
-export interface AutocompleteFieldProps<OptionType extends OptionTypeBase> {
+export interface AutocompleteFieldProps {
   /** used to make label and errorText accessible for screen readers */
   id?: string;
 
@@ -21,16 +20,16 @@ export interface AutocompleteFieldProps<OptionType extends OptionTypeBase> {
   control: any;
 
   /* function to get the value of an option */
-  getOptionValue: (option: OptionType) => string;
+  getOptionValue: (option: any) => string;
 
   /* function to get the label for an option */
-  getOptionLabel: (option: OptionType) => string;
+  getOptionLabel: (option: any) => string;
 
   /* function to load options based on input value */
-  loadOptions: (inputValue: string) => Promise<Array<OptionType>>;
+  loadOptions: (inputValue: string) => Promise<Array<any>>;
 }
 
-export function AutocompleteField<OptionType extends OptionTypeBase>({
+export function AutocompleteField({
   id,
   name,
   label,
@@ -39,7 +38,7 @@ export function AutocompleteField<OptionType extends OptionTypeBase>({
   getOptionValue,
   getOptionLabel,
   loadOptions,
-}: AutocompleteFieldProps<OptionType>) {
+}: AutocompleteFieldProps) {
   const customStyles = {
     valueContainer: () => ({
       padding: 8,

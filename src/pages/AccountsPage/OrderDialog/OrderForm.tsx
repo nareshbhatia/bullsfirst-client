@@ -120,7 +120,7 @@ export const OrderForm = ({ onSubmit }: OrderFormProps) => {
       </p>
 
       <div className="mb-3">
-        <AutocompleteField<Security>
+        <AutocompleteField
           id="security"
           name="security"
           label="Symbol"

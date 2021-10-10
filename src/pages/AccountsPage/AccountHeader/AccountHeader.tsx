@@ -1,12 +1,11 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useOrderContext } from '../OrderDialog';
 import { useTransferContext } from '../TransferDialog';
 import { RefreshButton } from './RefreshButton';
 import './AccountHeader.css';
 
 export const AccountHeader = () => {
-  const { accountId } = useParams();
   const { setOrderState } = useOrderContext();
   const { setTransferState } = useTransferContext();
 
@@ -22,38 +21,22 @@ export const AccountHeader = () => {
     <nav className="account-header">
       <ul className="flex-1">
         <li>
-          <NavLink
-            className="account-header__link"
-            to={`/accounts/${accountId}/overview`}
-            end
-          >
+          <NavLink className="account-header__link" to="overview" end>
             Overview
           </NavLink>
         </li>
         <li>
-          <NavLink
-            className="account-header__link"
-            to={`/accounts/${accountId}/holdings`}
-            end
-          >
+          <NavLink className="account-header__link" to="holdings" end>
             Holdings
           </NavLink>
         </li>
         <li>
-          <NavLink
-            className="account-header__link"
-            to={`/accounts/${accountId}/orders`}
-            end
-          >
+          <NavLink className="account-header__link" to="orders" end>
             Orders
           </NavLink>
         </li>
         <li>
-          <NavLink
-            className="account-header__link"
-            to={`/accounts/${accountId}/activity`}
-            end
-          >
+          <NavLink className="account-header__link" to="activity" end>
             Activity
           </NavLink>
         </li>
