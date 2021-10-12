@@ -92,6 +92,7 @@ describe('<NumberField />', () => {
         quantity: 1000,
         price: 123.45,
       },
+      // ignore the event that is sent to handleSubmit
       expect.anything()
     );
   });
