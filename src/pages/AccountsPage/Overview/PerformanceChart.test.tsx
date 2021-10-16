@@ -1,6 +1,10 @@
 import React from 'react';
 import { RefreshContextProvider } from '../../../contexts';
-import { render, waitForElementToBeRemoved } from '../../../test/test-utils';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '../../../test/test-utils';
 import { computeLineChartSeries, PerformanceChart } from './PerformanceChart';
 
 const accountPerformance = [
@@ -72,13 +76,13 @@ describe('<PerformanceChart />', () => {
   });
 
   test('renders correctly', async () => {
-    const { container, getByText } = render(
+    const { container } = render(
       <RefreshContextProvider>
         <PerformanceChart />
       </RefreshContextProvider>
     );
 
-    await waitForElementToBeRemoved(getByText('Loading...'));
+    await waitForElementToBeRemoved(screen.getByText('Loading...'));
 
     const lines = container.querySelectorAll(
       '.highcharts-series-group .highcharts-series'

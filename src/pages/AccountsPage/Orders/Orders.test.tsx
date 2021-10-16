@@ -1,6 +1,6 @@
 import React from 'react';
 import { RefreshContextProvider } from '../../../contexts';
-import { render } from '../../../test/test-utils';
+import { render, screen } from '../../../test/test-utils';
 import { Orders } from './Orders';
 
 // mock react-router-dom
@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('<Orders />', () => {
   test('renders correctly', async () => {
-    const { findAllByRole } = render(
+    render(
       <RefreshContextProvider>
         <Orders />
       </RefreshContextProvider>
@@ -21,7 +21,7 @@ describe('<Orders />', () => {
 
     // TODO: Find a better way to test ag-grid
     // The answer (36) shown below is wrong
-    await findAllByRole('row');
+    await screen.findAllByRole('row');
     // expect(rows.length).toBe(36);
   });
 });

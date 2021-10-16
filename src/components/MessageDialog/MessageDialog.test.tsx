@@ -1,6 +1,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { render } from '../../test/test-utils';
+import { render, screen } from '../../test/test-utils';
 import { HorizontalContainer } from '../Containers';
 import { useMessageContext } from './MessageContext';
 
@@ -38,15 +38,15 @@ const TestContainer = () => {
 
 describe('<MessageDialog />', () => {
   test('performs actions on button click', () => {
-    const { getByText, queryByText } = render(<TestContainer />);
+    render(<TestContainer />);
 
     // Open the MessageDialog by clicking on the Show Message button
-    userEvent.click(getByText('Show Message'));
-    getByText('SUCCESS');
-    expect(getByText('Your transfer was successful.')).toBeTruthy();
+    userEvent.click(screen.getByText('Show Message'));
+    screen.getByText('SUCCESS');
+    expect(screen.getByText('Your transfer was successful.')).toBeTruthy();
 
     // Close the MessageDialog
-    userEvent.click(getByText('Close'));
-    expect(queryByText('SUCCESS')).toBeNull();
+    userEvent.click(screen.getByText('Close'));
+    expect(screen.queryByText('SUCCESS')).toBeNull();
   });
 });

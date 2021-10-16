@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { NavItem, SideBar } from './SideBar';
 
 const handleNavItemSelected = jest.fn();
@@ -47,7 +47,7 @@ describe('SideBar', () => {
   });
 
   it('calls onNavItemSelected when a nav item is clicked', () => {
-    const { getByText } = render(
+    render(
       <SideBar
         title="Accounts"
         items={items}
@@ -56,7 +56,7 @@ describe('SideBar', () => {
       />
     );
 
-    fireEvent.click(getByText('Retirement Account'));
+    fireEvent.click(screen.getByText('Retirement Account'));
     expect(handleNavItemSelected).toBeCalledWith('retirement-account');
   });
 });

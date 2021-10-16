@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { GridToolbar } from './GridToolbar';
 import { GridContextProvider, useGridContext } from '../../contexts';
@@ -27,26 +27,26 @@ const MockGrid = () => {
 
 describe('<GridToolbar />', () => {
   test('clicking on Size To Fit button calls gridApi.sizeColumnsToFit()', async () => {
-    const { getByTitle } = render(
+    render(
       <GridContextProvider>
         <GridToolbar />
         <MockGrid />
       </GridContextProvider>
     );
 
-    userEvent.click(getByTitle('Size to Fit'));
+    userEvent.click(screen.getByTitle('Size to Fit'));
     expect(gridApi.sizeColumnsToFit).toBeCalledTimes(1);
   });
 
   test('clicking on Auto-Size button calls columnApi.autoSizeAllColumns()', async () => {
-    const { getByTitle } = render(
+    render(
       <GridContextProvider>
         <GridToolbar />
         <MockGrid />
       </GridContextProvider>
     );
 
-    userEvent.click(getByTitle('Auto-Size'));
+    userEvent.click(screen.getByTitle('Auto-Size'));
     expect(columnApi.autoSizeAllColumns).toBeCalledTimes(1);
   });
 });

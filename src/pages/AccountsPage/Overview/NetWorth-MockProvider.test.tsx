@@ -1,6 +1,10 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import { render, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { RefreshContextProvider } from '../../../contexts';
 import { GetNetWorthDocument } from '../../../graphql';
 import { NetWorth } from './NetWorth';
@@ -36,7 +40,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('<NetWorth />', () => {
   test('renders correctly', async () => {
-    const { asFragment, getByText } = render(
+    const { asFragment } = render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <RefreshContextProvider>
           <NetWorth />
@@ -44,7 +48,7 @@ describe('<NetWorth />', () => {
       </MockedProvider>
     );
 
-    await waitForElementToBeRemoved(getByText('Loading...'));
+    await waitForElementToBeRemoved(screen.getByText('Loading...'));
 
     expect(asFragment()).toMatchSnapshot();
   });

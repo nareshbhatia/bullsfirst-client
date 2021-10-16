@@ -3,7 +3,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import userEvent from '@testing-library/user-event';
 import { SignInDocument } from '../../graphql';
 import { AuthService } from '../../services';
-import { render, waitFor } from '../../test/test-utils';
+import { render, screen, waitFor } from '../../test/test-utils';
 import { SignInPage } from './SignInPage';
 
 const accessToken = '2b9a58c6-d7cc-4a2f-9563-28af8442d28d';
@@ -40,16 +40,16 @@ const mockSetAccessToken = jest.spyOn(AuthService, 'setAccessToken');
 
 describe('SignInPage', () => {
   it('saves access token on successful sign in', async () => {
-    const { getByLabelText, getByText } = render(
+    render(
       <MockedProvider mocks={mocks} addTypename={false}>
         <SignInPage />
       </MockedProvider>
     );
 
     // Enter valid credentials and submit form
-    userEvent.type(getByLabelText('Email'), 'johnsmith@gmail.com');
-    userEvent.type(getByLabelText('Password'), 'let-me-in');
-    userEvent.click(getByText('Sign in'));
+    userEvent.type(screen.getByLabelText('Email'), 'johnsmith@gmail.com');
+    userEvent.type(screen.getByLabelText('Password'), 'let-me-in');
+    userEvent.click(screen.getByText('Sign in'));
 
     await waitFor(() =>
       expect(mockSetAccessToken).toHaveBeenCalledWith(accessToken)

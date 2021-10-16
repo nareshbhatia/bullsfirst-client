@@ -1,6 +1,10 @@
 import React from 'react';
 import { RefreshContextProvider } from '../../../contexts';
-import { render, waitForElementToBeRemoved } from '../../../test/test-utils';
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '../../../test/test-utils';
 import {
   AssetAllocationChart,
   computePieSeries,
@@ -106,13 +110,13 @@ describe('<AssetAllocationChart />', () => {
   });
 
   test('renders correctly', async () => {
-    const { container, getByText } = render(
+    const { container } = render(
       <RefreshContextProvider>
         <AssetAllocationChart />
       </RefreshContextProvider>
     );
 
-    await waitForElementToBeRemoved(getByText('Loading...'));
+    await waitForElementToBeRemoved(screen.getByText('Loading...'));
 
     const pies = container.querySelectorAll('.highcharts-point');
     expect(pies).toHaveLength(3);

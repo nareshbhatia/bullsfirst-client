@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ActionBar } from './ActionBar';
 
@@ -20,15 +20,13 @@ describe('<ActionBar />', () => {
       onClick: handleViewTransactions,
     };
 
-    const { getByText } = render(
-      <ActionBar buttonSpecs={[closeButton, viewTransactionsButton]} />
-    );
+    render(<ActionBar buttonSpecs={[closeButton, viewTransactionsButton]} />);
 
-    userEvent.click(getByText('Close'));
+    userEvent.click(screen.getByText('Close'));
     expect(handleClose).toBeCalledTimes(1);
     expect(handleViewTransactions).toBeCalledTimes(0);
 
-    userEvent.click(getByText('View Transactions'));
+    userEvent.click(screen.getByText('View Transactions'));
     expect(handleClose).toBeCalledTimes(1);
     expect(handleViewTransactions).toBeCalledTimes(1);
   });

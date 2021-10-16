@@ -1,6 +1,6 @@
 import React from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -63,27 +63,23 @@ beforeEach(() => {
 
 describe('<NumberField />', () => {
   test('displays a validation error if validation fails', async () => {
-    const { findByText, getByLabelText, getByText } = render(
-      <TestForm onSubmit={handleSubmit} />
-    );
+    render(<TestForm onSubmit={handleSubmit} />);
 
     // Submit form with price not filled
-    userEvent.type(getByLabelText('Quantity'), '1000');
-    userEvent.click(getByText('Submit'));
+    userEvent.type(screen.getByLabelText('Quantity'), '1000');
+    userEvent.click(screen.getByText('Submit'));
 
     // Expect to see a validation error
-    expect(await findByText('price is a required field')).toBeTruthy();
+    expect(await screen.findByText('price is a required field')).toBeTruthy();
   });
 
   test('submits form information if all validations pass', async () => {
-    const { getByLabelText, getByText, getByTestId } = render(
-      <TestForm onSubmit={handleSubmit} />
-    );
+    render(<TestForm onSubmit={handleSubmit} />);
 
     // Enter valid information and submit form
-    userEvent.type(getByLabelText('Quantity'), '1000');
-    userEvent.type(getByTestId('price'), '123.45');
-    userEvent.click(getByText('Submit'));
+    userEvent.type(screen.getByLabelText('Quantity'), '1000');
+    userEvent.type(screen.getByTestId('price'), '123.45');
+    userEvent.click(screen.getByText('Submit'));
 
     // Expect handleSubmit to be called with the entered information
     await waitFor(() => expect(handleSubmit).toHaveBeenCalledTimes(1));
