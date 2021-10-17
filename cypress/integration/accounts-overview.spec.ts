@@ -8,3 +8,6 @@ describe('Accounts | Overview', function () {
     cy.url().should('eq', `${baseUrl}/accounts/brokerage-account/overview`);
   });
 });
+
+// Convert this to a module instead of script (allows import/export)
+export {};

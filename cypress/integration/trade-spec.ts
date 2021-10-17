@@ -162,3 +162,6 @@ describe('Order Dialog', function () {
     cy.contains('Close').click();
   });
 });
+
+// Convert this to a module instead of script (allows import/export)
+export {};

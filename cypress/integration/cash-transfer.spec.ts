@@ -64,3 +64,6 @@ describe('Cash Transfer', function () {
     cy.contains('ERROR').should('not.exist');
   });
 });
+
+// Convert this to a module instead of script (allows import/export)
+export {};

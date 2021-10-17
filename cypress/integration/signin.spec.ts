@@ -1,9 +1,3 @@
-const user = {
-  name: 'John Smith',
-  email: 'jsmith@example.com',
-  password: 'let-me-in',
-};
-
 describe('SignIn page', function () {
   it('shows errors if required fields are not filled', function () {
     // Go to the sign-in page
@@ -29,3 +23,6 @@ describe('SignIn page', function () {
     cy.contains('email must be a valid email');
   });
 });
+
+// Convert this to a module instead of script (allows import/export)
+export {};

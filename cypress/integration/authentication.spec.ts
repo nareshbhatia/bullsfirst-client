@@ -46,3 +46,6 @@ describe('Authentication', function () {
     cy.contains(user.name);
   });
 });
+
+// Convert this to a module instead of script (allows import/export)
+export {};
