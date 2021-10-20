@@ -1,11 +1,19 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router-dom';
 import { render, screen } from '../../test/test-utils';
 import { SignUpPage } from './SignUpPage';
 
+const MockAccountsPage = () => <div>MockAccountsPage</div>;
+
 describe('<SignUp />', () => {
-  test('navigates to headlines page on successful login', async () => {
-    render(<SignUpPage />);
+  test('navigates to accounts page on successful login', async () => {
+    render(
+      <Routes>
+        <Route path="/" element={<SignUpPage />} />
+        <Route path="/accounts" element={<MockAccountsPage />} />
+      </Routes>
+    );
 
     // Enter valid user info and submit form
     userEvent.type(screen.getByLabelText('Full Name'), 'John Smith');
@@ -14,11 +22,7 @@ describe('<SignUp />', () => {
     userEvent.type(screen.getByLabelText('Confirm Password'), 'let-me-in');
     userEvent.click(screen.getByText('Sign up'));
 
-    // Expect to see the headlines page
-    // TODO: wait for React Router docs to catch up on testing. See here:
-    // https://github.com/ReactTraining/react-router/blob/dev/docs/advanced-guides/testing/testing-with-react-testing-library.md
-    // For now the app remains on the sign-up page
-    // expect(await findByText('Headlines')).toBeTruthy();
-    expect(await screen.findByText('Sign up')).toBeTruthy();
+    // Expect to see the accounts page
+    expect(await screen.findByText('MockAccountsPage')).toBeInTheDocument();
   });
 });

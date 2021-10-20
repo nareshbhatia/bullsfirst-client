@@ -37,10 +37,11 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <PrivateRoute
+      <Route
         path="/accounts"
-        redirectPath="/signin"
-        element={<AccountsPage />}
+        element={
+          <PrivateRoute redirectPath="/signin" element={<AccountsPage />} />
+        }
       >
         <Route path=":accountId" element={<AccountView />}>
           <Route path="overview" element={<Overview />} />
@@ -48,7 +49,7 @@ export const App = () => {
           <Route path="orders" element={<Orders />} />
           <Route path="activity" element={<Activity />} />
         </Route>
-      </PrivateRoute>
+      </Route>
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="*" element={<NotFoundPage />} />

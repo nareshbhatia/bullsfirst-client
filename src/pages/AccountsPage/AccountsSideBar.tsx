@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Loading, SideBar } from '../../components';
 import { GetAccountsDocument } from '../../graphql';
 import { useAccountContext } from './AccountContext';
@@ -8,6 +8,7 @@ import { useAccountContext } from './AccountContext';
 export const AccountsSideBar = () => {
   const { loading, error, data } = useQuery(GetAccountsDocument);
   const navigate = useNavigate();
+  const { accountId } = useParams();
   const { accountState, setAccountState } = useAccountContext();
   const { account: selectedAccount } = accountState;
 
@@ -23,10 +24,10 @@ export const AccountsSideBar = () => {
 
   // when a new account is selected, navigate to its overview tab
   useEffect(() => {
-    if (selectedAccount !== undefined) {
+    if (selectedAccount !== undefined && selectedAccount.id !== accountId) {
       navigate(`/accounts/${selectedAccount.id}/overview`);
     }
-  }, [selectedAccount, navigate]);
+  }, [accountId, selectedAccount, navigate]);
 
   const handleNavItemSelected = (navItemId: string) => {
     const accountSelected = data?.accounts?.find(
