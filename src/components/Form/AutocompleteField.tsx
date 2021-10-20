@@ -40,7 +40,8 @@ export function AutocompleteField({
   loadOptions,
 }: AutocompleteFieldProps) {
   const customStyles = {
-    valueContainer: () => ({
+    valueContainer: (provided: any) => ({
+      ...provided,
       padding: 8,
     }),
   };
