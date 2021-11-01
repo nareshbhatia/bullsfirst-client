@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import userEvent from '@testing-library/user-event';
 import { RefreshContextProvider } from '../../../contexts';
 import {
   GetSecuritiesDocument,
@@ -9,7 +8,7 @@ import {
   PlaceOrderDocument,
   Side,
 } from '../../../graphql';
-import { render } from '../../../test/test-utils';
+import { render, userEvent } from '../../../test/test-utils';
 import { AccountContextProvider, useAccountContext } from '../AccountContext';
 import { OrderContextProvider, useOrderContext } from './OrderContext';
 import { OrderDialog } from './OrderDialog';

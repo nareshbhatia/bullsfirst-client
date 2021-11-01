@@ -1,9 +1,8 @@
 import React from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import userEvent from '@testing-library/user-event';
 import { SignInDocument } from '../../graphql';
 import { AuthService } from '../../services';
-import { render, screen, waitFor } from '../../test/test-utils';
+import { render, screen, userEvent, waitFor } from '../../test/test-utils';
 import { SignInPage } from './SignInPage';
 
 const accessToken = '2b9a58c6-d7cc-4a2f-9563-28af8442d28d';

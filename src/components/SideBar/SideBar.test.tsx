@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen, userEvent } from '../../test/test-utils';
 import { NavItem, SideBar } from './SideBar';
 
 const handleNavItemSelected = jest.fn();
@@ -56,7 +56,7 @@ describe('SideBar', () => {
       />
     );
 
-    fireEvent.click(screen.getByText('Retirement Account'));
+    userEvent.click(screen.getByText('Retirement Account'));
     expect(handleNavItemSelected).toBeCalledWith('retirement-account');
   });
 });

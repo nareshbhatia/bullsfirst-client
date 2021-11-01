@@ -18,6 +18,20 @@ const LabelValue = ({ label, value }: { label: string; value: number }) => {
   );
 };
 
+export const NetWorthRenderer = (props: {
+  investmentTotal: number;
+  cashBalance: number;
+}) => {
+  const { investmentTotal, cashBalance } = props;
+  return (
+    <HorizontalContainer className="p-2">
+      <LabelValue label="Net Worth" value={investmentTotal + cashBalance} />
+      <LabelValue label="Investments" value={investmentTotal} />
+      <LabelValue label="Cash" value={cashBalance} />
+    </HorizontalContainer>
+  );
+};
+
 export const NetWorth = () => {
   const { accountId } = useParams();
   const { refreshCount } = useRefreshContext();
@@ -43,10 +57,9 @@ export const NetWorth = () => {
 
   const { investmentTotal, cashBalance } = data.account;
   return (
-    <HorizontalContainer className="p-2">
-      <LabelValue label="Net Worth" value={investmentTotal + cashBalance} />
-      <LabelValue label="Investments" value={investmentTotal} />
-      <LabelValue label="Cash" value={cashBalance} />
-    </HorizontalContainer>
+    <NetWorthRenderer
+      investmentTotal={investmentTotal}
+      cashBalance={cashBalance}
+    />
   );
 };

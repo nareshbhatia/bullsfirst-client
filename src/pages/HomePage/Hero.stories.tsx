@@ -1,6 +1,5 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { MemoryRouter as Router } from 'react-router';
 import { Hero } from './Hero';
 
 export default {
@@ -11,9 +10,5 @@ export default {
   },
 } as Meta;
 
-export const HeroStory = () => (
-  <Router>
-    <Hero />
-  </Router>
-);
+export const HeroStory = () => <Hero />;
 HeroStory.storyName = 'Hero';

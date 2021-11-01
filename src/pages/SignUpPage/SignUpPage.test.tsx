@@ -1,7 +1,6 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router-dom';
-import { render, screen } from '../../test/test-utils';
+import { render, screen, userEvent } from '../../test/test-utils';
 import { SignUpPage } from './SignUpPage';
 
 const MockAccountsPage = () => <div>MockAccountsPage</div>;

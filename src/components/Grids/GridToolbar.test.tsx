@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { GridToolbar } from './GridToolbar';
 import { GridContextProvider, useGridContext } from '../../contexts';
+import { render, screen, userEvent } from '../../test/test-utils';
 import { ColumnApi, GridApi } from 'ag-grid-community';
 
 const gridApi = {

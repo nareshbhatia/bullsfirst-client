@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { MockedProvider } from '@apollo/client/testing';
-import userEvent from '@testing-library/user-event';
 import { RefreshContextProvider } from '../../../contexts';
 import { TransferCashDocument } from '../../../graphql';
-import { render } from '../../../test/test-utils';
+import { render, userEvent } from '../../../test/test-utils';
 import { AccountContextProvider, useAccountContext } from '../AccountContext';
 import { TransferContextProvider, useTransferContext } from './TransferContext';
 import { TransferDialog } from './TransferDialog';

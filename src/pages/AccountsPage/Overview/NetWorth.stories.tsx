@@ -1,28 +1,21 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { MemoryRouter as Router, Route, Routes } from 'react-router';
-import { RefreshContextProvider } from '../../../contexts';
-import { NetWorth } from './NetWorth';
+import { Story, Meta } from '@storybook/react';
+import { NetWorthRenderer } from './NetWorth';
 
 export default {
   title: 'Pages/Accounts/NetWorth',
-  component: NetWorth,
+  component: NetWorthRenderer,
 } as Meta;
 
-export const NetWorthStory = () => (
-  <Router initialEntries={['/accounts/brokerage-account/overview']}>
-    <Routes>
-      <Route
-        path="/accounts/:accountId/overview"
-        element={
-          <RefreshContextProvider>
-            <div className="paper border-paper">
-              <NetWorth />
-            </div>
-          </RefreshContextProvider>
-        }
-      />
-    </Routes>
-  </Router>
+const Template: Story = (args) => (
+  <div className="paper border-paper">
+    <NetWorthRenderer
+      investmentTotal={args.investmentTotal}
+      cashBalance={args.cashBalance}
+    />
+  </div>
 );
+
+export const NetWorthStory = Template.bind({});
 NetWorthStory.storyName = 'NetWorth';
+NetWorthStory.args = { investmentTotal: 900000.66, cashBalance: 100000.33 };

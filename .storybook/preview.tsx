@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   ApolloClient,
   ApolloProvider,
@@ -6,9 +6,14 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { addDecorator } from '@storybook/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Highcharts from 'highcharts';
-import { MessageContextProvider, MessageDialog } from '../src/components';
+import {
+  ErrorBoundary,
+  Loading,
+  MessageContextProvider,
+  MessageDialog,
+} from '../src/components';
 import { AuthContextProvider, EnvProvider } from '../src/contexts';
 import { AuthService } from '../src/services';
 import { ChartColors } from '../src/utils';
@@ -55,17 +60,23 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const StoryDecorator = (Story: any) => (
-  <MessageContextProvider>
-    <EnvProvider>
-      <ApolloProvider client={client}>
-        <AuthContextProvider>
-          <Story />
-          <MessageDialog />
-        </AuthContextProvider>
-      </ApolloProvider>
-    </EnvProvider>
-  </MessageContextProvider>
-);
-
-addDecorator(StoryDecorator);
+export const decorators = [
+  (Story: any) => (
+    <Suspense fallback={<Loading />}>
+      <MessageContextProvider>
+        <ErrorBoundary>
+          <EnvProvider>
+            <ApolloProvider client={client}>
+              <AuthContextProvider>
+                <Router>
+                  <Story />
+                </Router>
+                <MessageDialog />
+              </AuthContextProvider>
+            </ApolloProvider>
+          </EnvProvider>
+        </ErrorBoundary>
+      </MessageContextProvider>
+    </Suspense>
+  ),
+];
