@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { DrilldownOptions, SeriesPieOptions } from 'highcharts';
 import { useParams } from 'react-router-dom';
 import { Loading, PieChart } from '../../../components';
 import { useRefreshContext } from '../../../contexts';
@@ -22,7 +23,7 @@ export function computePieSeries(
         }))
         .sort((a, b) => b.y - a.y), // descending order
     },
-  ];
+  ] as SeriesPieOptions[];
 }
 
 export function computePieDrilldown(
@@ -56,7 +57,7 @@ export function computePieDrilldown(
 
       return { id: categoryId, name: categoryName, data };
     }),
-  };
+  } as DrilldownOptions;
 }
 
 export const AssetAllocationChart = () => {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
+import Highcharts, { DrilldownOptions, SeriesPieOptions } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import drilldown from 'highcharts/modules/drilldown';
 drilldown(Highcharts);
 
 export interface PieChartProps {
   title: string;
-  series: any;
-  drilldown: any;
+  series: SeriesPieOptions[];
+  drilldown: DrilldownOptions;
 }
 
 export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
@@ -88,10 +88,11 @@ export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
     // overwrite the options - the new ones will be passed to chart.update()
     // see https://github.com/highcharts/highcharts-react#optimal-way-to-update
     // @ts-ignore
-    setChartOptions({
+    setChartOptions((prev) => ({
+      ...prev,
       series,
       drilldown,
-    });
+    }));
   }, [series, drilldown]);
 
   return (
