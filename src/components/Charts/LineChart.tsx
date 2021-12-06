@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
+import Highcharts, { Options } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 export interface LineChartProps {
@@ -8,7 +8,7 @@ export interface LineChartProps {
 }
 
 export const LineChart = ({ title, series }: LineChartProps) => {
-  const [chartOptions, setChartOptions] = useState({
+  const [chartOptions, setChartOptions] = useState<Options>({
     chart: {
       type: 'line',
       style: {
@@ -36,7 +36,7 @@ export const LineChart = ({ title, series }: LineChartProps) => {
       align: 'left',
       style: {
         fontSize: '14px',
-        fontWeight: 500,
+        fontWeight: '500',
         color: '#486581',
       },
       text: title,
