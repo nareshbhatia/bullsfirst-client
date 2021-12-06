@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts, { DrilldownOptions, SeriesPieOptions } from 'highcharts';
+import Highcharts, {
+  DrilldownOptions,
+  Options,
+  SeriesPieOptions,
+} from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import drilldown from 'highcharts/modules/drilldown';
 drilldown(Highcharts);
@@ -11,7 +15,7 @@ export interface PieChartProps {
 }
 
 export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
-  const [chartOptions, setChartOptions] = useState({
+  const [chartOptions, setChartOptions] = useState<Options>({
     chart: {
       type: 'pie',
       style: {
@@ -30,7 +34,7 @@ export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
           format: '{point.name}<br /><b>{point.y}%</b>',
           style: {
             fontSize: '12px',
-            fontWeight: 300,
+            fontWeight: '300',
             textOverflow: 'clip',
           },
         },
@@ -54,7 +58,7 @@ export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
       align: 'left',
       style: {
         fontSize: '14px',
-        fontWeight: 500,
+        fontWeight: '500',
         color: '#486581',
       },
       text: title,
@@ -87,12 +91,10 @@ export const PieChart = ({ title, series, drilldown }: PieChartProps) => {
   useEffect(() => {
     // overwrite the options - the new ones will be passed to chart.update()
     // see https://github.com/highcharts/highcharts-react#optimal-way-to-update
-    // @ts-ignore
-    setChartOptions((prev) => ({
-      ...prev,
+    setChartOptions({
       series,
       drilldown,
-    }));
+    });
   }, [series, drilldown]);
 
   return (
