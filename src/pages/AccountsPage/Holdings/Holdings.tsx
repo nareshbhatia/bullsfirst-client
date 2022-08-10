@@ -19,7 +19,7 @@ export const Holdings = () => {
   const { refreshCount } = useRefreshContext();
   const { loading, error, data, refetch } = useQuery(GetHoldingsDocument, {
     variables: {
-      accountId,
+      accountId: accountId as string,
     },
   });
 

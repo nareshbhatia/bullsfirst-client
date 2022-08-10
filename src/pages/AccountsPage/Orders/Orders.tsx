@@ -26,7 +26,7 @@ export const Orders = () => {
   const { refreshCount } = useRefreshContext();
   const { loading, error, data, refetch } = useQuery(GetOrdersDocument, {
     variables: {
-      accountId,
+      accountId: accountId as string,
     },
   });
 

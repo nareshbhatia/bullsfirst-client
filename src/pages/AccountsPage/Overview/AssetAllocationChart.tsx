@@ -67,7 +67,7 @@ export const AssetAllocationChart = () => {
     GetAssetAllocationsDocument,
     {
       variables: {
-        accountId,
+        accountId: accountId as string,
       },
     }
   );

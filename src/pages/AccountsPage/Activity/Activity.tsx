@@ -31,7 +31,7 @@ export const Activity = () => {
   const { refreshCount } = useRefreshContext();
   const { loading, error, data, refetch } = useQuery(GetTransactionsDocument, {
     variables: {
-      accountId,
+      accountId: accountId as string,
     },
   });
 

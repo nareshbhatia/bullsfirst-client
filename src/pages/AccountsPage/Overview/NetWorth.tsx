@@ -37,7 +37,7 @@ export const NetWorth = () => {
   const { refreshCount } = useRefreshContext();
   const { loading, error, data, refetch } = useQuery(GetNetWorthDocument, {
     variables: {
-      accountId,
+      accountId: accountId as string,
     },
   });
 
